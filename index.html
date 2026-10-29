@@ -2,7 +2,7 @@
 <html lang="ms">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>eHadir - Sistem Kehadiran Komuniti Pintar</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -60,215 +60,228 @@
     }
   </style>
 </head>
-<body class="bg-[#cfd6dc] min-h-screen flex items-center justify-center p-0 sm:p-5 text-slate-800 antialiased font-sans">
+<body class="bg-[#f6f8fa] w-full min-h-[100dvh] text-slate-800 antialiased font-sans flex flex-col m-0 p-0 overflow-x-hidden">
 
-  <!-- Mobile Frame Canvas -->
-  <div class="relative w-full max-w-[400px] h-screen sm:h-[844px] glow-canvas sm:rounded-[44px] shadow-2xl overflow-hidden flex flex-col border border-white/60">
+  <!-- Responsive Full-Size Container (Memenuhi 100% lebar & tinggi peranti) -->
+  <div class="relative w-full min-h-[100dvh] flex-1 glow-canvas flex flex-col justify-between">
 
     <!-- ==============================================
-         SKRIN 1: ONBOARDING / PENGENALAN
+         SKRIN 1: ONBOARDING / PENGENALAN (FULL SCREEN)
          ============================================== -->
-    <div id="screenOnboarding" class="relative flex-1 flex flex-col justify-between overflow-hidden transition-all duration-300 p-6 pt-10">
+    <div id="screenOnboarding" class="relative flex-1 flex flex-col justify-between overflow-y-auto no-scrollbar transition-all duration-300 p-5 sm:p-8 md:p-12 max-w-4xl mx-auto w-full">
       
       <!-- Top Action Bar -->
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between w-full">
         <div class="w-10 h-10 rounded-full bg-white/80 shadow-neumorph-btn flex items-center justify-center text-slate-600">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
         </div>
-        <div class="flex gap-2">
+        <div class="flex gap-2.5">
           <div class="w-10 h-10 rounded-full bg-white/80 shadow-neumorph-btn flex items-center justify-center text-slate-600">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"/></svg>
           </div>
-          <div class="w-10 h-10 rounded-full bg-white/80 shadow-neumorph-btn flex items-center justify-center text-amber-500 font-bold text-xs">
+          <div class="w-10 h-10 rounded-full bg-white/80 shadow-neumorph-btn flex items-center justify-center text-amber-500 font-bold text-sm">
             ★
           </div>
         </div>
       </div>
 
-      <!-- Hero Visual Motif -->
-      <div class="my-auto flex flex-col items-center text-center">
-        <div class="relative w-44 h-44 mb-6 flex items-center justify-center">
-          <div class="absolute inset-0 bg-gradient-to-tr from-amber-200/50 to-orange-100/40 rounded-full blur-2xl"></div>
-          <div class="relative w-36 h-36 rounded-full bg-white shadow-soft-card flex items-center justify-center border-4 border-white/80 p-3">
+      <!-- Hero Visual Motif & Penerangan Program -->
+      <div class="my-auto py-8 flex flex-col items-center text-center">
+        <div class="relative w-44 h-44 sm:w-56 sm:h-56 mb-6 flex items-center justify-center">
+          <div class="absolute inset-0 bg-gradient-to-tr from-amber-200/50 to-orange-100/40 rounded-full blur-3xl"></div>
+          <div class="relative w-36 h-36 sm:w-48 sm:h-48 rounded-full bg-white shadow-soft-card flex items-center justify-center border-4 border-white/80 p-3">
             <div class="w-full h-full rounded-full bg-slate-900 flex flex-col items-center justify-center text-amber-400">
-              <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-14 h-14 sm:w-16 sm:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
             </div>
           </div>
         </div>
 
-        <span class="px-3 py-1 rounded-full bg-white/80 border border-slate-200/60 text-slate-500 text-[10px] font-bold tracking-widest uppercase mb-3 shadow-sm">
+        <span class="px-3.5 py-1.5 rounded-full bg-white/90 border border-slate-200/60 text-slate-500 text-[11px] sm:text-xs font-bold tracking-widest uppercase mb-3 shadow-sm">
           SISTEM KEHADIRAN PINTAR
         </span>
-        <h1 class="text-xl font-extrabold text-slate-900 leading-tight mb-2 uppercase">
+        <h1 class="text-xl sm:text-3xl font-extrabold text-slate-900 leading-tight mb-2 uppercase max-w-lg">
           Bengkel Perancangan Perolehan 2027
         </h1>
-        <p class="text-xs text-slate-500 leading-relaxed max-w-[280px]">
-          Sahkan slot sesi bengkel anda dengan mudah melalui carian pantas & 4 digit pengesahan selamat.
+        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed max-w-md">
+          Sahkan slot sesi bengkel anda dengan pantas melalui carian nama serta pengesahan 4 digit telefon berdaftar.
         </p>
       </div>
 
-      <!-- Bottom Card Action -->
-      <div class="pt-4">
+      <!-- Bottom Action -->
+      <div class="pt-4 w-full max-w-md mx-auto">
         <button 
           onclick="goToScreen('attendance')" 
-          class="w-full py-4 bg-slate-900 hover:bg-slate-800 active:scale-[0.98] text-white font-bold text-sm rounded-3xl shadow-xl shadow-slate-900/20 transition flex items-center justify-center gap-3">
+          class="w-full py-4 bg-slate-900 hover:bg-slate-800 active:scale-[0.98] text-white font-bold text-sm sm:text-base rounded-3xl shadow-xl shadow-slate-900/20 transition flex items-center justify-center gap-3">
           <span>Masuk Sistem Kehadiran</span>
           <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
           </svg>
         </button>
 
-        <p class="text-[10px] text-slate-400 font-medium text-center tracking-tight mt-4 select-none">
+        <p class="text-[11px] text-slate-400 font-medium text-center tracking-tight mt-4 select-none">
           Sistem Rekod Kehadiran Pintar UMKB@JKEW
         </p>
-        <div class="w-28 h-1 bg-slate-400/40 rounded-full mx-auto mt-3"></div>
       </div>
 
     </div>
 
     <!-- ==============================================
-         SKRIN 2: PORTAL CARIAN & SENARAI KEHADIRAN
+         SKRIN 2: PORTAL SENARAI KEHADIRAN (FULL SCREEN)
          ============================================== -->
-    <div id="screenAttendance" class="hidden flex-1 flex flex-col overflow-hidden transition-all duration-300">
+    <div id="screenAttendance" class="hidden flex-1 flex flex-col w-full h-[100dvh] overflow-hidden transition-all duration-300">
       
-      <!-- Top App Bar -->
-      <div class="px-6 pt-5 pb-3">
-        <div class="flex items-center justify-between mb-4">
-          <button onclick="goToScreen('onboarding')" class="w-9 h-9 rounded-full bg-white/80 shadow-neumorph-btn flex items-center justify-center text-slate-600 transition active:scale-95">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
-            </svg>
-          </button>
+      <!-- Top Sticky App Bar & Header Panel -->
+      <div class="w-full bg-white/70 backdrop-blur-md border-b border-slate-200/60 shadow-sm shrink-0">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-4">
           
-          <!-- Segmented Tab Header (Directory Style) -->
-          <div class="flex bg-white/70 p-1 rounded-full shadow-sm border border-slate-200/50">
-            <button class="px-3.5 py-1 rounded-full text-[11px] font-bold bg-white text-slate-800 shadow-sm">Kehadiran</button>
-            <button class="px-3.5 py-1 rounded-full text-[11px] font-medium text-slate-400 hover:text-slate-700">Info Program</button>
+          <div class="flex items-center justify-between mb-3">
+            <button onclick="goToScreen('onboarding')" class="w-10 h-10 rounded-full bg-white shadow-neumorph-btn flex items-center justify-center text-slate-600 transition active:scale-95">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+              </svg>
+            </button>
+            
+            <div class="flex bg-slate-100/90 p-1 rounded-full border border-slate-200/50">
+              <button class="px-4 py-1 rounded-full text-xs font-bold bg-white text-slate-800 shadow-sm">Kehadiran</button>
+              <button class="px-4 py-1 rounded-full text-xs font-medium text-slate-400 hover:text-slate-700">Info Program</button>
+            </div>
+
+            <button onclick="fetchParticipants()" class="w-10 h-10 rounded-full bg-white shadow-neumorph-btn flex items-center justify-center text-slate-600 transition active:scale-95" title="Segar Semula">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+            </button>
           </div>
 
-          <button onclick="fetchParticipants()" class="w-9 h-9 rounded-full bg-white/80 shadow-neumorph-btn flex items-center justify-center text-slate-600 transition active:scale-95" title="Segar Semula">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-            </svg>
-          </button>
-        </div>
-
-        <h2 class="text-xl font-extrabold text-slate-900 tracking-tight">Peserta Bengkel</h2>
-        <p class="text-xs text-slate-400 mt-0.5" id="subCountInfo">Memuatkan data kehadiran...</p>
-
-        <!-- Search Input Bar -->
-        <div class="relative mt-3">
-          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-4.35-4.35m1.85-5.65a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-2">
+            <div>
+              <h2 class="text-lg sm:text-2xl font-extrabold text-slate-900 tracking-tight">Peserta Bengkel</h2>
+              <p class="text-xs text-slate-400" id="subCountInfo">Memuatkan data kehadiran...</p>
+            </div>
+            <div class="self-start sm:self-center">
+              <span id="currentSessionLabelTop" class="text-xs font-bold text-amber-600 bg-amber-50 border border-amber-200/60 px-3 py-1 rounded-full">
+                Hari 1 • Sesi Pagi
+              </span>
+            </div>
           </div>
-          <input 
-            type="text" 
-            id="searchInput" 
-            placeholder="Cari nama peserta..." 
-            oninput="filterParticipants()"
-            class="w-full pl-10 pr-9 py-2.5 bg-white/80 focus:bg-white text-xs rounded-2xl border border-slate-200/80 focus:border-amber-400 outline-none transition font-medium text-slate-800 placeholder-slate-400 shadow-sm"
-          >
-          <button id="clearSearchBtn" onclick="clearSearchInput()" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-          </button>
-        </div>
 
-        <!-- Pemilih Hari (Hari 1, 2, 3) -->
-        <div class="flex items-center gap-1.5 mt-3 p-1 bg-white/60 rounded-2xl border border-slate-200/40">
-          <button onclick="setDay(1)" id="tabDay1" class="flex-1 py-1.5 text-xs font-bold rounded-xl transition bg-slate-900 text-white shadow-sm">Hari 1</button>
-          <button onclick="setDay(2)" id="tabDay2" class="flex-1 py-1.5 text-xs font-bold rounded-xl transition text-slate-500 hover:text-slate-800">Hari 2</button>
-          <button onclick="setDay(3)" id="tabDay3" class="flex-1 py-1.5 text-xs font-bold rounded-xl transition text-slate-500 hover:text-slate-800">Hari 3</button>
-        </div>
+          <!-- Search Input Bar -->
+          <div class="relative mt-2">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-4.35-4.35m1.85-5.65a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </div>
+            <input 
+              type="text" 
+              id="searchInput" 
+              placeholder="Cari nama peserta anda di sini..." 
+              oninput="filterParticipants()"
+              class="w-full pl-10 pr-9 py-2.5 bg-white text-xs sm:text-sm rounded-2xl border border-slate-200/80 focus:border-amber-400 outline-none transition font-medium text-slate-800 placeholder-slate-400 shadow-sm"
+            >
+            <button id="clearSearchBtn" onclick="clearSearchInput()" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
 
-        <!-- Pemilih Sesi (Pagi, Petang, Malam) -->
-        <div class="flex items-center gap-2 mt-2">
-          <button onclick="setSlot('pagi')" id="btnSlotPagi" class="flex-1 py-1 px-2 rounded-xl text-[10px] font-bold border transition flex items-center justify-center gap-1 bg-amber-400 text-slate-900 border-amber-400 shadow-sm">
-            <span>🌅 Pagi</span>
-          </button>
-          <button onclick="setSlot('petang')" id="btnSlotPetang" class="flex-1 py-1 px-2 rounded-xl text-[10px] font-bold border transition flex items-center justify-center gap-1 bg-white/70 text-slate-600 border-slate-200">
-            <span>☀️ Petang</span>
-          </button>
-          <button onclick="setSlot('malam')" id="btnSlotMalam" class="flex-1 py-1 px-2 rounded-xl text-[10px] font-bold border transition flex items-center justify-center gap-1 bg-white/70 text-slate-600 border-slate-200">
-            <span>🌙 Malam</span>
-          </button>
+          <!-- Pilihan Hari & Pilihan Sesi (Responsif Grid) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3 pt-2 border-t border-slate-100">
+            <!-- Tab Hari -->
+            <div class="flex items-center gap-1.5 p-1 bg-white/80 rounded-2xl border border-slate-200/60">
+              <button onclick="setDay(1)" id="tabDay1" class="flex-1 py-1.5 text-xs font-bold rounded-xl transition bg-slate-900 text-white shadow-sm">Hari 1</button>
+              <button onclick="setDay(2)" id="tabDay2" class="flex-1 py-1.5 text-xs font-bold rounded-xl transition text-slate-500 hover:text-slate-800">Hari 2</button>
+              <button onclick="setDay(3)" id="tabDay3" class="flex-1 py-1.5 text-xs font-bold rounded-xl transition text-slate-500 hover:text-slate-800">Hari 3</button>
+            </div>
+
+            <!-- Tab Sesi -->
+            <div class="flex items-center gap-1.5 p-1 bg-white/80 rounded-2xl border border-slate-200/60">
+              <button onclick="setSlot('pagi')" id="btnSlotPagi" class="flex-1 py-1.5 text-xs font-bold rounded-xl transition flex items-center justify-center gap-1 bg-amber-400 text-slate-900 shadow-sm">
+                <span>🌅 Pagi</span>
+              </button>
+              <button onclick="setSlot('petang')" id="btnSlotPetang" class="flex-1 py-1.5 text-xs font-bold rounded-xl transition flex items-center justify-center gap-1 text-slate-500 hover:text-slate-800">
+                <span>☀️ Petang</span>
+              </button>
+              <button onclick="setSlot('malam')" id="btnSlotMalam" class="flex-1 py-1.5 text-xs font-bold rounded-xl transition flex items-center justify-center gap-1 text-slate-500 hover:text-slate-800">
+                <span>🌙 Malam</span>
+              </button>
+            </div>
+          </div>
+
         </div>
       </div>
 
-      <!-- Participant List Scroll Area -->
-      <div id="participantList" class="flex-1 overflow-y-auto no-scrollbar px-6 py-2 space-y-3">
-        <!-- Rendered via JS -->
+      <!-- Participant List Scroll Area (Responsif Grid untuk Skrin Lebar / Telefon Pintar) -->
+      <div class="flex-1 overflow-y-auto no-scrollbar w-full">
+        <div id="participantList" class="max-w-4xl mx-auto p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <!-- Rendered via JS -->
+        </div>
       </div>
 
       <!-- Bottom Bar Summary Indicator -->
-      <div class="bg-white/90 backdrop-blur-md px-6 py-2.5 border-t border-slate-200/50 flex items-center justify-between text-[11px] text-slate-500">
-        <span id="currentSessionLabel" class="font-bold text-slate-800">Hari 1 • Sesi Pagi</span>
-        <span class="flex items-center gap-1.5 text-amber-600 font-semibold">
-          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-          Sistem Aktif
-        </span>
-      </div>
-
-      <!-- Home bar indicator -->
-      <div class="w-full flex justify-center py-1.5 bg-white/90">
-        <div class="w-28 h-1 bg-slate-800 rounded-full opacity-80"></div>
+      <div class="bg-white/95 backdrop-blur-md px-6 py-3 border-t border-slate-200/60 shrink-0">
+        <div class="max-w-4xl mx-auto flex items-center justify-between text-xs text-slate-500">
+          <span id="currentSessionLabel" class="font-bold text-slate-800">Hari 1 • Sesi Pagi</span>
+          <span class="flex items-center gap-1.5 text-amber-600 font-semibold">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            Sistem Aktif
+          </span>
+        </div>
       </div>
 
     </div>
 
     <!-- ==============================================
-         MODAL POP-UP 4-DIGIT: GAYA DARK CARD
+         MODAL POP-UP 4-DIGIT: GAYA RESPONSIVE SHEET / DIALOG
          ============================================== -->
-    <div id="pinModal" class="hidden fixed inset-0 z-50 flex items-end justify-center bg-slate-900/60 backdrop-blur-sm transition-all">
-      <div class="w-full max-w-[400px] bg-[#1c2227] text-white rounded-t-[36px] p-6 shadow-dark-sheet transform transition-all text-center border-t border-slate-700/60">
+    <div id="pinModal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/60 backdrop-blur-sm p-0 sm:p-4 transition-all">
+      <div class="w-full max-w-lg bg-[#1c2227] text-white rounded-t-[36px] sm:rounded-[36px] p-6 sm:p-8 shadow-dark-sheet transform transition-all text-center border-t sm:border border-slate-700/60">
         
-        <!-- Pill handle -->
-        <div class="w-10 h-1 bg-slate-600 rounded-full mx-auto mb-4"></div>
+        <!-- Pill handle for mobile -->
+        <div class="w-10 h-1 bg-slate-600 rounded-full mx-auto mb-4 sm:hidden"></div>
 
         <div class="flex items-center justify-between px-2 mb-2">
-          <span class="text-[10px] font-bold text-amber-400 tracking-wider uppercase" id="modalSessionBadge">Hari 1 • Sesi Pagi</span>
-          <span class="text-[10px] text-slate-400">Pengesahan Selamat</span>
+          <span class="text-[10px] sm:text-xs font-bold text-amber-400 tracking-wider uppercase" id="modalSessionBadge">Hari 1 • Sesi Pagi</span>
+          <span class="text-[10px] sm:text-xs text-slate-400">Pengesahan Selamat</span>
         </div>
 
-        <h3 class="text-base font-bold text-white mt-1">Sahkan Kehadiran Anda</h3>
-        <p id="modalTargetName" class="text-sm font-extrabold text-amber-300 mt-0.5 truncate">Nama Peserta</p>
+        <h3 class="text-base sm:text-lg font-bold text-white mt-1">Sahkan Kehadiran Anda</h3>
+        <p id="modalTargetName" class="text-sm sm:text-base font-extrabold text-amber-300 mt-0.5 truncate">Nama Peserta</p>
         
-        <p class="text-xs text-slate-400 mt-2 leading-relaxed">
-          Masukkan <span class="font-bold text-white">4 digit terakhir</span> nombor telefon yang didaftarkan untuk mengesahkan sesi ini.
+        <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
+          Masukkan <span class="font-bold text-white">4 digit terakhir</span> nombor telefon yang didaftarkan untuk mengesahkan kehadiran.
         </p>
 
         <!-- 4 Separate PIN Input Boxes -->
-        <div class="flex justify-center gap-2.5 my-5">
-          <input type="tel" maxlength="1" id="pin1" class="pin-box w-12 h-14 text-center text-xl font-bold bg-[#242b32] border border-slate-600 rounded-2xl outline-none transition text-white" oninput="handlePinStep(this, 'pin2', null)" autofocus>
-          <input type="tel" maxlength="1" id="pin2" class="pin-box w-12 h-14 text-center text-xl font-bold bg-[#242b32] border border-slate-600 rounded-2xl outline-none transition text-white" oninput="handlePinStep(this, 'pin3', 'pin1')">
-          <input type="tel" maxlength="1" id="pin3" class="pin-box w-12 h-14 text-center text-xl font-bold bg-[#242b32] border border-slate-600 rounded-2xl outline-none transition text-white" oninput="handlePinStep(this, 'pin4', 'pin2')">
-          <input type="tel" maxlength="1" id="pin4" class="pin-box w-12 h-14 text-center text-xl font-bold bg-[#242b32] border border-slate-600 rounded-2xl outline-none transition text-white" oninput="handlePinStep(this, null, 'pin3')">
+        <div class="flex justify-center gap-3 sm:gap-4 my-6">
+          <input type="tel" maxlength="1" id="pin1" class="pin-box w-12 h-14 sm:w-14 sm:h-16 text-center text-xl sm:text-2xl font-bold bg-[#242b32] border border-slate-600 rounded-2xl outline-none transition text-white" oninput="handlePinStep(this, 'pin2', null)" autofocus>
+          <input type="tel" maxlength="1" id="pin2" class="pin-box w-12 h-14 sm:w-14 sm:h-16 text-center text-xl sm:text-2xl font-bold bg-[#242b32] border border-slate-600 rounded-2xl outline-none transition text-white" oninput="handlePinStep(this, 'pin3', 'pin1')">
+          <input type="tel" maxlength="1" id="pin3" class="pin-box w-12 h-14 sm:w-14 sm:h-16 text-center text-xl sm:text-2xl font-bold bg-[#242b32] border border-slate-600 rounded-2xl outline-none transition text-white" oninput="handlePinStep(this, 'pin4', 'pin2')">
+          <input type="tel" maxlength="1" id="pin4" class="pin-box w-12 h-14 sm:w-14 sm:h-16 text-center text-xl sm:text-2xl font-bold bg-[#242b32] border border-slate-600 rounded-2xl outline-none transition text-white" oninput="handlePinStep(this, null, 'pin3')">
         </div>
 
         <!-- Error Msg -->
-        <div id="modalError" class="hidden text-xs text-rose-400 font-semibold mb-3 flex items-center justify-center gap-1">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div id="modalError" class="hidden text-xs sm:text-sm text-rose-400 font-semibold mb-3 flex items-center justify-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           <span id="modalErrorText">4 digit tidak sepadan!</span>
         </div>
 
         <!-- Actions Buttons -->
-        <div class="flex gap-2.5 mt-2">
+        <div class="flex gap-3 mt-4">
           <button 
             type="button" 
             onclick="closePinModal()" 
-            class="flex-1 py-3 px-4 rounded-full font-semibold text-xs text-slate-400 bg-[#242b32] hover:bg-slate-700 transition">
+            class="flex-1 py-3.5 px-4 rounded-full font-semibold text-xs sm:text-sm text-slate-400 bg-[#242b32] hover:bg-slate-700 transition">
             Batal
           </button>
           <button 
             type="button" 
             id="btnConfirmAttendance"
             onclick="verifyAndRecord()" 
-            class="flex-1 py-3 px-4 rounded-full font-bold text-xs text-slate-900 bg-amber-400 hover:bg-amber-300 active:scale-[0.98] shadow-lg shadow-amber-400/20 transition flex items-center justify-center gap-1.5">
+            class="flex-1 py-3.5 px-4 rounded-full font-bold text-xs sm:text-sm text-slate-900 bg-amber-400 hover:bg-amber-300 active:scale-[0.98] shadow-lg shadow-amber-400/20 transition flex items-center justify-center gap-2">
             <span id="btnConfirmLabel">Sahkan Hadir</span>
-            <div id="btnConfirmSpinner" class="hidden w-3.5 h-3.5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
+            <div id="btnConfirmSpinner" class="hidden w-4 h-4 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
           </button>
         </div>
 
@@ -276,7 +289,7 @@
     </div>
 
     <!-- Toast Alert -->
-    <div id="toastAlert" class="fixed top-6 left-1/2 -translate-x-1/2 z-[60] px-4 py-2.5 rounded-2xl shadow-xl text-xs font-semibold flex items-center gap-2 transform -translate-y-28 transition-all duration-300 pointer-events-none text-white">
+    <div id="toastAlert" class="fixed top-6 left-1/2 -translate-x-1/2 z-[60] px-5 py-3 rounded-2xl shadow-2xl text-xs sm:text-sm font-semibold flex items-center gap-2.5 transform -translate-y-28 transition-all duration-300 pointer-events-none text-white">
       <span id="toastIcon"></span>
       <span id="toastMessage">Notifikasi</span>
     </div>
@@ -373,9 +386,9 @@
         const btnId = `btnSlot${s.charAt(0).toUpperCase() + s.slice(1)}`;
         const btn = document.getElementById(btnId);
         if (s === slotKey) {
-          btn.className = "flex-1 py-1 px-2 rounded-xl text-[10px] font-bold border transition flex items-center justify-center gap-1 bg-amber-400 text-slate-900 border-amber-400 shadow-sm";
+          btn.className = "flex-1 py-1.5 text-xs font-bold rounded-xl transition flex items-center justify-center gap-1 bg-amber-400 text-slate-900 shadow-sm";
         } else {
-          btn.className = "flex-1 py-1 px-2 rounded-xl text-[10px] font-bold border transition flex items-center justify-center gap-1 bg-white/70 text-slate-600 border-slate-200";
+          btn.className = "flex-1 py-1.5 text-xs font-bold rounded-xl transition flex items-center justify-center gap-1 text-slate-500 hover:text-slate-800";
         }
       });
       updateSessionUI();
@@ -383,7 +396,9 @@
 
     function updateSessionUI() {
       const label = document.getElementById('currentSessionLabel');
+      const labelTop = document.getElementById('currentSessionLabelTop');
       if (label) label.innerText = getSessionTitleText();
+      if (labelTop) labelTop.innerText = getSessionTitleText();
       filterParticipants();
     }
 
@@ -405,7 +420,6 @@
     }
 
     async function fetchParticipants() {
-      const listEl = document.getElementById('participantList');
       if (SCRIPT_URL && SCRIPT_URL.trim() !== "") {
         try {
           const res = await fetch(`${SCRIPT_URL}?action=getPeserta`);
@@ -454,9 +468,9 @@
 
       if (list.length === 0) {
         container.innerHTML = `
-          <div class="py-14 text-center">
-            <p class="text-xs font-bold text-slate-700">Tiada nama ditemui</p>
-            <p class="text-[11px] text-slate-400 mt-0.5">Sila semak semula ejaan carian anda.</p>
+          <div class="col-span-full py-16 text-center">
+            <p class="text-sm font-bold text-slate-700">Tiada nama ditemui</p>
+            <p class="text-xs text-slate-400 mt-1">Sila pastikan ejaan nama carian anda betul.</p>
           </div>
         `;
         return;
@@ -470,40 +484,40 @@
         return `
           <div 
             onclick="onParticipantClicked(${p.row})" 
-            class="group bg-white/90 hover:bg-white p-3.5 rounded-3xl border border-white/80 transition duration-150 shadow-soft-card cursor-pointer"
+            class="group bg-white/95 hover:bg-white p-4 rounded-3xl border border-white/80 transition duration-150 shadow-soft-card cursor-pointer"
           >
             <div class="flex items-center justify-between mb-2">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-2xl flex items-center justify-center font-bold text-xs ${
+                <div class="w-11 h-11 rounded-2xl flex items-center justify-center font-bold text-xs ${
                   isHadir ? 'bg-amber-400 text-slate-900 font-extrabold' : 'bg-slate-100 text-slate-600'
                 }">
                   ${initials}
                 </div>
                 <div>
-                  <h4 class="text-xs font-extrabold text-slate-900 leading-snug">${p.nama}</h4>
-                  <p class="text-[10px] text-slate-400 font-medium">${p.role || 'Peserta Bengkel'}</p>
+                  <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 leading-snug">${p.nama}</h4>
+                  <p class="text-[10px] sm:text-xs text-slate-400 font-medium">${p.role || 'Peserta Bengkel'}</p>
                 </div>
               </div>
 
               <!-- Top Right Action Arrow -->
-              <div class="w-7 h-7 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-slate-700 transition">
+              <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-slate-700 transition shrink-0">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
               </div>
             </div>
 
-            <!-- Match Rate / Status Bar (Gaya Rekaan Rujukan) -->
-            <div class="pt-2 border-t border-slate-100/80 flex items-center justify-between text-[10px]">
+            <!-- Status Indicator Bar -->
+            <div class="pt-2 border-t border-slate-100/80 flex items-center justify-between text-[11px]">
               <div class="flex items-center gap-2">
                 <span class="text-slate-400 font-medium">Status:</span>
                 <span class="font-bold ${isHadir ? 'text-amber-600' : 'text-slate-500'}">
                   ${isHadir ? 'Disahkan Hadir' : 'Belum Rekod'}
                 </span>
               </div>
-              <div class="flex items-center gap-1.5">
-                <div class="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+              <div class="flex items-center gap-2">
+                <div class="w-20 h-1.5 bg-slate-100 rounded-full overflow-hidden">
                   <div class="h-full rounded-full ${isHadir ? 'w-full bg-amber-400' : 'w-2 bg-slate-300'}"></div>
                 </div>
-                <span class="text-[9px] font-bold text-slate-400">${isHadir ? (slotData.masa || 'Hadir') : '0%'}</span>
+                <span class="text-[10px] font-bold text-slate-400">${isHadir ? (slotData.masa || 'Hadir') : '0%'}</span>
               </div>
             </div>
           </div>
@@ -585,7 +599,7 @@
       const fullPin = `${p1}${p2}${p3}${p4}`;
 
       if (fullPin.length !== 4) {
-        showPinModalError("Sila masukkan lengkap 4 digit.");
+        showPinModalError("Sila masukkan lengkap 4 digit nombor.");
         return;
       }
 
@@ -621,11 +635,11 @@
             triggerToast(`Kehadiran ${getSessionTitleText()} direkodkan!`, "success");
             fetchParticipants();
           } else {
-            showPinModalError(json.message || "4 digit telefon tidak sepadan!");
+            showPinModalError(json.message || "4 digit nombor tidak sepadan!");
           }
           return;
         } catch (e) {
-          // Fallback ke mod demo
+          // Beralih ke demo jika ada ralat rangkaian
         }
       }
 
@@ -672,10 +686,10 @@
       msg.innerText = text;
 
       if (type === "success") {
-        toast.className = "fixed top-6 left-1/2 -translate-x-1/2 z-[60] px-4 py-2.5 rounded-2xl shadow-xl text-xs font-semibold flex items-center gap-2 bg-slate-900 text-amber-400 border border-slate-700 transition-all duration-300 pointer-events-none";
+        toast.className = "fixed top-6 left-1/2 -translate-x-1/2 z-[60] px-5 py-3 rounded-2xl shadow-xl text-xs sm:text-sm font-semibold flex items-center gap-2 bg-slate-900 text-amber-400 border border-slate-700 transition-all duration-300 pointer-events-none";
         icon.innerHTML = `✓`;
       } else {
-        toast.className = "fixed top-6 left-1/2 -translate-x-1/2 z-[60] px-4 py-2.5 rounded-2xl shadow-xl text-xs font-semibold flex items-center gap-2 bg-[#1c2227] text-white border border-slate-700 transition-all duration-300 pointer-events-none";
+        toast.className = "fixed top-6 left-1/2 -translate-x-1/2 z-[60] px-5 py-3 rounded-2xl shadow-xl text-xs sm:text-sm font-semibold flex items-center gap-2 bg-[#1c2227] text-white border border-slate-700 transition-all duration-300 pointer-events-none";
         icon.innerHTML = `ℹ`;
       }
 
