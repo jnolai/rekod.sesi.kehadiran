@@ -518,8 +518,6 @@
     let selectedSlot = "pagi";
     let activeParticipant = null;
     let adminActiveSessionKey = "h1_pagi";
-
-    // Pemboleh ubah sementara untuk penukaran status oleh Admin
     let pendingToggleData = null;
 
     let participants = [
@@ -827,12 +825,15 @@
         const slot = (p.attendance && p.attendance[adminActiveSessionKey]) ? p.attendance[adminActiveSessionKey] : { status: "Belum Hadir", masa: "-" };
         const isHadir = slot.status === 'Hadir';
 
+        // Memaparkan nombor telefon dengan menyokong pelbagai format kunci dari Sheets / data tempatan
+        const displayPhone = p.phone || p.noTel || p.noTelefon || p.notel || '-';
+
         return `
           <tr class="hover:bg-slate-800/40 transition">
             <td class="p-4 text-center text-slate-400 font-mono">${index + 1}</td>
             <td class="p-4 font-bold text-white">${p.nama}</td>
             <td class="p-4 text-slate-400">${p.role || 'Peserta Bengkel'}</td>
-            <td class="p-4 text-slate-400 font-mono">-</td>
+            <td class="p-4 text-amber-300 font-mono font-medium">${displayPhone}</td>
             <td class="p-4 text-center">
               <button 
                 onclick="promptAdminToggleStatus(${p.row})" 
@@ -916,13 +917,13 @@
         ? `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`
         : "";
 
-      // Kemaskini data tempatan
+      // Kemas kini data tempatan
       participant.attendance[sessionKey] = {
         status: targetStatus,
         masa: masaKini
       };
 
-      // Hantar kemaskini ke Google Sheets jika SCRIPT_URL tersedia
+      // Hantar kemas kini ke Google Sheets jika SCRIPT_URL tersedia
       if (SCRIPT_URL && SCRIPT_URL.trim() !== "") {
         try {
           fetch(SCRIPT_URL, {
@@ -936,7 +937,7 @@
             })
           });
         } catch (e) {
-          console.warn("Gagal menghantar kemas kini ke Google Sheets", e);
+          console.warn("Gagal menyegerak ke Google Sheets", e);
         }
       }
 
