@@ -6,36 +6,31 @@
   <title>eHadir - Sistem Kehadiran Komuniti Pintar</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Plus Jakarta Sans / Inter -->
+  <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
+
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
           },
           colors: {
-            teal: {
-              50: '#f0fdfa',
-              100: '#ccfbf1',
-              200: '#99f6e4',
-              300: '#5eead4',
-              400: '#2dd4bf',
-              500: '#14b8a6',
-              600: '#0d9488',
-              700: '#0f766e', // Deep Teal padan imej Neighborly (#008080)
-              800: '#115e59',
-              900: '#134e4a',
+            theme: {
+              bg: '#cfd6dc',
+              dark: '#1c2227',
+              darkCard: '#242b32',
+              accent: '#facc15',
+              accentHover: '#eab308'
             }
           },
           boxShadow: {
-            'soft': '0 20px 40px -15px rgba(15, 118, 110, 0.12)',
-            'card': '0 10px 30px -10px rgba(0, 0, 0, 0.06)',
-            'floating': '0 -10px 40px rgba(15, 118, 110, 0.08)'
+            'soft-card': '0 18px 30px -10px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.02)',
+            'neumorph-btn': '4px 4px 10px rgba(0, 0, 0, 0.04), -4px -4px 10px rgba(255, 255, 255, 0.8)',
+            'dark-sheet': '0 -15px 40px rgba(0, 0, 0, 0.25)'
           }
         }
       }
@@ -54,355 +49,234 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
-    @keyframes floatSoft {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-6px); }
-    }
-    .animate-float {
-      animation: floatSoft 4s ease-in-out infinite;
-    }
-    @keyframes pulseGlow {
-      0%, 100% { opacity: 0.6; }
-      50% { opacity: 1; }
-    }
-    .animate-glow {
-      animation: pulseGlow 2.5s ease-in-out infinite;
+    .glow-canvas {
+      background: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.95) 0%, rgba(246, 248, 250, 0.9) 60%),
+                  radial-gradient(circle at 95% 85%, rgba(254, 243, 199, 0.5) 0%, transparent 60%);
     }
     .pin-box:focus {
-      border-color: #0f766e;
-      background-color: #ffffff;
-      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+      border-color: #facc15;
+      background-color: #2b333c;
+      box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
     }
   </style>
 </head>
-<body class="bg-[#eaf4f4] min-h-screen flex items-center justify-center p-0 sm:p-4 text-slate-800 antialiased font-sans">
+<body class="bg-[#cfd6dc] min-h-screen flex items-center justify-center p-0 sm:p-5 text-slate-800 antialiased font-sans">
 
   <!-- Mobile Frame Canvas -->
-  <div class="relative w-full max-w-[390px] h-screen sm:h-[844px] bg-[#f4f9f9] sm:rounded-[44px] shadow-2xl overflow-hidden flex flex-col border border-teal-900/10">
+  <div class="relative w-full max-w-[400px] h-screen sm:h-[844px] glow-canvas sm:rounded-[44px] shadow-2xl overflow-hidden flex flex-col border border-white/60">
 
     <!-- ==============================================
-         SKRIN 1: ONBOARDING / HALAMAN PENGENALAN
-         (Menyerupai gaya asal Neighborly)
+         SKRIN 1: ONBOARDING / PENGENALAN
          ============================================== -->
-    <div id="screenOnboarding" class="relative flex-1 flex flex-col justify-between overflow-hidden transition-all duration-300 pt-6">
+    <div id="screenOnboarding" class="relative flex-1 flex flex-col justify-between overflow-hidden transition-all duration-300 p-6 pt-10">
       
-      <!-- Mid Section: Friendly Community Illustration (2 People Shaking Hands & Greenery) -->
-      <div class="relative flex-1 flex items-center justify-center px-4">
-        <!-- Soft Circular Background Gradient -->
-        <div class="absolute w-64 h-64 rounded-full bg-gradient-to-tr from-teal-200/40 via-emerald-100/30 to-transparent blur-xl"></div>
-        
-        <svg class="w-full max-w-[280px] h-auto drop-shadow-sm select-none z-10" viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Background Plants / Greenery in Pots -->
-          <ellipse cx="160" cy="245" rx="100" ry="24" fill="#E2E8F0" opacity="0.6"/>
-          <!-- Plant Left -->
-          <g>
-            <path d="M72 170 C65 140, 85 130, 95 155 C105 130, 125 140, 118 170" fill="#99F6E4" opacity="0.7"/>
-            <path d="M85 185 C80 160, 95 150, 102 170" fill="#5EEAD4" opacity="0.8"/>
-            <path d="M80 185 L85 220 L108 220 L113 185 Z" fill="#94A3B8"/>
-          </g>
-          <!-- Plant Right -->
-          <g>
-            <path d="M210 165 C205 135, 225 125, 235 150 C245 125, 265 135, 258 165" fill="#99F6E4" opacity="0.7"/>
-            <path d="M225 185 L230 220 L248 220 L253 185 Z" fill="#94A3B8"/>
-          </g>
-
-          <!-- Chat bubble handshake motif above -->
-          <g class="animate-float">
-            <!-- Left Speech Bubble -->
-            <rect x="105" y="45" width="46" height="30" rx="8" fill="#67E8F9" />
-            <path d="M128 75 L124 81 L133 75 Z" fill="#67E8F9"/>
-            <circle cx="118" cy="60" r="2" fill="white"/>
-            <circle cx="128" cy="60" r="2" fill="white"/>
-            <circle cx="138" cy="60" r="2" fill="white"/>
-
-            <!-- Right Speech Bubble -->
-            <rect x="156" y="38" width="50" height="32" rx="8" fill="#A7F3D0" />
-            <path d="M170 70 L166 76 L175 70 Z" fill="#A7F3D0"/>
-            <circle cx="171" cy="54" r="2" fill="#0F766E"/>
-            <circle cx="181" cy="54" r="2" fill="#0F766E"/>
-            <circle cx="191" cy="54" r="2" fill="#0F766E"/>
-            
-            <!-- Connection Light Bulb/Sparkle -->
-            <circle cx="152" cy="78" r="6" fill="#FEF08A" class="animate-glow"/>
-          </g>
-
-          <!-- Left Character (Yellowish Mustard Hoodie & Dark Pants) -->
-          <g>
-            <!-- Head & Hair -->
-            <path d="M112 60 C104 60, 97 66, 97 75 C97 80, 100 84, 104 86 L118 86 C122 84, 125 80, 125 75 C125 66, 118 60, 112 60 Z" fill="#1E293B"/>
-            <ellipse cx="114" cy="74" rx="6" ry="7" fill="#FBCFE8"/>
-            <!-- Mustard Hoodie -->
-            <path d="M100 88 C94 96, 90 108, 96 138 L128 138 C134 108, 130 96, 124 88 Z" fill="#EAB308"/>
-            <path d="M96 98 L108 108 L114 98" fill="#CA8A04"/>
-            <!-- Left Arm shaking hands -->
-            <path d="M124 98 L146 112 L160 110" stroke="#EAB308" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="160" cy="110" r="4" fill="#FBCFE8"/>
-            <!-- Legs & Shoes -->
-            <path d="M102 138 L103 210 L113 210 L115 138" fill="#475569"/>
-            <path d="M117 138 L119 210 L129 210 L129 138" fill="#334155"/>
-            <rect x="99" y="210" width="16" height="7" rx="3.5" fill="#1E293B"/>
-            <rect x="119" y="210" width="16" height="7" rx="3.5" fill="#1E293B"/>
-          </g>
-
-          <!-- Right Character (Pink Top, Blue Jeans & High Heels) -->
-          <g>
-            <!-- Head & Long Hair -->
-            <path d="M208 58 C200 58, 194 65, 194 76 C194 88, 197 100, 200 106 L216 106 C219 100, 222 88, 222 76 C222 65, 216 58, 208 58 Z" fill="#1E293B"/>
-            <ellipse cx="206" cy="74" rx="6" ry="7" fill="#FED7AA"/>
-            <!-- Pink Cardigan / Top -->
-            <path d="M195 88 C189 96, 185 106, 190 134 L220 134 C225 106, 221 96, 215 88 Z" fill="#F472B6"/>
-            <!-- Right Arm extending to shake hands -->
-            <path d="M193 98 L174 112 L160 110" stroke="#F472B6" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-            <!-- Jeans / Pants -->
-            <path d="M194 134 L197 200 L206 200 L208 134" fill="#60A5FA"/>
-            <path d="M210 134 L212 200 L221 200 L221 134" fill="#3B82F6"/>
-            <!-- Heels -->
-            <path d="M194 200 L204 200 L200 214 L196 214 Z" fill="#0F766E"/>
-            <path d="M211 200 L221 200 L219 214 L215 214 Z" fill="#0F766E"/>
-          </g>
-        </svg>
+      <!-- Top Action Bar -->
+      <div class="flex items-center justify-between">
+        <div class="w-10 h-10 rounded-full bg-white/80 shadow-neumorph-btn flex items-center justify-center text-slate-600">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+        </div>
+        <div class="flex gap-2">
+          <div class="w-10 h-10 rounded-full bg-white/80 shadow-neumorph-btn flex items-center justify-center text-slate-600">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"/></svg>
+          </div>
+          <div class="w-10 h-10 rounded-full bg-white/80 shadow-neumorph-btn flex items-center justify-center text-amber-500 font-bold text-xs">
+            ★
+          </div>
+        </div>
       </div>
 
-      <!-- BOTTOM CARD (Persis Kad Putih Melengkung Gaya Neighborly) -->
-      <div class="relative bg-white rounded-t-[36px] px-7 pt-5 pb-8 shadow-floating flex flex-col items-center text-center">
-        
-        <!-- Carousel Dots Indicator (Seperti dalam gambar) -->
-        <div class="flex items-center gap-1.5 mb-4">
-          <div class="w-6 h-2 bg-teal-700 rounded-full transition-all duration-300"></div>
-          <div class="w-2 h-2 bg-slate-200 rounded-full"></div>
-          <div class="w-2 h-2 bg-slate-200 rounded-full"></div>
+      <!-- Hero Visual Motif -->
+      <div class="my-auto flex flex-col items-center text-center">
+        <div class="relative w-44 h-44 mb-6 flex items-center justify-center">
+          <div class="absolute inset-0 bg-gradient-to-tr from-amber-200/50 to-orange-100/40 rounded-full blur-2xl"></div>
+          <div class="relative w-36 h-36 rounded-full bg-white shadow-soft-card flex items-center justify-center border-4 border-white/80 p-3">
+            <div class="w-full h-full rounded-full bg-slate-900 flex flex-col items-center justify-center text-amber-400">
+              <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
         </div>
 
-        <!-- Lencana Program & Headline Rasmi -->
-        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-[10px] font-bold tracking-wide uppercase mb-2">
-          <span class="w-1.5 h-1.5 rounded-full bg-teal-600"></span>
-          Pendaftaran Kehadiran
-        </div>
-
-        <h2 class="text-base font-extrabold text-slate-900 tracking-tight leading-snug mb-1 uppercase">
-          BENGKEL PERANCANGAN PEROLEHAN TAHUNAN 2027
-        </h2>
-        <p class="text-xs font-semibold text-teal-700 mb-2">
-          Sistem Kehadiran eHadir
+        <span class="px-3 py-1 rounded-full bg-white/80 border border-slate-200/60 text-slate-500 text-[10px] font-bold tracking-widest uppercase mb-3 shadow-sm">
+          SISTEM KEHADIRAN PINTAR
+        </span>
+        <h1 class="text-xl font-extrabold text-slate-900 leading-tight mb-2 uppercase">
+          Bengkel Perancangan Perolehan 2027
+        </h1>
+        <p class="text-xs text-slate-500 leading-relaxed max-w-[280px]">
+          Sahkan slot sesi bengkel anda dengan mudah melalui carian pantas & 4 digit pengesahan selamat.
         </p>
-        <p class="text-xs text-slate-500 leading-relaxed max-w-[280px] mb-6">
-          Sahkan kehadiran bengkel anda dengan pantas melalui carian nama dan pengesahan nombor telefon.
-        </p>
+      </div>
 
-        <!-- Rounded Deep Teal Action Button (Gaya Get Started) -->
+      <!-- Bottom Card Action -->
+      <div class="pt-4">
         <button 
           onclick="goToScreen('attendance')" 
-          class="w-full py-4 bg-teal-700 hover:bg-teal-800 active:scale-[0.98] text-white font-bold text-sm rounded-full shadow-lg shadow-teal-700/25 transition-all tracking-wide flex items-center justify-center gap-2">
-          <span>Mula Sekarang</span>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          class="w-full py-4 bg-slate-900 hover:bg-slate-800 active:scale-[0.98] text-white font-bold text-sm rounded-3xl shadow-xl shadow-slate-900/20 transition flex items-center justify-center gap-3">
+          <span>Masuk Sistem Kehadiran</span>
+          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
           </svg>
         </button>
 
-        <!-- Footer Kecil Skrin Utama -->
-        <p class="text-[10px] text-slate-400 font-medium tracking-tight mt-4 select-none">
+        <p class="text-[10px] text-slate-400 font-medium text-center tracking-tight mt-4 select-none">
           Sistem Rekod Kehadiran Pintar UMKB@JKEW
         </p>
-
-        <!-- Home Bar Indicator -->
-        <div class="w-32 h-1 bg-slate-900 rounded-full mt-3 opacity-80"></div>
+        <div class="w-28 h-1 bg-slate-400/40 rounded-full mx-auto mt-3"></div>
       </div>
 
     </div>
 
     <!-- ==============================================
-         SKRIN 2: CARIAN & SENARAI KEHADIRAN
+         SKRIN 2: PORTAL CARIAN & SENARAI KEHADIRAN
          ============================================== -->
-    <div id="screenAttendance" class="hidden flex-1 flex flex-col bg-[#f8fafc] overflow-hidden transition-all duration-300">
+    <div id="screenAttendance" class="hidden flex-1 flex flex-col overflow-hidden transition-all duration-300">
       
       <!-- Top App Bar -->
-      <div class="bg-white px-5 pt-3 pb-4 border-b border-slate-100 shadow-sm">
-        <div class="flex items-center justify-between mb-3">
-          <!-- Back button -->
-          <button onclick="goToScreen('onboarding')" class="w-9 h-9 rounded-full bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-slate-600 transition active:scale-95">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="px-6 pt-5 pb-3">
+        <div class="flex items-center justify-between mb-4">
+          <button onclick="goToScreen('onboarding')" class="w-9 h-9 rounded-full bg-white/80 shadow-neumorph-btn flex items-center justify-center text-slate-600 transition active:scale-95">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
             </svg>
           </button>
           
-          <div class="text-center px-2 flex-1">
-            <p class="text-[9px] font-bold tracking-wider uppercase text-teal-700">eHadir</p>
-            <h3 class="text-xs font-extrabold text-slate-900 uppercase leading-snug line-clamp-1">
-              BENGKEL PERANCANGAN PEROLEHAN TAHUNAN 2027
-            </h3>
-            <p id="subCountInfo" class="text-[11px] text-teal-700 font-semibold mt-0.5">Memuatkan peserta...</p>
+          <!-- Segmented Tab Header (Directory Style) -->
+          <div class="flex bg-white/70 p-1 rounded-full shadow-sm border border-slate-200/50">
+            <button class="px-3.5 py-1 rounded-full text-[11px] font-bold bg-white text-slate-800 shadow-sm">Kehadiran</button>
+            <button class="px-3.5 py-1 rounded-full text-[11px] font-medium text-slate-400 hover:text-slate-700">Info Program</button>
           </div>
 
-          <!-- Refresh button -->
-          <button onclick="fetchParticipants()" class="w-9 h-9 rounded-full bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-teal-700 transition active:scale-95" title="Segar Semula">
+          <button onclick="fetchParticipants()" class="w-9 h-9 rounded-full bg-white/80 shadow-neumorph-btn flex items-center justify-center text-slate-600 transition active:scale-95" title="Segar Semula">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
             </svg>
           </button>
         </div>
 
-        <!-- Search Input Bar (Neat Rounded Card) -->
-        <div class="relative">
+        <h2 class="text-xl font-extrabold text-slate-900 tracking-tight">Peserta Bengkel</h2>
+        <p class="text-xs text-slate-400 mt-0.5" id="subCountInfo">Memuatkan data kehadiran...</p>
+
+        <!-- Search Input Bar -->
+        <div class="relative mt-3">
           <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-4.35-4.35m1.85-5.65a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-4.35-4.35m1.85-5.65a7 7 0 11-14 0 7 7 0 0114 0z"/>
             </svg>
           </div>
           <input 
             type="text" 
             id="searchInput" 
-            placeholder="Cari nama anda di sini..." 
+            placeholder="Cari nama peserta..." 
             oninput="filterParticipants()"
-            class="w-full pl-10 pr-9 py-2.5 bg-slate-100/80 hover:bg-slate-100 focus:bg-white text-xs rounded-2xl border border-transparent focus:border-teal-600 outline-none transition font-medium text-slate-800 placeholder-slate-400"
+            class="w-full pl-10 pr-9 py-2.5 bg-white/80 focus:bg-white text-xs rounded-2xl border border-slate-200/80 focus:border-amber-400 outline-none transition font-medium text-slate-800 placeholder-slate-400 shadow-sm"
           >
           <button id="clearSearchBtn" onclick="clearSearchInput()" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
         </div>
 
-        <!-- Pemilih Hari (Hari 1, Hari 2, Hari 3) -->
-        <div class="mt-3.5 pt-2.5 border-t border-slate-100">
-          <div class="flex items-center justify-between mb-1.5 px-0.5">
-            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Pilihan Hari:</span>
-            <span id="currentSessionLabel" class="text-[10px] font-bold text-teal-800 bg-teal-50 border border-teal-200/70 px-2 py-0.5 rounded-full">
-              Hari 1 • Sesi Pagi
-            </span>
-          </div>
-          <div class="grid grid-cols-3 gap-1.5 p-1 bg-slate-100/90 rounded-2xl">
-            <button onclick="setDay(1)" id="tabDay1" class="py-1.5 text-xs font-bold rounded-xl transition bg-white text-teal-800 shadow-sm">
-              Hari 1
-            </button>
-            <button onclick="setDay(2)" id="tabDay2" class="py-1.5 text-xs font-bold rounded-xl transition text-slate-500 hover:text-slate-800">
-              Hari 2
-            </button>
-            <button onclick="setDay(3)" id="tabDay3" class="py-1.5 text-xs font-bold rounded-xl transition text-slate-500 hover:text-slate-800">
-              Hari 3
-            </button>
-          </div>
+        <!-- Pemilih Hari (Hari 1, 2, 3) -->
+        <div class="flex items-center gap-1.5 mt-3 p-1 bg-white/60 rounded-2xl border border-slate-200/40">
+          <button onclick="setDay(1)" id="tabDay1" class="flex-1 py-1.5 text-xs font-bold rounded-xl transition bg-slate-900 text-white shadow-sm">Hari 1</button>
+          <button onclick="setDay(2)" id="tabDay2" class="flex-1 py-1.5 text-xs font-bold rounded-xl transition text-slate-500 hover:text-slate-800">Hari 2</button>
+          <button onclick="setDay(3)" id="tabDay3" class="flex-1 py-1.5 text-xs font-bold rounded-xl transition text-slate-500 hover:text-slate-800">Hari 3</button>
         </div>
 
         <!-- Pemilih Sesi (Pagi, Petang, Malam) -->
-        <div class="flex items-center gap-1.5 mt-2">
-          <button onclick="setSlot('pagi')" id="btnSlotPagi" class="flex-1 py-1.5 px-2 rounded-xl text-[11px] font-bold border transition flex items-center justify-center gap-1 bg-teal-700 text-white border-teal-700 shadow-sm">
+        <div class="flex items-center gap-2 mt-2">
+          <button onclick="setSlot('pagi')" id="btnSlotPagi" class="flex-1 py-1 px-2 rounded-xl text-[10px] font-bold border transition flex items-center justify-center gap-1 bg-amber-400 text-slate-900 border-amber-400 shadow-sm">
             <span>🌅 Pagi</span>
           </button>
-          <button onclick="setSlot('petang')" id="btnSlotPetang" class="flex-1 py-1.5 px-2 rounded-xl text-[11px] font-bold border transition flex items-center justify-center gap-1 bg-white text-slate-600 border-slate-200 hover:bg-slate-50">
+          <button onclick="setSlot('petang')" id="btnSlotPetang" class="flex-1 py-1 px-2 rounded-xl text-[10px] font-bold border transition flex items-center justify-center gap-1 bg-white/70 text-slate-600 border-slate-200">
             <span>☀️ Petang</span>
           </button>
-          <button onclick="setSlot('malam')" id="btnSlotMalam" class="flex-1 py-1.5 px-2 rounded-xl text-[11px] font-bold border transition flex items-center justify-center gap-1 bg-white text-slate-600 border-slate-200 hover:bg-slate-50">
+          <button onclick="setSlot('malam')" id="btnSlotMalam" class="flex-1 py-1 px-2 rounded-xl text-[10px] font-bold border transition flex items-center justify-center gap-1 bg-white/70 text-slate-600 border-slate-200">
             <span>🌙 Malam</span>
-          </button>
-        </div>
-
-        <!-- Filter Chips (Semua / Belum Hadir / Hadir) -->
-        <div class="flex items-center gap-2 mt-3 overflow-x-auto no-scrollbar text-xs">
-          <button onclick="setFilter('all')" id="chipAll" class="px-3.5 py-1.5 rounded-full font-semibold transition bg-teal-700 text-white shadow-sm">
-            Semua
-          </button>
-          <button onclick="setFilter('pending')" id="chipPending" class="px-3.5 py-1.5 rounded-full font-semibold transition bg-slate-100 text-slate-600 hover:bg-slate-200">
-            Belum Hadir
-          </button>
-          <button onclick="setFilter('attended')" id="chipAttended" class="px-3.5 py-1.5 rounded-full font-semibold transition bg-slate-100 text-slate-600 hover:bg-slate-200">
-            Hadir
           </button>
         </div>
       </div>
 
       <!-- Participant List Scroll Area -->
-      <div id="participantList" class="flex-1 overflow-y-auto no-scrollbar p-4 space-y-2.5">
+      <div id="participantList" class="flex-1 overflow-y-auto no-scrollbar px-6 py-2 space-y-3">
         <!-- Rendered via JS -->
       </div>
 
-      <!-- Bottom Bar Notice -->
-      <div class="bg-white px-4 py-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
-        <span>Ketik nama untuk mengesahkan</span>
-        <span class="flex items-center gap-1 text-teal-700 font-semibold">
-          <span class="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
-          Modul Selamat
+      <!-- Bottom Bar Summary Indicator -->
+      <div class="bg-white/90 backdrop-blur-md px-6 py-2.5 border-t border-slate-200/50 flex items-center justify-between text-[11px] text-slate-500">
+        <span id="currentSessionLabel" class="font-bold text-slate-800">Hari 1 • Sesi Pagi</span>
+        <span class="flex items-center gap-1.5 text-amber-600 font-semibold">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          Sistem Aktif
         </span>
       </div>
 
-      <!-- Footer Kecil Skrin Senarai Kehadiran -->
-      <div class="bg-white text-center pb-1 pt-0.5">
-        <p class="text-[10px] text-slate-400 font-medium tracking-tight select-none">
-          Sistem Rekod Kehadiran Pintar UMKB@JKEW
-        </p>
-      </div>
-
       <!-- Home bar indicator -->
-      <div class="w-full flex justify-center py-1.5 bg-white">
+      <div class="w-full flex justify-center py-1.5 bg-white/90">
         <div class="w-28 h-1 bg-slate-800 rounded-full opacity-80"></div>
       </div>
 
     </div>
 
     <!-- ==============================================
-         MODAL POP-UP: 4 DIGIT PENGESAHAN TELEFON
-         (Bottom Sheet / Dialog Gaya Neighborly)
+         MODAL POP-UP 4-DIGIT: GAYA DARK CARD
          ============================================== -->
-    <div id="pinModal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/50 backdrop-blur-sm transition-all">
-      <div class="w-full max-w-[390px] bg-white rounded-t-[32px] sm:rounded-[32px] p-6 shadow-2xl transform transition-all text-center border border-teal-900/5">
+    <div id="pinModal" class="hidden fixed inset-0 z-50 flex items-end justify-center bg-slate-900/60 backdrop-blur-sm transition-all">
+      <div class="w-full max-w-[400px] bg-[#1c2227] text-white rounded-t-[36px] p-6 shadow-dark-sheet transform transition-all text-center border-t border-slate-700/60">
         
-        <!-- Small top pill handle -->
-        <div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-4"></div>
+        <!-- Pill handle -->
+        <div class="w-10 h-1 bg-slate-600 rounded-full mx-auto mb-4"></div>
 
-        <!-- Security Icon -->
-        <div class="w-14 h-14 mx-auto rounded-2xl bg-teal-50 border border-teal-100 text-teal-700 flex items-center justify-center mb-3">
-          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-          </svg>
+        <div class="flex items-center justify-between px-2 mb-2">
+          <span class="text-[10px] font-bold text-amber-400 tracking-wider uppercase" id="modalSessionBadge">Hari 1 • Sesi Pagi</span>
+          <span class="text-[10px] text-slate-400">Pengesahan Selamat</span>
         </div>
 
-        <p class="text-[10px] font-bold text-teal-700 tracking-wider uppercase">BENGKEL PERANCANGAN PEROLEHAN TAHUNAN 2027</p>
-        <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-[10px] font-bold mt-1">
-          <span id="modalSessionBadge">Hari 1 • Sesi Pagi</span>
-        </div>
-        <h3 class="text-base font-bold text-slate-800 mt-1">Sahkan Kehadiran</h3>
-        <p id="modalTargetName" class="text-sm font-extrabold text-teal-800 mt-0.5 truncate px-2">Nama Peserta</p>
+        <h3 class="text-base font-bold text-white mt-1">Sahkan Kehadiran Anda</h3>
+        <p id="modalTargetName" class="text-sm font-extrabold text-amber-300 mt-0.5 truncate">Nama Peserta</p>
         
-        <p class="text-xs text-slate-500 mt-2 px-3 leading-relaxed">
-          Masukkan <span class="font-bold text-slate-700">4 digit terakhir</span> nombor telefon berdaftar untuk mengesahkan slot kehadiran ini.
+        <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+          Masukkan <span class="font-bold text-white">4 digit terakhir</span> nombor telefon yang didaftarkan untuk mengesahkan sesi ini.
         </p>
 
         <!-- 4 Separate PIN Input Boxes -->
         <div class="flex justify-center gap-2.5 my-5">
-          <input type="tel" maxlength="1" id="pin1" class="pin-box w-12 h-14 text-center text-xl font-bold bg-slate-50 border-2 border-slate-200 rounded-2xl outline-none transition text-slate-800" oninput="handlePinStep(this, 'pin2', null)" autofocus>
-          <input type="tel" maxlength="1" id="pin2" class="pin-box w-12 h-14 text-center text-xl font-bold bg-slate-50 border-2 border-slate-200 rounded-2xl outline-none transition text-slate-800" oninput="handlePinStep(this, 'pin3', 'pin1')">
-          <input type="tel" maxlength="1" id="pin3" class="pin-box w-12 h-14 text-center text-xl font-bold bg-slate-50 border-2 border-slate-200 rounded-2xl outline-none transition text-slate-800" oninput="handlePinStep(this, 'pin4', 'pin2')">
-          <input type="tel" maxlength="1" id="pin4" class="pin-box w-12 h-14 text-center text-xl font-bold bg-slate-50 border-2 border-slate-200 rounded-2xl outline-none transition text-slate-800" oninput="handlePinStep(this, null, 'pin3')">
+          <input type="tel" maxlength="1" id="pin1" class="pin-box w-12 h-14 text-center text-xl font-bold bg-[#242b32] border border-slate-600 rounded-2xl outline-none transition text-white" oninput="handlePinStep(this, 'pin2', null)" autofocus>
+          <input type="tel" maxlength="1" id="pin2" class="pin-box w-12 h-14 text-center text-xl font-bold bg-[#242b32] border border-slate-600 rounded-2xl outline-none transition text-white" oninput="handlePinStep(this, 'pin3', 'pin1')">
+          <input type="tel" maxlength="1" id="pin3" class="pin-box w-12 h-14 text-center text-xl font-bold bg-[#242b32] border border-slate-600 rounded-2xl outline-none transition text-white" oninput="handlePinStep(this, 'pin4', 'pin2')">
+          <input type="tel" maxlength="1" id="pin4" class="pin-box w-12 h-14 text-center text-xl font-bold bg-[#242b32] border border-slate-600 rounded-2xl outline-none transition text-white" oninput="handlePinStep(this, null, 'pin3')">
         </div>
 
         <!-- Error Msg -->
-        <div id="modalError" class="hidden text-xs text-rose-500 font-semibold mb-3 flex items-center justify-center gap-1">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <div id="modalError" class="hidden text-xs text-rose-400 font-semibold mb-3 flex items-center justify-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           <span id="modalErrorText">4 digit tidak sepadan!</span>
         </div>
 
-        <!-- Modal Actions Buttons -->
+        <!-- Actions Buttons -->
         <div class="flex gap-2.5 mt-2">
           <button 
             type="button" 
             onclick="closePinModal()" 
-            class="flex-1 py-3 px-4 rounded-full font-semibold text-xs text-slate-600 bg-slate-100 hover:bg-slate-200 transition">
+            class="flex-1 py-3 px-4 rounded-full font-semibold text-xs text-slate-400 bg-[#242b32] hover:bg-slate-700 transition">
             Batal
           </button>
           <button 
             type="button" 
             id="btnConfirmAttendance"
             onclick="verifyAndRecord()" 
-            class="flex-1 py-3 px-4 rounded-full font-bold text-xs text-white bg-teal-700 hover:bg-teal-800 active:scale-[0.98] shadow-md shadow-teal-700/20 transition flex items-center justify-center gap-1.5">
-            <span id="btnConfirmLabel">Sahkan Sekarang</span>
-            <div id="btnConfirmSpinner" class="hidden w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            class="flex-1 py-3 px-4 rounded-full font-bold text-xs text-slate-900 bg-amber-400 hover:bg-amber-300 active:scale-[0.98] shadow-lg shadow-amber-400/20 transition flex items-center justify-center gap-1.5">
+            <span id="btnConfirmLabel">Sahkan Hadir</span>
+            <div id="btnConfirmSpinner" class="hidden w-3.5 h-3.5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
           </button>
         </div>
 
       </div>
     </div>
 
-    <!-- Toast Floating Alert -->
-    <div id="toastAlert" class="fixed top-12 left-1/2 -translate-x-1/2 z-[60] px-4 py-2.5 rounded-2xl shadow-xl text-white text-xs font-semibold flex items-center gap-2 transform -translate-y-28 transition-all duration-300 pointer-events-none">
+    <!-- Toast Alert -->
+    <div id="toastAlert" class="fixed top-6 left-1/2 -translate-x-1/2 z-[60] px-4 py-2.5 rounded-2xl shadow-xl text-xs font-semibold flex items-center gap-2 transform -translate-y-28 transition-all duration-300 pointer-events-none text-white">
       <span id="toastIcon"></span>
       <span id="toastMessage">Notifikasi</span>
     </div>
@@ -410,120 +284,55 @@
   </div>
 
   <script>
-    /**
-     * =========================================================================
-     * PANDUAN STRUKTUR GOOGLE SHEETS & GOOGLE APPS SCRIPT (9 SESI):
-     * =========================================================================
-     * Lajur Google Sheets 'SenaraiPeserta':
-     * A: ID | B: Nama | C: NoTelefon
-     * D: H1_Pagi_Status   | E: H1_Pagi_Masa
-     * F: H1_Petang_Status | G: H1_Petang_Masa
-     * H: H1_Malam_Status  | I: H1_Malam_Masa
-     * J: H2_Pagi_Status   | K: H2_Pagi_Masa
-     * L: H2_Petang_Status | M: H2_Petang_Masa
-     * N: H2_Malam_Status  | O: H2_Malam_Masa
-     * P: H3_Pagi_Status   | Q: H3_Pagi_Masa
-     * R: H3_Petang_Status | S: H3_Petang_Masa
-     * T: H3_Malam_Status  | U: H3_Malam_Masa
-     * =========================================================================
-     */
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzKUzGPSuyT9iYu3SgScXFnYgt1P3VbYQIcbaRxs6bCiEZLrPNHpvGJIqNPYyvb3UnQ/exec"; 
 
-    // Pengurusan Slot & Hari Semasa (Default Auto-detect berasaskan waktu jam tempatan)
-    let selectedDay = 1;      // 1, 2, atau 3
-    let selectedSlot = "pagi"; // 'pagi', 'petang', atau 'malam'
-    let currentFilter = "all";
+    let selectedDay = 1;
+    let selectedSlot = "pagi";
     let activeParticipant = null;
 
-    // Data Demo dengan Struktur 9 Sesi
     let participants = [
       {
-        row: 2, id: "P-101", nama: "Farhan Hakim Bin Azman", phone: "0134421188", last4: "1188",
+        row: 2, id: "P-101", nama: "Farhan Hakim Bin Azman", role: "Penyelaras Perolehan", phone: "0134421188", last4: "1188",
         attendance: {
           "h1_pagi": { status: "Hadir", masa: "08:20 PG" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" },
-          "h2_pagi": { status: "Belum Hadir", masa: "" },
-          "h2_petang": { status: "Belum Hadir", masa: "" },
-          "h2_malam": { status: "Belum Hadir", masa: "" },
-          "h3_pagi": { status: "Belum Hadir", masa: "" },
-          "h3_petang": { status: "Belum Hadir", masa: "" },
-          "h3_malam": { status: "Belum Hadir", masa: "" }
+          "h1_malam": { status: "Belum Hadir", masa: "" }
         }
       },
       {
-        row: 3, id: "P-102", nama: "Nur Sabrina Binti Kamarul", phone: "0198765432", last4: "5432",
+        row: 3, id: "P-102", nama: "Nur Sabrina Binti Kamarul", role: "Pegawai Kewangan", phone: "0198765432", last4: "5432",
         attendance: {
           "h1_pagi": { status: "Hadir", masa: "08:15 PG" },
           "h1_petang": { status: "Hadir", masa: "02:10 PTG" },
-          "h1_malam": { status: "Belum Hadir", masa: "" },
-          "h2_pagi": { status: "Belum Hadir", masa: "" },
-          "h2_petang": { status: "Belum Hadir", masa: "" },
-          "h2_malam": { status: "Belum Hadir", masa: "" },
-          "h3_pagi": { status: "Belum Hadir", masa: "" },
-          "h3_petang": { status: "Belum Hadir", masa: "" },
-          "h3_malam": { status: "Belum Hadir", masa: "" }
+          "h1_malam": { status: "Belum Hadir", masa: "" }
         }
       },
       {
-        row: 4, id: "P-103", nama: "Ahmad Danish Bin Razali", phone: "0123456789", last4: "6789",
+        row: 4, id: "P-103", nama: "Ahmad Danish Bin Razali", role: "Penolong Jurutera", phone: "0123456789", last4: "6789",
         attendance: {
           "h1_pagi": { status: "Belum Hadir", masa: "" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" },
-          "h2_pagi": { status: "Belum Hadir", masa: "" },
-          "h2_petang": { status: "Belum Hadir", masa: "" },
-          "h2_malam": { status: "Belum Hadir", masa: "" },
-          "h3_pagi": { status: "Belum Hadir", masa: "" },
-          "h3_petang": { status: "Belum Hadir", masa: "" },
-          "h3_malam": { status: "Belum Hadir", masa: "" }
+          "h1_malam": { status: "Belum Hadir", masa: "" }
         }
       },
       {
-        row: 5, id: "P-104", nama: "Siti Zulaikha Binti Murad", phone: "01122339900", last4: "9900",
+        row: 5, id: "P-104", nama: "Siti Zulaikha Binti Murad", role: "Ketua Bahagian", phone: "01122339900", last4: "9900",
         attendance: {
           "h1_pagi": { status: "Belum Hadir", masa: "" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" },
-          "h2_pagi": { status: "Belum Hadir", masa: "" },
-          "h2_petang": { status: "Belum Hadir", masa: "" },
-          "h2_malam": { status: "Belum Hadir", masa: "" },
-          "h3_pagi": { status: "Belum Hadir", masa: "" },
-          "h3_petang": { status: "Belum Hadir", masa: "" },
-          "h3_malam": { status: "Belum Hadir", masa: "" }
+          "h1_malam": { status: "Belum Hadir", masa: "" }
         }
       },
       {
-        row: 6, id: "P-105", nama: "Tan Jian Wei", phone: "0168892345", last4: "2345",
+        row: 6, id: "P-105", nama: "Tan Jian Wei", role: "Pegawai Tadbir", phone: "0168892345", last4: "2345",
         attendance: {
           "h1_pagi": { status: "Hadir", masa: "08:35 PG" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" },
-          "h2_pagi": { status: "Belum Hadir", masa: "" },
-          "h2_petang": { status: "Belum Hadir", masa: "" },
-          "h2_malam": { status: "Belum Hadir", masa: "" },
-          "h3_pagi": { status: "Belum Hadir", masa: "" },
-          "h3_petang": { status: "Belum Hadir", masa: "" },
-          "h3_malam": { status: "Belum Hadir", masa: "" }
-        }
-      },
-      {
-        row: 7, id: "P-106", nama: "Mohd Ridzuan Bin Hashim", phone: "0176654321", last4: "4321",
-        attendance: {
-          "h1_pagi": { status: "Belum Hadir", masa: "" },
-          "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" },
-          "h2_pagi": { status: "Belum Hadir", masa: "" },
-          "h2_petang": { status: "Belum Hadir", masa: "" },
-          "h2_malam": { status: "Belum Hadir", masa: "" },
-          "h3_pagi": { status: "Belum Hadir", masa: "" },
-          "h3_petang": { status: "Belum Hadir", masa: "" },
-          "h3_malam": { status: "Belum Hadir", masa: "" }
+          "h1_malam": { status: "Belum Hadir", masa: "" }
         }
       }
     ];
 
-    // Dapatkan Kunci Sesi Semasa (cth: 'h1_pagi', 'h2_petang')
     function getCurrentSessionKey() {
       return `h${selectedDay}_${selectedSlot}`;
     }
@@ -533,7 +342,6 @@
       return `Hari ${selectedDay} • ${slotNames[selectedSlot]}`;
     }
 
-    // Auto-detect Sesi Mengikut Waktu Jam Semasa
     function autoDetectSession() {
       const currentHour = new Date().getHours();
       if (currentHour < 12) {
@@ -546,30 +354,28 @@
       updateSessionUI();
     }
 
-    // Tetapkan Hari
     function setDay(dayNum) {
       selectedDay = dayNum;
       [1, 2, 3].forEach(d => {
         const btn = document.getElementById(`tabDay${d}`);
         if (d === dayNum) {
-          btn.className = "py-1.5 text-xs font-bold rounded-xl transition bg-white text-teal-800 shadow-sm";
+          btn.className = "flex-1 py-1.5 text-xs font-bold rounded-xl transition bg-slate-900 text-white shadow-sm";
         } else {
-          btn.className = "py-1.5 text-xs font-bold rounded-xl transition text-slate-500 hover:text-slate-800";
+          btn.className = "flex-1 py-1.5 text-xs font-bold rounded-xl transition text-slate-500 hover:text-slate-800";
         }
       });
       updateSessionUI();
     }
 
-    // Tetapkan Sesi (Pagi/Petang/Malam)
     function setSlot(slotKey) {
       selectedSlot = slotKey;
       ['pagi', 'petang', 'malam'].forEach(s => {
         const btnId = `btnSlot${s.charAt(0).toUpperCase() + s.slice(1)}`;
         const btn = document.getElementById(btnId);
         if (s === slotKey) {
-          btn.className = "flex-1 py-1.5 px-2 rounded-xl text-[11px] font-bold border transition flex items-center justify-center gap-1 bg-teal-700 text-white border-teal-700 shadow-sm";
+          btn.className = "flex-1 py-1 px-2 rounded-xl text-[10px] font-bold border transition flex items-center justify-center gap-1 bg-amber-400 text-slate-900 border-amber-400 shadow-sm";
         } else {
-          btn.className = "flex-1 py-1.5 px-2 rounded-xl text-[11px] font-bold border transition flex items-center justify-center gap-1 bg-white text-slate-600 border-slate-200 hover:bg-slate-50";
+          btn.className = "flex-1 py-1 px-2 rounded-xl text-[10px] font-bold border transition flex items-center justify-center gap-1 bg-white/70 text-slate-600 border-slate-200";
         }
       });
       updateSessionUI();
@@ -577,13 +383,10 @@
 
     function updateSessionUI() {
       const label = document.getElementById('currentSessionLabel');
-      if (label) {
-        label.innerText = getSessionTitleText();
-      }
+      if (label) label.innerText = getSessionTitleText();
       filterParticipants();
     }
 
-    // Navigasi Skrin
     function goToScreen(screen) {
       const screenOnboard = document.getElementById('screenOnboarding');
       const screenAtt = document.getElementById('screenAttendance');
@@ -601,17 +404,9 @@
       }
     }
 
-    // Ambil Data Peserta (Google Sheets / Demo)
     async function fetchParticipants() {
       const listEl = document.getElementById('participantList');
-
       if (SCRIPT_URL && SCRIPT_URL.trim() !== "") {
-        listEl.innerHTML = `
-          <div class="py-16 text-center text-teal-800">
-            <div class="w-8 h-8 border-2 border-teal-600 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-            <p class="text-xs font-semibold">Menyegerakkan data daripada Google Sheets...</p>
-          </div>
-        `;
         try {
           const res = await fetch(`${SCRIPT_URL}?action=getPeserta`);
           const cloudData = await res.json();
@@ -619,34 +414,12 @@
             participants = cloudData;
           }
         } catch (err) {
-          triggerToast("Mod demo aktif (Tidak dapat sambung ke Sheet)", "error");
+          triggerToast("Mod demo aktif (data luar talian)", "info");
         }
       }
-
       filterParticipants();
     }
 
-    // Tetapkan Penapis Status
-    function setFilter(type) {
-      currentFilter = type;
-      const chips = {
-        all: document.getElementById('chipAll'),
-        pending: document.getElementById('chipPending'),
-        attended: document.getElementById('chipAttended')
-      };
-
-      Object.keys(chips).forEach(k => {
-        if (k === type) {
-          chips[k].className = "px-3.5 py-1.5 rounded-full font-semibold transition bg-teal-700 text-white shadow-sm";
-        } else {
-          chips[k].className = "px-3.5 py-1.5 rounded-full font-semibold transition bg-slate-100 text-slate-600 hover:bg-slate-200";
-        }
-      });
-
-      filterParticipants();
-    }
-
-    // Penapis Dinamik Mengikut Carian dan Sesi Aktif
     function filterParticipants() {
       const term = document.getElementById('searchInput').value.toLowerCase().trim();
       const clearBtn = document.getElementById('clearSearchBtn');
@@ -656,22 +429,7 @@
         clearBtn.classList.add('hidden');
       }
 
-      const sessionKey = getCurrentSessionKey();
-
       let filtered = participants.filter(p => p.nama.toLowerCase().includes(term));
-
-      if (currentFilter === 'pending') {
-        filtered = filtered.filter(p => {
-          const slot = (p.attendance && p.attendance[sessionKey]) ? p.attendance[sessionKey] : { status: "Belum Hadir" };
-          return slot.status !== 'Hadir';
-        });
-      } else if (currentFilter === 'attended') {
-        filtered = filtered.filter(p => {
-          const slot = (p.attendance && p.attendance[sessionKey]) ? p.attendance[sessionKey] : { status: "Belum Hadir" };
-          return slot.status === 'Hadir';
-        });
-      }
-
       renderParticipants(filtered);
     }
 
@@ -682,7 +440,6 @@
       filterParticipants();
     }
 
-    // Render Kad Senarai Peserta Mengikut Sesi Aktif
     function renderParticipants(list) {
       const container = document.getElementById('participantList');
       const countEl = document.getElementById('subCountInfo');
@@ -693,16 +450,13 @@
         return slot && slot.status === 'Hadir';
       }).length;
 
-      countEl.innerText = `${totalHadir} daripada ${participants.length} Hadir (${getSessionTitleText()})`;
+      countEl.innerText = `${totalHadir} daripada ${participants.length} hadir bagi ${getSessionTitleText()}`;
 
       if (list.length === 0) {
         container.innerHTML = `
           <div class="py-14 text-center">
-            <div class="w-12 h-12 bg-teal-50 rounded-2xl flex items-center justify-center mx-auto text-teal-700 mb-2">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            </div>
             <p class="text-xs font-bold text-slate-700">Tiada nama ditemui</p>
-            <p class="text-[11px] text-slate-400 mt-0.5">Sila semak semula ejaan carian atau pilihan penapis anda.</p>
+            <p class="text-[11px] text-slate-400 mt-0.5">Sila semak semula ejaan carian anda.</p>
           </div>
         `;
         return;
@@ -716,40 +470,41 @@
         return `
           <div 
             onclick="onParticipantClicked(${p.row})" 
-            class="group bg-white p-3.5 rounded-2xl border transition duration-150 flex items-center justify-between shadow-card cursor-pointer ${
-              isHadir 
-                ? 'border-teal-200/60 bg-teal-50/20' 
-                : 'border-slate-100 hover:border-teal-400 hover:shadow-soft active:scale-[0.99]'
-            }"
+            class="group bg-white/90 hover:bg-white p-3.5 rounded-3xl border border-white/80 transition duration-150 shadow-soft-card cursor-pointer"
           >
-            <div class="flex items-center gap-3">
-              <!-- Avatar Circle -->
-              <div class="w-11 h-11 rounded-2xl flex items-center justify-center font-bold text-xs tracking-wider ${
-                isHadir 
-                  ? 'bg-teal-700 text-white' 
-                  : 'bg-teal-50 text-teal-800 border border-teal-100 group-hover:bg-teal-700 group-hover:text-white transition'
-              }">
-                ${initials}
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl flex items-center justify-center font-bold text-xs ${
+                  isHadir ? 'bg-amber-400 text-slate-900 font-extrabold' : 'bg-slate-100 text-slate-600'
+                }">
+                  ${initials}
+                </div>
+                <div>
+                  <h4 class="text-xs font-extrabold text-slate-900 leading-snug">${p.nama}</h4>
+                  <p class="text-[10px] text-slate-400 font-medium">${p.role || 'Peserta Bengkel'}</p>
+                </div>
               </div>
-              <div class="text-left">
-                <h4 class="text-xs font-bold text-slate-800 leading-snug">${p.nama}</h4>
-                <p class="text-[10px] text-slate-400 mt-0.5">${isHadir ? 'Direkod pada ' + (slotData.masa || 'Sesi ini') : 'Ketik untuk rekod ' + getSessionTitleText()}</p>
+
+              <!-- Top Right Action Arrow -->
+              <div class="w-7 h-7 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-slate-700 transition">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
               </div>
             </div>
 
-            <!-- Status Indicator Badge -->
-            <div>
-              ${
-                isHadir 
-                  ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-teal-100 text-teal-800">
-                      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
-                      Hadir
-                     </span>` 
-                  : `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-500 group-hover:bg-teal-50 group-hover:text-teal-800 transition">
-                      Belum
-                      <svg class="w-3 h-3 text-slate-400 group-hover:text-teal-700 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
-                     </span>`
-              }
+            <!-- Match Rate / Status Bar (Gaya Rekaan Rujukan) -->
+            <div class="pt-2 border-t border-slate-100/80 flex items-center justify-between text-[10px]">
+              <div class="flex items-center gap-2">
+                <span class="text-slate-400 font-medium">Status:</span>
+                <span class="font-bold ${isHadir ? 'text-amber-600' : 'text-slate-500'}">
+                  ${isHadir ? 'Disahkan Hadir' : 'Belum Rekod'}
+                </span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <div class="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div class="h-full rounded-full ${isHadir ? 'w-full bg-amber-400' : 'w-2 bg-slate-300'}"></div>
+                </div>
+                <span class="text-[9px] font-bold text-slate-400">${isHadir ? (slotData.masa || 'Hadir') : '0%'}</span>
+              </div>
             </div>
           </div>
         `;
@@ -764,7 +519,6 @@
         : parts[0].substring(0, 2).toUpperCase();
     }
 
-    // Klik Kad Peserta
     function onParticipantClicked(row) {
       const p = participants.find(item => item.row === row);
       if (!p) return;
@@ -780,17 +534,14 @@
       openPinModal(p);
     }
 
-    // Buka Modal & Set Fokus
     function openPinModal(participant) {
       activeParticipant = participant;
       document.getElementById('modalTargetName').innerText = participant.nama;
       document.getElementById('modalSessionBadge').innerText = getSessionTitleText();
       document.getElementById('modalError').classList.add('hidden');
 
-      // Kosongkan 4 input pin
       ['pin1', 'pin2', 'pin3', 'pin4'].forEach(id => {
-        const el = document.getElementById(id);
-        el.value = '';
+        document.getElementById(id).value = '';
       });
 
       document.getElementById('pinModal').classList.remove('hidden');
@@ -804,7 +555,6 @@
       activeParticipant = null;
     }
 
-    // PIN Auto-Advance & Backspace Handler
     function handlePinStep(current, nextFieldId, prevFieldId) {
       current.value = current.value.replace(/[^0-9]/g, '');
 
@@ -825,7 +575,6 @@
       });
     });
 
-    // Sahkan 4 Digit Terakhir & Rekodkan Kehadiran Sesi
     async function verifyAndRecord() {
       if (!activeParticipant) return;
 
@@ -836,7 +585,7 @@
       const fullPin = `${p1}${p2}${p3}${p4}`;
 
       if (fullPin.length !== 4) {
-        showPinModalError("Sila lengkapkan 4 digit nombor.");
+        showPinModalError("Sila masukkan lengkap 4 digit.");
         return;
       }
 
@@ -850,7 +599,6 @@
 
       const sessionKey = getCurrentSessionKey();
 
-      // Sekiranya ada integrasi Google Apps Script
       if (SCRIPT_URL && SCRIPT_URL.trim() !== "") {
         try {
           const res = await fetch(SCRIPT_URL, {
@@ -864,26 +612,25 @@
             })
           });
           const json = await res.json();
-          btnLabel.innerText = "Sahkan Sekarang";
+          btnLabel.innerText = "Sahkan Hadir";
           btnSpinner.classList.add('hidden');
           btn.disabled = false;
 
           if (json.success) {
             closePinModal();
-            triggerToast(`Kehadiran ${getSessionTitleText()} berjaya direkod!`, "success");
+            triggerToast(`Kehadiran ${getSessionTitleText()} direkodkan!`, "success");
             fetchParticipants();
           } else {
             showPinModalError(json.message || "4 digit telefon tidak sepadan!");
           }
           return;
         } catch (e) {
-          // Beralih ke mod demo jika sambungan gagal
+          // Fallback ke mod demo
         }
       }
 
-      // Mod Ujian / Demo Luar Talian
       setTimeout(() => {
-        btnLabel.innerText = "Sahkan Sekarang";
+        btnLabel.innerText = "Sahkan Hadir";
         btnSpinner.classList.add('hidden');
         btn.disabled = false;
 
@@ -901,13 +648,13 @@
           };
 
           closePinModal();
-          triggerToast(`Terima kasih! Kehadiran ${activeParticipant.nama} (${getSessionTitleText()}) telah direkod.`, "success");
+          triggerToast(`Kehadiran ${activeParticipant.nama} berjaya disahkan.`, "success");
           filterParticipants();
         } else {
           showPinModalError(`4 digit tidak sepadan! (Demo PIN: "${expectedPin}")`);
           document.getElementById('pin1').focus();
         }
-      }, 400);
+      }, 350);
     }
 
     function showPinModalError(msg) {
@@ -917,7 +664,6 @@
       err.classList.remove('hidden');
     }
 
-    // Custom Toast Alert
     function triggerToast(text, type = "info") {
       const toast = document.getElementById('toastAlert');
       const msg = document.getElementById('toastMessage');
@@ -926,14 +672,11 @@
       msg.innerText = text;
 
       if (type === "success") {
-        toast.className = "fixed top-12 left-1/2 -translate-x-1/2 z-[60] px-4 py-2.5 rounded-2xl shadow-xl text-white text-xs font-semibold flex items-center gap-2 bg-teal-700 transition-all duration-300 pointer-events-none";
-        icon.innerHTML = `<svg class="w-4 h-4 text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>`;
-      } else if (type === "error") {
-        toast.className = "fixed top-12 left-1/2 -translate-x-1/2 z-[60] px-4 py-2.5 rounded-2xl shadow-xl text-white text-xs font-semibold flex items-center gap-2 bg-rose-600 transition-all duration-300 pointer-events-none";
-        icon.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+        toast.className = "fixed top-6 left-1/2 -translate-x-1/2 z-[60] px-4 py-2.5 rounded-2xl shadow-xl text-xs font-semibold flex items-center gap-2 bg-slate-900 text-amber-400 border border-slate-700 transition-all duration-300 pointer-events-none";
+        icon.innerHTML = `✓`;
       } else {
-        toast.className = "fixed top-12 left-1/2 -translate-x-1/2 z-[60] px-4 py-2.5 rounded-2xl shadow-xl text-white text-xs font-semibold flex items-center gap-2 bg-slate-800 transition-all duration-300 pointer-events-none";
-        icon.innerHTML = `<svg class="w-4 h-4 text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+        toast.className = "fixed top-6 left-1/2 -translate-x-1/2 z-[60] px-4 py-2.5 rounded-2xl shadow-xl text-xs font-semibold flex items-center gap-2 bg-[#1c2227] text-white border border-slate-700 transition-all duration-300 pointer-events-none";
+        icon.innerHTML = `ℹ`;
       }
 
       toast.style.transform = "translate(-50%, 0px)";
