@@ -232,12 +232,12 @@
     </div>
 
     <!-- ==============================================
-         SKRIN 3: DASHBOARD ADMIN KEHADIRAN
+         SKRIN 3: DASHBOARD ADMIN KEHADIRAN (UPGRADED)
          ============================================== -->
     <div id="screenAdmin" class="hidden flex-1 flex flex-col w-full h-[100dvh] overflow-hidden transition-all duration-300 bg-[#0f172a] text-slate-100">
       
       <!-- Top Admin Bar -->
-      <div class="bg-slate-900/90 border-b border-slate-800 px-4 sm:px-8 py-4 shrink-0 backdrop-blur-md">
+      <div class="bg-slate-900/90 border-b border-slate-800 px-4 sm:px-8 py-3.5 shrink-0 backdrop-blur-md">
         <div class="max-w-6xl mx-auto flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-2xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400">
@@ -252,10 +252,16 @@
             </div>
           </div>
 
-          <button onclick="logoutAdmin()" class="px-4 py-2 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold border border-slate-700 transition flex items-center gap-1.5">
-            <svg class="w-4 h-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-            <span>Keluar Admin</span>
-          </button>
+          <div class="flex items-center gap-2.5">
+            <button onclick="exportAttendanceCSV()" class="px-3.5 py-2 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition flex items-center gap-1.5" title="Muat turun format Excel/CSV">
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              <span class="hidden sm:inline">Eksport CSV</span>
+            </button>
+            <button onclick="logoutAdmin()" class="px-3.5 py-2 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold border border-slate-700 transition flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+              <span>Keluar</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -263,11 +269,11 @@
       <div class="flex-1 overflow-y-auto no-scrollbar p-4 sm:p-8">
         <div class="max-w-6xl mx-auto space-y-6">
 
-          <!-- Ringkasan Kad Statistik -->
+          <!-- Kad Metrik Operasi (Bermutu & Dinamik) -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             
             <div class="bg-[#1e293b]/80 p-5 rounded-3xl border border-slate-800 shadow-xl">
-              <span class="text-xs text-slate-400 font-medium">Kadar Kehadiran Sesi Semasa</span>
+              <span class="text-xs text-slate-400 font-medium">Kehadiran Sesi Terpilih</span>
               <div class="flex items-baseline gap-2 mt-2">
                 <h3 id="adminCurrentRate" class="text-3xl font-extrabold text-amber-400">0%</h3>
                 <span id="adminCurrentRatio" class="text-xs text-slate-400">0 / 0 Peserta</span>
@@ -279,37 +285,55 @@
             </div>
 
             <div class="bg-[#1e293b]/80 p-5 rounded-3xl border border-slate-800 shadow-xl">
-              <span class="text-xs text-slate-400 font-medium">Jumlah Peserta Berdaftar</span>
+              <span class="text-xs text-slate-400 font-medium">Status Peserta Sesi Ini</span>
               <div class="flex items-baseline gap-2 mt-2">
                 <h3 id="adminTotalParticipants" class="text-3xl font-extrabold text-white">0</h3>
-                <span class="text-xs text-slate-400">Orang</span>
+                <span class="text-xs text-slate-400">Jumlah Peserta</span>
               </div>
-              <div class="flex items-center gap-2 mt-4 text-xs text-emerald-400 font-semibold">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                <span>Pangkalan Data Bersedia</span>
+              <div class="flex items-center gap-3 mt-3 text-xs font-semibold">
+                <span class="text-emerald-400 flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                  <span id="adminStatHadirCount">0 Hadir</span>
+                </span>
+                <span class="text-rose-400 flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+                  <span id="adminStatBelumCount">0 Belum</span>
+                </span>
               </div>
             </div>
 
             <div class="bg-[#1e293b]/80 p-5 rounded-3xl border border-slate-800 shadow-xl">
-              <span class="text-xs text-slate-400 font-medium">Purata Keseluruhan (9 Sesi)</span>
+              <span class="text-xs text-slate-400 font-medium">Kehadiran Purata Hari Terpilih</span>
               <div class="flex items-baseline gap-2 mt-2">
-                <h3 id="adminOverallAvg" class="text-3xl font-extrabold text-teal-400">0%</h3>
-                <span class="text-xs text-slate-400">Sepanjang Bengkel</span>
+                <h3 id="adminTodayRate" class="text-3xl font-extrabold text-teal-400">0%</h3>
+                <span id="adminTodaySubtitle" class="text-xs text-slate-400">Hari 1</span>
               </div>
               <div class="w-full h-2 bg-slate-800 rounded-full mt-3 overflow-hidden">
-                <div id="adminOverallBar" class="h-full bg-teal-400 transition-all duration-500" style="width: 0%"></div>
+                <div id="adminTodayBar" class="h-full bg-teal-400 transition-all duration-500" style="width: 0%"></div>
               </div>
-              <p class="text-[11px] text-slate-400 mt-2">Berdasarkan 9 slot sesi berjadual</p>
+              <p class="text-[11px] text-slate-400 mt-2">Purata 3 sesi (Pagi, Petang, Malam)</p>
             </div>
 
           </div>
 
-          <!-- Matriks Kehadiran Mengikut Hari & Sesi -->
+          <!-- Pecahan Sesi Interaktif (Tab Mengikut Hari & Klik untuk Tukar Jadual) -->
           <div class="bg-[#1e293b]/80 p-6 rounded-3xl border border-slate-800 shadow-xl">
-            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-              Pecahan Kehadiran 9 Sesi Bengkel
-            </h3>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+              <div>
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                  Pecahan Sesi Mengikut Hari
+                </h3>
+                <p class="text-xs text-slate-400 mt-0.5">Ketik pada mana-mana kotak sesi untuk melihat dan mengurus jadual di bawah.</p>
+              </div>
+
+              <!-- Tab Pemilih Hari di Dashboard -->
+              <div class="flex items-center gap-1.5 p-1 bg-slate-900 rounded-2xl border border-slate-700">
+                <button onclick="setAdminDay(1)" id="adminTabDay1" class="px-3.5 py-1.5 text-xs font-bold rounded-xl transition bg-amber-400 text-slate-900 shadow-sm">Hari 1</button>
+                <button onclick="setAdminDay(2)" id="adminTabDay2" class="px-3.5 py-1.5 text-xs font-bold rounded-xl transition text-slate-400 hover:text-white">Hari 2</button>
+                <button onclick="setAdminDay(3)" id="adminTabDay3" class="px-3.5 py-1.5 text-xs font-bold rounded-xl transition text-slate-400 hover:text-white">Hari 3</button>
+              </div>
+            </div>
             
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="adminSessionMatrix">
               <!-- Rendered via JS -->
@@ -318,14 +342,19 @@
 
           <!-- Jadual Perincian Peserta Lengkap -->
           <div class="bg-[#1e293b]/80 p-6 rounded-3xl border border-slate-800 shadow-xl">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+            
+            <!-- Header Kawalan Jadual: Carian, Penapis Status & Dropdown Sesi -->
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
               <div>
-                <h3 class="text-base font-extrabold text-white">Senarai Terperinci Peserta & Sesi Semasa</h3>
-                <p class="text-xs text-slate-400 mt-0.5">Semak status kehadiran individu mengikut slot yang dipilih. <span class="text-amber-400">Ketik butang status untuk menukar Hadir / Belum Hadir.</span></p>
+                <h3 class="text-base font-extrabold text-white flex items-center gap-2">
+                  <span id="adminTableSessionHeading">Hari 1 – Pagi</span>
+                  <span id="adminActiveBadge" class="text-[10px] font-bold bg-amber-400/20 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded-full">Sesi Dipilih</span>
+                </h3>
+                <p class="text-xs text-slate-400 mt-0.5">Ketik status untuk ubah pengesahan atau ketik nombor telefon untuk buka WhatsApp terus[cite: 7].</p>
               </div>
 
-              <!-- Pilihan Sesi Pantas Admin -->
-              <div class="flex items-center gap-2">
+              <div class="flex flex-wrap items-center gap-2.5">
+                <!-- Dropdown Sesi Alternatif -->
                 <select id="adminSessionSelect" onchange="onAdminSessionChange(this.value)" class="bg-slate-900 text-xs font-semibold text-white px-3.5 py-2.5 rounded-xl border border-slate-700 outline-none focus:border-amber-400 transition cursor-pointer">
                   <option value="h1_pagi">Hari 1 – Pagi</option>
                   <option value="h1_petang">Hari 1 – Petang</option>
@@ -337,6 +366,30 @@
                   <option value="h3_petang">Hari 3 – Petang</option>
                   <option value="h3_malam">Hari 3 – Malam</option>
                 </select>
+              </div>
+            </div>
+
+            <!-- Bar Carian & Penapis Pantas Jadual -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 pt-3 border-t border-slate-800/80">
+              <!-- Kotak Carian -->
+              <div class="relative flex-1 max-w-sm">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.85-5.65a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                </div>
+                <input 
+                  type="text" 
+                  id="adminSearchInput" 
+                  placeholder="Tapis nama, jawatan atau jabatan..." 
+                  oninput="renderAdminTable()"
+                  class="w-full pl-9 pr-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 outline-none focus:border-amber-400 transition"
+                >
+              </div>
+
+              <!-- Filter Status Chips -->
+              <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar text-xs">
+                <button onclick="setAdminStatusFilter('all')" id="btnFilterAll" class="px-3 py-1.5 rounded-xl font-bold transition bg-amber-400 text-slate-900 shadow-sm">Semua (<span id="countBadgeAll">0</span>)</button>
+                <button onclick="setAdminStatusFilter('hadir')" id="btnFilterHadir" class="px-3 py-1.5 rounded-xl font-medium transition bg-slate-900 text-slate-400 hover:text-white border border-slate-700">Hadir (<span id="countBadgeHadir">0</span>)</button>
+                <button onclick="setAdminStatusFilter('belum')" id="btnFilterBelum" class="px-3 py-1.5 rounded-xl font-medium transition bg-slate-900 text-slate-400 hover:text-white border border-slate-700">Belum (<span id="countBadgeBelum">0</span>)</button>
               </div>
             </div>
 
@@ -516,15 +569,41 @@
     let selectedDay = 1;
     let selectedSlot = "pagi";
     let activeParticipant = null;
+
+    // Pemboleh ubah Dashboard Admin
+    let adminSelectedDay = 1;
     let adminActiveSessionKey = "h1_pagi";
+    let adminStatusFilter = "all"; // 'all', 'hadir', 'belum'
     let pendingToggleData = null;
+
+    // Format Tarikh & Masa Malaysia: 28/10/2026, 12:36:59 PTG
+    function formatMasaMY(val) {
+      if (!val || val === "-" || val === "") return "-";
+      var d = (val instanceof Date) ? val : new Date(val);
+      if (isNaN(d.getTime())) return val.toString();
+
+      var day = ("0" + d.getDate()).slice(-2);
+      var month = ("0" + (d.getMonth() + 1)).slice(-2);
+      var year = d.getFullYear();
+
+      var hours = d.getHours();
+      var minutes = ("0" + d.getMinutes()).slice(-2);
+      var seconds = ("0" + d.getSeconds()).slice(-2);
+
+      var ampm = hours >= 12 ? "PTG" : "PG";
+      if (hours > 12) hours = hours - 12;
+      if (hours === 0) hours = 12;
+      hours = ("0" + hours).slice(-2);
+
+      return `${day}/${month}/${year}, ${hours}:${minutes}:${seconds} ${ampm}`;
+    }
 
     // Data Demo Awal Padanan Google Sheet Terkini (Lajur A hingga E)
     let participants = [
       {
         row: 2, id: "1", nama: "Ahmad Faizal bin Ramli", jawatan: "PENGARAH EKSEKUTIF (PERANCANGAN) JUSA A", jabatan: "Pejabat Pengarah Eksekutif (Perancangan)", phone: "0123456789", last4: "6789",
         attendance: {
-          "h1_pagi": { status: "Hadir", masa: "2026-10-30 08:15:22" },
+          "h1_pagi": { status: "Belum Hadir", masa: "" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
           "h1_malam": { status: "Belum Hadir", masa: "" }
         }
@@ -532,15 +611,15 @@
       {
         row: 3, id: "2", nama: "Siti Sarah binti Idris", jawatan: "TIMBALAN PENGARAH F12", jabatan: "Jabatan Pengurusan Maklumat (JPM)", phone: "0198765432", last4: "5432",
         attendance: {
-          "h1_pagi": { status: "Hadir", masa: "2026-10-30 00:23:07" },
-          "h1_petang": { status: "Hadir", masa: "2026-10-30 02:10:11" },
+          "h1_pagi": { status: "Hadir", masa: "2026-10-30T00:23:07" },
+          "h1_petang": { status: "Hadir", masa: "2026-10-30T14:10:11" },
           "h1_malam": { status: "Belum Hadir", masa: "" }
         }
       },
       {
         row: 4, id: "3", nama: "Mohd Hafiz bin Razak", jawatan: "PENGARAH F14", jabatan: "Jabatan Pengurusan Maklumat (JPM)", phone: "0131122334", last4: "2334",
         attendance: {
-          "h1_pagi": { status: "Hadir", masa: "2026-10-30 08:22:45" },
+          "h1_pagi": { status: "Hadir", masa: "2026-10-30T08:22:45" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
           "h1_malam": { status: "Belum Hadir", masa: "" }
         }
@@ -548,7 +627,7 @@
       {
         row: 5, id: "4", nama: "Nurul Aini binti Osman", jawatan: "PENGARAH JUSA C", jabatan: "Jabatan Pentadbiran Bahagian Pengurusan Perolehan (JP-BPP)", phone: "0179988776", last4: "8776",
         attendance: {
-          "h1_pagi": { status: "Hadir", masa: "2026-10-30 00:29:39" },
+          "h1_pagi": { status: "Hadir", masa: "2026-10-30T00:29:39" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
           "h1_malam": { status: "Belum Hadir", masa: "" }
         }
@@ -556,7 +635,7 @@
       {
         row: 6, id: "5", nama: "Khairul Anuar bin Kassim", jawatan: "JURUTERA AWAM J14", jabatan: "Jabatan Kejuruteraan Awam Dan Saliran (JKAWS)", phone: "0184455667", last4: "5667",
         attendance: {
-          "h1_pagi": { status: "Hadir", masa: "2026-10-30 08:29:01" },
+          "h1_pagi": { status: "Hadir", masa: "2026-10-30T08:29:01" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
           "h1_malam": { status: "Belum Hadir", masa: "" }
         }
@@ -700,84 +779,174 @@
       goToScreen('attendance');
     }
 
+    function setAdminDay(dayNum) {
+      adminSelectedDay = dayNum;
+      [1, 2, 3].forEach(d => {
+        const btn = document.getElementById(`adminTabDay${d}`);
+        if (d === dayNum) {
+          btn.className = "px-3.5 py-1.5 text-xs font-bold rounded-xl transition bg-amber-400 text-slate-900 shadow-sm";
+        } else {
+          btn.className = "px-3.5 py-1.5 text-xs font-bold rounded-xl transition text-slate-400 hover:text-white";
+        }
+      });
+      renderAdminDashboard();
+    }
+
+    function selectAdminSession(sessionKey) {
+      adminActiveSessionKey = sessionKey;
+      document.getElementById('adminSessionSelect').value = sessionKey;
+      renderAdminDashboard();
+    }
+
+    function onAdminSessionChange(sessionKey) {
+      adminActiveSessionKey = sessionKey;
+      const dayMatch = sessionKey.match(/h(\d)_/);
+      if (dayMatch && dayMatch[1]) {
+        adminSelectedDay = parseInt(dayMatch[1]);
+        setAdminDay(adminSelectedDay);
+      } else {
+        renderAdminDashboard();
+      }
+    }
+
+    function setAdminStatusFilter(status) {
+      adminStatusFilter = status;
+      const buttons = {
+        all: document.getElementById('btnFilterAll'),
+        hadir: document.getElementById('btnFilterHadir'),
+        belum: document.getElementById('btnFilterBelum')
+      };
+
+      Object.keys(buttons).forEach(k => {
+        if (k === status) {
+          buttons[k].className = "px-3 py-1.5 rounded-xl font-bold transition bg-amber-400 text-slate-900 shadow-sm";
+        } else {
+          buttons[k].className = "px-3 py-1.5 rounded-xl font-medium transition bg-slate-900 text-slate-400 hover:text-white border border-slate-700";
+        }
+      });
+      renderAdminTable();
+    }
+
     function renderAdminDashboard() {
       const totalParticipants = participants.length;
       document.getElementById('adminTotalParticipants').innerText = totalParticipants;
 
-      // Sesi Semasa
-      const currentKey = getCurrentSessionKey();
-      const currentHadir = participants.filter(p => (p.attendance && p.attendance[currentKey] && p.attendance[currentKey].status === 'Hadir')).length;
+      // 1. Sesi Semasa Yang Dipilih
+      const currentHadir = participants.filter(p => (p.attendance && p.attendance[adminActiveSessionKey] && p.attendance[adminActiveSessionKey].status === 'Hadir')).length;
+      const currentBelum = totalParticipants - currentHadir;
       const currentPct = totalParticipants > 0 ? Math.round((currentHadir / totalParticipants) * 100) : 0;
 
       document.getElementById('adminCurrentRate').innerText = `${currentPct}%`;
       document.getElementById('adminCurrentRatio').innerText = `${currentHadir} / ${totalParticipants} Peserta`;
       document.getElementById('adminCurrentBar').style.width = `${currentPct}%`;
-      document.getElementById('adminCurrentSessionName').innerText = getSessionTitleText();
-
-      // Kira Purata Keseluruhan Semua 9 Sesi
-      const sessions = [
-        'h1_pagi', 'h1_petang', 'h1_malam',
-        'h2_pagi', 'h2_petang', 'h2_malam',
-        'h3_pagi', 'h3_petang', 'h3_malam'
-      ];
-
-      let totalSlotsCount = sessions.length * totalParticipants;
-      let totalHadirAllSessions = 0;
 
       const sessionDisplayNames = {
-        'h1_pagi': 'Hari 1 - Pagi',
-        'h1_petang': 'Hari 1 - Petang',
-        'h1_malam': 'Hari 1 - Malam',
-        'h2_pagi': 'Hari 2 - Pagi',
-        'h2_petang': 'Hari 2 - Petang',
-        'h2_malam': 'Hari 2 - Malam',
-        'h3_pagi': 'Hari 3 - Pagi',
-        'h3_petang': 'Hari 3 - Petang',
-        'h3_malam': 'Hari 3 - Malam'
+        'h1_pagi': 'Hari 1 – Pagi', 'h1_petang': 'Hari 1 – Petang', 'h1_malam': 'Hari 1 – Malam',
+        'h2_pagi': 'Hari 2 – Pagi', 'h2_petang': 'Hari 2 – Petang', 'h2_malam': 'Hari 2 – Malam',
+        'h3_pagi': 'Hari 3 – Pagi', 'h3_petang': 'Hari 3 – Petang', 'h3_malam': 'Hari 3 – Malam'
       };
 
-      const matrixHtml = sessions.map(sKey => {
+      const readableSessionName = sessionDisplayNames[adminActiveSessionKey] || adminActiveSessionKey;
+      document.getElementById('adminCurrentSessionName').innerText = readableSessionName;
+      document.getElementById('adminTableSessionHeading').innerText = readableSessionName;
+
+      // Kemas kini Metrik Hadir vs Belum
+      document.getElementById('adminStatHadirCount').innerText = `${currentHadir} Hadir`;
+      document.getElementById('adminStatBelumCount').innerText = `${currentBelum} Belum`;
+
+      // 2. Metrik Purata Hari Dipilih (3 Sesi Sehari)
+      const daySlots = [`h${adminSelectedDay}_pagi`, `h${adminSelectedDay}_petang`, `h${adminSelectedDay}_malam`];
+      let daySlotsHadir = 0;
+      daySlots.forEach(s => {
+        daySlotsHadir += participants.filter(p => (p.attendance && p.attendance[s] && p.attendance[s].status === 'Hadir')).length;
+      });
+      const dayTotalSlots = totalParticipants * 3;
+      const dayPct = dayTotalSlots > 0 ? Math.round((daySlotsHadir / dayTotalSlots) * 100) : 0;
+
+      document.getElementById('adminTodayRate').innerText = `${dayPct}%`;
+      document.getElementById('adminTodaySubtitle').innerText = `Hari ${adminSelectedDay}`;
+      document.getElementById('adminTodayBar').style.width = `${dayPct}%`;
+
+      // 3. Pecahan 3 Sesi Bagi Hari Dipilih (Boleh Diklik)
+      const matrixHtml = daySlots.map(sKey => {
         const count = participants.filter(p => (p.attendance && p.attendance[sKey] && p.attendance[sKey].status === 'Hadir')).length;
-        totalHadirAllSessions += count;
         const pct = totalParticipants > 0 ? Math.round((count / totalParticipants) * 100) : 0;
-        const isCurrent = sKey === currentKey;
+        const isCurrent = (sKey === adminActiveSessionKey);
 
         return `
-          <div class="p-3.5 rounded-2xl bg-slate-900/60 border ${isCurrent ? 'border-amber-400/80 bg-amber-400/5' : 'border-slate-800'}">
-            <div class="flex items-center justify-between text-xs mb-1">
-              <span class="font-bold text-slate-300 ${isCurrent ? 'text-amber-400' : ''}">${sessionDisplayNames[sKey]}</span>
+          <div 
+            onclick="selectAdminSession('${sKey}')"
+            class="p-4 rounded-2xl cursor-pointer transition-all border ${
+              isCurrent 
+                ? 'border-amber-400 bg-amber-400/10 shadow-lg shadow-amber-400/10' 
+                : 'border-slate-800 bg-slate-900/60 hover:border-slate-700 hover:bg-slate-900'
+            }"
+          >
+            <div class="flex items-center justify-between text-xs mb-1.5">
+              <span class="font-bold ${isCurrent ? 'text-amber-400' : 'text-slate-300'}">${sessionDisplayNames[sKey]}</span>
               <span class="font-extrabold ${pct > 0 ? 'text-amber-400' : 'text-slate-500'}">${count}/${totalParticipants}</span>
             </div>
-            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden my-1.5">
-              <div class="h-full bg-amber-400" style="width: ${pct}%"></div>
+            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden my-2">
+              <div class="h-full bg-amber-400 transition-all duration-300" style="width: ${pct}%"></div>
             </div>
-            <span class="text-[10px] text-slate-400">${pct}% kehadiran</span>
+            <div class="flex items-center justify-between text-[10px] text-slate-400">
+              <span>${pct}% kehadiran</span>
+              <span class="${isCurrent ? 'text-amber-400 font-bold' : 'text-slate-500'}">${isCurrent ? '● Dipilih' : 'Ketik untuk pilih'}</span>
+            </div>
           </div>
         `;
       }).join('');
 
       document.getElementById('adminSessionMatrix').innerHTML = matrixHtml;
-
-      const overallAvgPct = totalSlotsCount > 0 ? Math.round((totalHadirAllSessions / totalSlotsCount) * 100) : 0;
-      document.getElementById('adminOverallAvg').innerText = `${overallAvgPct}%`;
-      document.getElementById('adminOverallBar').style.width = `${overallAvgPct}%`;
-
       document.getElementById('adminSessionSelect').value = adminActiveSessionKey;
-      renderAdminTable();
-    }
 
-    function onAdminSessionChange(sessionKey) {
-      adminActiveSessionKey = sessionKey;
       renderAdminTable();
     }
 
     function renderAdminTable() {
       const tbody = document.getElementById('adminTableBody');
-      tbody.innerHTML = participants.map((p, index) => {
+      const searchTerm = (document.getElementById('adminSearchInput').value || '').toLowerCase().trim();
+
+      // Kira bilangan untuk lencana penapis
+      const allCount = participants.length;
+      const hadirCount = participants.filter(p => p.attendance && p.attendance[adminActiveSessionKey] && p.attendance[adminActiveSessionKey].status === 'Hadir').length;
+      const belumCount = allCount - hadirCount;
+
+      document.getElementById('countBadgeAll').innerText = allCount;
+      document.getElementById('countBadgeHadir').innerText = hadirCount;
+      document.getElementById('countBadgeBelum').innerText = belumCount;
+
+      // Tapis mengikut carian teks dan penapis status
+      let filtered = participants.filter(p => {
+        const slot = (p.attendance && p.attendance[adminActiveSessionKey]) ? p.attendance[adminActiveSessionKey] : { status: "Belum Hadir" };
+        const isHadir = (slot.status === 'Hadir');
+
+        if (adminStatusFilter === 'hadir' && !isHadir) return false;
+        if (adminStatusFilter === 'belum' && isHadir) return false;
+
+        const nameVal = (p.nama || p["Nama Peserta"] || '').toLowerCase();
+        const jawatanVal = (p.jawatan || p["Jawatan/Gred"] || '').toLowerCase();
+        const jabatanVal = (p.jabatan || p["Jabatan"] || '').toLowerCase();
+
+        return nameVal.includes(searchTerm) || jawatanVal.includes(searchTerm) || jabatanVal.includes(searchTerm);
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="p-8 text-center text-slate-400">
+              <p class="font-bold">Tiada rekod peserta dijumpai</p>
+              <p class="text-[11px] mt-1 text-slate-500">Sila semak semula pilihan penapis atau perkataan carian anda.</p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((p, index) => {
         const slot = (p.attendance && p.attendance[adminActiveSessionKey]) ? p.attendance[adminActiveSessionKey] : { status: "Belum Hadir", masa: "-" };
         const isHadir = slot.status === 'Hadir';
 
-        // Pengesanan Nombor Telefon
         let displayPhone = '-';
         if (p.phone !== undefined && p.phone !== null && p.phone !== '') {
           displayPhone = p.phone.toString().trim();
@@ -791,7 +960,6 @@
           displayPhone = '0' + displayPhone;
         }
 
-        // Formatkan nombor untuk pautan WhatsApp Antarabangsa (cth: 0123456789 -> 60123456789)
         let waPhone = displayPhone.replace(/[^0-9]/g, '');
         if (waPhone.startsWith('0')) {
           waPhone = '60' + waPhone.substring(1);
@@ -801,8 +969,9 @@
         const displayJawatan = p.jawatan || p["Jawatan/Gred"] || p.jawatanGred || '-';
         const displayJabatan = p.jabatan || p["Jabatan"] || '-';
 
-        const waText = encodeURIComponent(`Salam ${displayName}, ini berkenaan kehadiran Bengkel Perancangan Perolehan 2027.`);
+        const waText = encodeURIComponent(`Salam ${displayName}, peringatan mesra berkaitan pengesahan kehadiran Bengkel Perancangan Perolehan 2027.`);
         const waLink = `https://wa.me/${waPhone}?text=${waText}`;
+        const formattedScanTime = formatMasaMY(slot.masa);
 
         return `
           <tr class="hover:bg-slate-800/40 transition">
@@ -811,7 +980,6 @@
             <td class="p-4 text-slate-300 font-semibold text-[11px] leading-relaxed max-w-[220px]">${displayJawatan}</td>
             <td class="p-4 text-slate-400 text-[11px] leading-relaxed max-w-[220px]">${displayJabatan}</td>
             
-            <!-- Lajur Nombor Telefon dengan Pautan WhatsApp -->
             <td class="p-4 whitespace-nowrap">
               ${displayPhone !== '-' ? `
                 <a 
@@ -850,10 +1018,49 @@
                 }
               </button>
             </td>
-            <td class="p-4 text-slate-300 font-mono text-[11px] whitespace-nowrap">${slot.masa && slot.masa !== "" ? slot.masa : '-'}</td>
+            <td class="p-4 text-slate-300 font-mono text-[11px] whitespace-nowrap">${formattedScanTime}</td>
           </tr>
         `;
       }).join('');
+    }
+
+    // Fungsi Muat Turun Data Kehadiran Format CSV
+    function exportAttendanceCSV() {
+      if (participants.length === 0) {
+        triggerToast("Tiada data untuk dieksport.", "error");
+        return;
+      }
+
+      let csv = "\uFEFFBil,ID,Nama Peserta,Jawatan/Gred,Jabatan,No Telefon,Status (" + adminActiveSessionKey + "),Masa Imbasan\n";
+
+      participants.forEach((p, index) => {
+        const slot = (p.attendance && p.attendance[adminActiveSessionKey]) ? p.attendance[adminActiveSessionKey] : { status: "Belum Hadir", masa: "" };
+        const rawPhone = p.phone || p.noTel || p["No Telefon"] || "";
+        const formattedTime = formatMasaMY(slot.masa);
+
+        const row = [
+          index + 1,
+          `"${p.id || ''}"`,
+          `"${(p.nama || p['Nama Peserta'] || '').replace(/"/g, '""')}"`,
+          `"${(p.jawatan || p['Jawatan/Gred'] || '').replace(/"/g, '""')}"`,
+          `"${(p.jabatan || p['Jabatan'] || '').replace(/"/g, '""')}"`,
+          `"'${rawPhone}"`,
+          `"${slot.status || 'Belum Hadir'}"`,
+          `"${formattedTime}"`
+        ];
+        csv += row.join(",") + "\n";
+      });
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Kehadiran_${adminActiveSessionKey}_${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      triggerToast("Fail CSV berjaya dimuat turun!", "success");
     }
 
     /* ========================================================
@@ -883,7 +1090,7 @@
 
       if (targetStatus === "Belum Hadir") {
         titleEl.innerText = "Tukar Kepada 'Belum Hadir'?";
-        msgEl.innerHTML = `Adakah anda ingin membatalkan pengesahan kehadiran untuk <span class="font-bold text-amber-300">${pName}</span> bagi slot <span class="font-bold text-white">${adminActiveSessionKey.toUpperCase()}</span>? Masa imbasan akan dikosongkan.`;
+        msgEl.innerHTML = `Adakah anda ingin membatalkan kehadiran bagi <span class="font-bold text-amber-300">${pName}</span> untuk sesi <span class="font-bold text-white">${adminActiveSessionKey.toUpperCase()}</span>? Masa imbasan akan dikosongkan.`;
         iconEl.className = "w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 flex items-center justify-center mx-auto mb-3";
         btnEl.className = "flex-1 py-3 px-4 rounded-2xl font-bold text-xs text-white bg-rose-600 hover:bg-rose-500 transition shadow-lg shadow-rose-600/20";
         btnEl.innerText = "Batal Hadir";
@@ -912,9 +1119,7 @@
       if (!participant.attendance) participant.attendance = {};
 
       const now = new Date();
-      const masaKini = targetStatus === "Hadir" 
-        ? `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`
-        : "";
+      const masaKini = targetStatus === "Hadir" ? formatMasaMY(now) : "";
 
       participant.attendance[sessionKey] = {
         status: targetStatus,
@@ -1193,7 +1398,7 @@
           if (!activeParticipant.attendance) activeParticipant.attendance = {};
           
           const now = new Date();
-          const masaStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+          const masaStr = formatMasaMY(now);
 
           activeParticipant.attendance[sessionKey] = {
             status: "Hadir",
