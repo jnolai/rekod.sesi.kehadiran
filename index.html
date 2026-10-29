@@ -141,7 +141,6 @@
               </svg>
             </button>
             
-            <!-- Tab Switcher: Kehadiran vs Admin -->
             <div class="flex bg-slate-100/90 p-1 rounded-full border border-slate-200/50">
               <button class="px-4 py-1.5 rounded-full text-xs font-bold bg-white text-slate-800 shadow-sm">Kehadiran</button>
               <button onclick="promptAdminLogin()" class="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-500 hover:text-slate-900 transition flex items-center gap-1.5">
@@ -179,7 +178,7 @@
             <input 
               type="text" 
               id="searchInput" 
-              placeholder="Cari nama peserta anda di sini..." 
+              placeholder="Cari nama atau jabatan anda di sini..." 
               oninput="filterParticipants()"
               class="w-full pl-10 pr-9 py-2.5 bg-white text-xs sm:text-sm rounded-2xl border border-slate-200/80 focus:border-amber-400 outline-none transition font-medium text-slate-800 placeholder-slate-400 shadow-sm"
             >
@@ -239,7 +238,7 @@
       
       <!-- Top Admin Bar -->
       <div class="bg-slate-900/90 border-b border-slate-800 px-4 sm:px-8 py-4 shrink-0 backdrop-blur-md">
-        <div class="max-w-5xl mx-auto flex items-center justify-between">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-2xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
@@ -262,7 +261,7 @@
 
       <!-- Admin Scrollable Content -->
       <div class="flex-1 overflow-y-auto no-scrollbar p-4 sm:p-8">
-        <div class="max-w-5xl mx-auto space-y-6">
+        <div class="max-w-6xl mx-auto space-y-6">
 
           <!-- Ringkasan Kad Statistik -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -348,7 +347,8 @@
                   <tr>
                     <th class="p-4 w-12 text-center">BIL</th>
                     <th class="p-4">NAMA PESERTA</th>
-                    <th class="p-4">JAWATAN / PERANAN</th>
+                    <th class="p-4">JAWATAN / GRED</th>
+                    <th class="p-4">JABATAN</th>
                     <th class="p-4">NO. TEL</th>
                     <th class="p-4 text-center">STATUS</th>
                     <th class="p-4">MASA IMBASAN</th>
@@ -368,7 +368,7 @@
     </div>
 
     <!-- ==============================================
-         MODAL PENGESAHAN TUKAR STATUS (ADMIN TOGGLE MODAL)
+         MODAL PENGESAHAN TUKAR STATUS (ADMIN)
          ============================================== -->
     <div id="adminToggleConfirmModal" class="hidden fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/75 backdrop-blur-md p-4 transition-all">
       <div class="w-full max-w-sm bg-[#1e293b] text-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-slate-700 text-center">
@@ -452,7 +452,6 @@
     <div id="pinModal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/60 backdrop-blur-sm p-0 sm:p-4 transition-all">
       <div class="w-full max-w-lg bg-[#1c2227] text-white rounded-t-[36px] sm:rounded-[36px] p-6 sm:p-8 shadow-dark-sheet transform transition-all text-center border-t sm:border border-slate-700/60">
         
-        <!-- Pill handle for mobile -->
         <div class="w-10 h-1 bg-slate-600 rounded-full mx-auto mb-4 sm:hidden"></div>
 
         <div class="flex items-center justify-between px-2 mb-2">
@@ -520,117 +519,70 @@
     let adminActiveSessionKey = "h1_pagi";
     let pendingToggleData = null;
 
+    // Data Demo Awal Padanan Google Sheet Terkini (Lajur A hingga E)
     let participants = [
       {
-        row: 2, id: "P-101", nama: "Ahmad Faizal bin Ramli", role: "Peserta Bengkel", phone: "0134421188", last4: "1188",
+        row: 2, id: "1", nama: "Ahmad Faizal bin Ramli", jawatan: "PENGARAH EKSEKUTIF (PERANCANGAN) JUSA A", jabatan: "Pejabat Pengarah Eksekutif (Perancangan)", phone: "0123456789", last4: "6789",
         attendance: {
           "h1_pagi": { status: "Hadir", masa: "2026-10-30 08:15:22" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" },
-          "h2_pagi": { status: "Belum Hadir", masa: "" },
-          "h2_petang": { status: "Belum Hadir", masa: "" },
-          "h2_malam": { status: "Belum Hadir", masa: "" },
-          "h3_pagi": { status: "Belum Hadir", masa: "" },
-          "h3_petang": { status: "Belum Hadir", masa: "" },
-          "h3_malam": { status: "Belum Hadir", masa: "" }
+          "h1_malam": { status: "Belum Hadir", masa: "" }
         }
       },
       {
-        row: 3, id: "P-102", nama: "Siti Sarah binti Idris", role: "Peserta Bengkel", phone: "0198765432", last4: "5432",
+        row: 3, id: "2", nama: "Siti Sarah binti Idris", jawatan: "TIMBALAN PENGARAH F12", jabatan: "Jabatan Pengurusan Maklumat (JPM)", phone: "0198765432", last4: "5432",
         attendance: {
           "h1_pagi": { status: "Hadir", masa: "2026-10-30 00:23:07" },
           "h1_petang": { status: "Hadir", masa: "2026-10-30 02:10:11" },
-          "h1_malam": { status: "Belum Hadir", masa: "" },
-          "h2_pagi": { status: "Belum Hadir", masa: "" },
-          "h2_petang": { status: "Belum Hadir", masa: "" },
-          "h2_malam": { status: "Belum Hadir", masa: "" },
-          "h3_pagi": { status: "Belum Hadir", masa: "" },
-          "h3_petang": { status: "Belum Hadir", masa: "" },
-          "h3_malam": { status: "Belum Hadir", masa: "" }
+          "h1_malam": { status: "Belum Hadir", masa: "" }
         }
       },
       {
-        row: 4, id: "P-103", nama: "Mohd Hafiz bin Razak", role: "Peserta Bengkel", phone: "0123456789", last4: "6789",
+        row: 4, id: "3", nama: "Mohd Hafiz bin Razak", jawatan: "PENGARAH F14", jabatan: "Jabatan Pengurusan Maklumat (JPM)", phone: "0131122334", last4: "2334",
         attendance: {
           "h1_pagi": { status: "Hadir", masa: "2026-10-30 08:22:45" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" },
-          "h2_pagi": { status: "Belum Hadir", masa: "" },
-          "h2_petang": { status: "Belum Hadir", masa: "" },
-          "h2_malam": { status: "Belum Hadir", masa: "" },
-          "h3_pagi": { status: "Belum Hadir", masa: "" },
-          "h3_petang": { status: "Belum Hadir", masa: "" },
-          "h3_malam": { status: "Belum Hadir", masa: "" }
+          "h1_malam": { status: "Belum Hadir", masa: "" }
         }
       },
       {
-        row: 5, id: "P-104", nama: "Nurul Aini binti Osman", role: "Peserta Bengkel", phone: "01122339900", last4: "9900",
+        row: 5, id: "4", nama: "Nurul Aini binti Osman", jawatan: "PENGARAH JUSA C", jabatan: "Jabatan Pentadbiran Bahagian Pengurusan Perolehan (JP-BPP)", phone: "0179988776", last4: "8776",
         attendance: {
           "h1_pagi": { status: "Hadir", masa: "2026-10-30 00:29:39" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" },
-          "h2_pagi": { status: "Belum Hadir", masa: "" },
-          "h2_petang": { status: "Belum Hadir", masa: "" },
-          "h2_malam": { status: "Belum Hadir", masa: "" },
-          "h3_pagi": { status: "Belum Hadir", masa: "" },
-          "h3_petang": { status: "Belum Hadir", masa: "" },
-          "h3_malam": { status: "Belum Hadir", masa: "" }
+          "h1_malam": { status: "Belum Hadir", masa: "" }
         }
       },
       {
-        row: 6, id: "P-105", nama: "Khairul Anuar bin Kassim", role: "Peserta Bengkel", phone: "0168892345", last4: "2345",
+        row: 6, id: "5", nama: "Khairul Anuar bin Kassim", jawatan: "JURUTERA AWAM J14", jabatan: "Jabatan Kejuruteraan Awam Dan Saliran (JKAWS)", phone: "0184455667", last4: "5667",
         attendance: {
           "h1_pagi": { status: "Hadir", masa: "2026-10-30 08:29:01" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" },
-          "h2_pagi": { status: "Belum Hadir", masa: "" },
-          "h2_petang": { status: "Belum Hadir", masa: "" },
-          "h2_malam": { status: "Belum Hadir", masa: "" },
-          "h3_pagi": { status: "Belum Hadir", masa: "" },
-          "h3_petang": { status: "Belum Hadir", masa: "" },
-          "h3_malam": { status: "Belum Hadir", masa: "" }
+          "h1_malam": { status: "Belum Hadir", masa: "" }
         }
       },
       {
-        row: 7, id: "P-106", nama: "Zulkifli bin Mat Aris", role: "Peserta Bengkel", phone: "0172233445", last4: "3445",
+        row: 7, id: "6", nama: "Farah Diana binti Mansor", jawatan: "PEGAWAI UNDANG-UNDANG L12", jabatan: "Jabatan Undang-Undang dan Pendakwaan (JUP)", phone: "0112345678", last4: "5678",
         attendance: {
           "h1_pagi": { status: "Belum Hadir", masa: "" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" },
-          "h2_pagi": { status: "Belum Hadir", masa: "" },
-          "h2_petang": { status: "Belum Hadir", masa: "" },
-          "h2_malam": { status: "Belum Hadir", masa: "" },
-          "h3_pagi": { status: "Belum Hadir", masa: "" },
-          "h3_petang": { status: "Belum Hadir", masa: "" },
-          "h3_malam": { status: "Belum Hadir", masa: "" }
+          "h1_malam": { status: "Belum Hadir", masa: "" }
         }
       },
       {
-        row: 8, id: "P-107", nama: "Faridah binti Sulaiman", role: "Peserta Bengkel", phone: "0189988776", last4: "8776",
+        row: 8, id: "7", nama: "Zulkifli bin Ismail", jawatan: "PENGARAH N14", jabatan: "Jabatan Pelesenan Dan Pembangunan Perniagaan (JPPP)", phone: "0145566778", last4: "6778",
         attendance: {
           "h1_pagi": { status: "Belum Hadir", masa: "" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" },
-          "h2_pagi": { status: "Belum Hadir", masa: "" },
-          "h2_petang": { status: "Belum Hadir", masa: "" },
-          "h2_malam": { status: "Belum Hadir", masa: "" },
-          "h3_pagi": { status: "Belum Hadir", masa: "" },
-          "h3_petang": { status: "Belum Hadir", masa: "" },
-          "h3_malam": { status: "Belum Hadir", masa: "" }
+          "h1_malam": { status: "Belum Hadir", masa: "" }
         }
       },
       {
-        row: 9, id: "P-108", nama: "Ramesh a/l Muniandy", role: "Peserta Bengkel", phone: "0128877665", last4: "7665",
+        row: 9, id: "8", nama: "Noraini binti Sulaiman", jawatan: "KETUA PENOLONG PENGARAH N12", jabatan: "Jabatan Pelesenan Dan Pembangunan Perniagaan (JPPP)", phone: "0163344556", last4: "4556",
         attendance: {
           "h1_pagi": { status: "Belum Hadir", masa: "" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" },
-          "h2_pagi": { status: "Belum Hadir", masa: "" },
-          "h2_petang": { status: "Belum Hadir", masa: "" },
-          "h2_malam": { status: "Belum Hadir", masa: "" },
-          "h3_pagi": { status: "Belum Hadir", masa: "" },
-          "h3_petang": { status: "Belum Hadir", masa: "" },
-          "h3_malam": { status: "Belum Hadir", masa: "" }
+          "h1_malam": { status: "Belum Hadir", masa: "" }
         }
       }
     ];
@@ -825,20 +777,36 @@
         const slot = (p.attendance && p.attendance[adminActiveSessionKey]) ? p.attendance[adminActiveSessionKey] : { status: "Belum Hadir", masa: "-" };
         const isHadir = slot.status === 'Hadir';
 
-        // Memaparkan nombor telefon dengan menyokong pelbagai format kunci dari Sheets / data tempatan
-        const displayPhone = p.phone || p.noTel || p.noTelefon || p.notel || '-';
+        // Pengesanan Nombor Telefon
+        let displayPhone = '-';
+        if (p.phone !== undefined && p.phone !== null && p.phone !== '') {
+          displayPhone = p.phone.toString();
+        } else if (p.noTel !== undefined && p.noTel !== null && p.noTel !== '') {
+          displayPhone = p.noTel.toString();
+        } else if (p["No Telefon"] !== undefined && p["No Telefon"] !== null && p["No Telefon"] !== '') {
+          displayPhone = p["No Telefon"].toString();
+        }
+
+        if (displayPhone !== '-' && !displayPhone.startsWith('0') && !displayPhone.startsWith('+')) {
+          displayPhone = '0' + displayPhone;
+        }
+
+        const displayName = p.nama || p["Nama Peserta"] || p.name || 'Peserta';
+        const displayJawatan = p.jawatan || p["Jawatan/Gred"] || p.jawatanGred || '-';
+        const displayJabatan = p.jabatan || p["Jabatan"] || '-';
 
         return `
           <tr class="hover:bg-slate-800/40 transition">
             <td class="p-4 text-center text-slate-400 font-mono">${index + 1}</td>
-            <td class="p-4 font-bold text-white">${p.nama}</td>
-            <td class="p-4 text-slate-400">${p.role || 'Peserta Bengkel'}</td>
-            <td class="p-4 text-amber-300 font-mono font-medium">${displayPhone}</td>
+            <td class="p-4 font-bold text-white whitespace-nowrap">${displayName}</td>
+            <td class="p-4 text-slate-300 font-semibold text-[11px] leading-relaxed max-w-[220px]">${displayJawatan}</td>
+            <td class="p-4 text-slate-400 text-[11px] leading-relaxed max-w-[220px]">${displayJabatan}</td>
+            <td class="p-4 text-amber-300 font-mono font-medium whitespace-nowrap">${displayPhone}</td>
             <td class="p-4 text-center">
               <button 
                 onclick="promptAdminToggleStatus(${p.row})" 
                 title="Ketik untuk menukar status"
-                class="group relative inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all active:scale-95 shadow-sm ${
+                class="group relative inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all active:scale-95 shadow-sm whitespace-nowrap ${
                   isHadir 
                     ? 'bg-amber-400/10 text-amber-300 border border-amber-400/40 hover:bg-rose-500/20 hover:text-rose-300 hover:border-rose-400/50' 
                     : 'bg-slate-800 text-slate-400 border border-slate-700 hover:bg-amber-400/20 hover:text-amber-300 hover:border-amber-400/40'
@@ -853,7 +821,7 @@
                 }
               </button>
             </td>
-            <td class="p-4 text-slate-300 font-mono text-[11px]">${slot.masa && slot.masa !== "" ? slot.masa : '-'}</td>
+            <td class="p-4 text-slate-300 font-mono text-[11px] whitespace-nowrap">${slot.masa && slot.masa !== "" ? slot.masa : '-'}</td>
           </tr>
         `;
       }).join('');
@@ -882,15 +850,17 @@
       const iconEl = document.getElementById('adminToggleModalIcon');
       const btnEl = document.getElementById('adminToggleConfirmBtn');
 
+      const pName = p.nama || p["Nama Peserta"] || 'Peserta';
+
       if (targetStatus === "Belum Hadir") {
         titleEl.innerText = "Tukar Kepada 'Belum Hadir'?";
-        msgEl.innerHTML = `Adakah anda ingin membatalkan pengesahan kehadiran untuk <span class="font-bold text-amber-300">${p.nama}</span> bagi slot <span class="font-bold text-white">${adminActiveSessionKey.toUpperCase()}</span>? Masa imbasan akan dikosongkan.`;
+        msgEl.innerHTML = `Adakah anda ingin membatalkan pengesahan kehadiran untuk <span class="font-bold text-amber-300">${pName}</span> bagi slot <span class="font-bold text-white">${adminActiveSessionKey.toUpperCase()}</span>? Masa imbasan akan dikosongkan.`;
         iconEl.className = "w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 flex items-center justify-center mx-auto mb-3";
         btnEl.className = "flex-1 py-3 px-4 rounded-2xl font-bold text-xs text-white bg-rose-600 hover:bg-rose-500 transition shadow-lg shadow-rose-600/20";
         btnEl.innerText = "Batal Hadir";
       } else {
         titleEl.innerText = "Tukar Kepada 'Hadir'?";
-        msgEl.innerHTML = `Sahkan kehadiran manual bagi <span class="font-bold text-amber-300">${p.nama}</span> untuk sesi <span class="font-bold text-white">${adminActiveSessionKey.toUpperCase()}</span>?`;
+        msgEl.innerHTML = `Sahkan kehadiran manual bagi <span class="font-bold text-amber-300">${pName}</span> untuk sesi <span class="font-bold text-white">${adminActiveSessionKey.toUpperCase()}</span>?`;
         iconEl.className = "w-12 h-12 rounded-2xl bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center mx-auto mb-3";
         btnEl.className = "flex-1 py-3 px-4 rounded-2xl font-bold text-xs text-slate-900 bg-amber-400 hover:bg-amber-300 transition shadow-lg shadow-amber-400/20";
         btnEl.innerText = "Sahkan Hadir";
@@ -917,13 +887,11 @@
         ? `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`
         : "";
 
-      // Kemas kini data tempatan
       participant.attendance[sessionKey] = {
         status: targetStatus,
         masa: masaKini
       };
 
-      // Hantar kemas kini ke Google Sheets jika SCRIPT_URL tersedia
       if (SCRIPT_URL && SCRIPT_URL.trim() !== "") {
         try {
           fetch(SCRIPT_URL, {
@@ -941,7 +909,8 @@
         }
       }
 
-      triggerToast(`Status ${participant.nama} ditukar kepada "${targetStatus}".`, targetStatus === "Hadir" ? "success" : "info");
+      const pName = participant.nama || participant["Nama Peserta"] || 'Peserta';
+      triggerToast(`Status ${pName} ditukar kepada "${targetStatus}".`, targetStatus === "Hadir" ? "success" : "info");
       renderAdminDashboard();
     }
 
@@ -953,14 +922,17 @@
         try {
           const res = await fetch(`${SCRIPT_URL}?action=getPeserta`);
           const cloudData = await res.json();
-          if (Array.isArray(cloudData)) {
+          if (Array.isArray(cloudData) && cloudData.length > 0) {
             participants = cloudData;
           }
         } catch (err) {
-          triggerToast("Mod demo aktif (data tempatan)", "info");
+          triggerToast("Mod demo aktif (data luar talian)", "info");
         }
       }
       filterParticipants();
+      if (!document.getElementById('screenAdmin').classList.contains('hidden')) {
+        renderAdminDashboard();
+      }
     }
 
     function filterParticipants() {
@@ -972,7 +944,12 @@
         clearBtn.classList.add('hidden');
       }
 
-      let filtered = participants.filter(p => p.nama.toLowerCase().includes(term));
+      let filtered = participants.filter(p => {
+        const nameVal = (p.nama || p["Nama Peserta"] || '').toLowerCase();
+        const jawatanVal = (p.jawatan || p["Jawatan/Gred"] || '').toLowerCase();
+        const jabatanVal = (p.jabatan || p["Jabatan"] || '').toLowerCase();
+        return nameVal.includes(term) || jawatanVal.includes(term) || jabatanVal.includes(term);
+      });
       renderParticipants(filtered);
     }
 
@@ -999,7 +976,7 @@
         container.innerHTML = `
           <div class="col-span-full py-16 text-center">
             <p class="text-sm font-bold text-slate-700">Tiada nama ditemui</p>
-            <p class="text-xs text-slate-400 mt-1">Sila pastikan ejaan carian nama anda betul.</p>
+            <p class="text-xs text-slate-400 mt-1">Sila pastikan carian nama, jawatan atau jabatan anda betul.</p>
           </div>
         `;
         return;
@@ -1008,32 +985,38 @@
       container.innerHTML = list.map(p => {
         const slotData = (p.attendance && p.attendance[sessionKey]) ? p.attendance[sessionKey] : { status: "Belum Hadir", masa: "" };
         const isHadir = slotData.status === 'Hadir';
-        const initials = getInitials(p.nama);
+        const displayName = p.nama || p["Nama Peserta"] || 'Peserta';
+        const displayJawatan = p.jawatan || p["Jawatan/Gred"] || 'Peserta Bengkel';
+        const displayJabatan = p.jabatan || p["Jabatan"] || '';
+        const initials = getInitials(displayName);
 
         return `
           <div 
             onclick="onParticipantClicked(${p.row})" 
-            class="group bg-white/95 hover:bg-white p-4 rounded-3xl border border-white/80 transition duration-150 shadow-soft-card cursor-pointer"
+            class="group bg-white/95 hover:bg-white p-4 rounded-3xl border border-white/80 transition duration-150 shadow-soft-card cursor-pointer flex flex-col justify-between"
           >
-            <div class="flex items-center justify-between mb-2">
-              <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-2xl flex items-center justify-center font-bold text-xs ${
-                  isHadir ? 'bg-amber-400 text-slate-900 font-extrabold' : 'bg-slate-100 text-slate-600'
-                }">
-                  ${initials}
+            <div>
+              <div class="flex items-start justify-between mb-2">
+                <div class="flex items-start gap-3">
+                  <div class="w-11 h-11 rounded-2xl flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 ${
+                    isHadir ? 'bg-amber-400 text-slate-900 font-extrabold' : 'bg-slate-100 text-slate-600'
+                  }">
+                    ${initials}
+                  </div>
+                  <div>
+                    <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 leading-snug">${displayName}</h4>
+                    <p class="text-[11px] font-bold text-amber-600 mt-0.5 leading-tight">${displayJawatan}</p>
+                    ${displayJabatan ? `<p class="text-[10px] text-slate-400 mt-0.5 leading-snug line-clamp-1">${displayJabatan}</p>` : ''}
+                  </div>
                 </div>
-                <div>
-                  <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 leading-snug">${p.nama}</h4>
-                  <p class="text-[10px] sm:text-xs text-slate-400 font-medium">${p.role || 'Peserta Bengkel'}</p>
-                </div>
-              </div>
 
-              <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-slate-700 transition shrink-0">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-slate-700 transition shrink-0 ml-2">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                </div>
               </div>
             </div>
 
-            <div class="pt-2 border-t border-slate-100/80 flex items-center justify-between text-[11px]">
+            <div class="pt-2.5 mt-2 border-t border-slate-100/80 flex items-center justify-between text-[11px]">
               <div class="flex items-center gap-2">
                 <span class="text-slate-400 font-medium">Status:</span>
                 <span class="font-bold ${isHadir ? 'text-amber-600' : 'text-slate-500'}">
@@ -1066,9 +1049,10 @@
 
       const sessionKey = getCurrentSessionKey();
       const slotData = (p.attendance && p.attendance[sessionKey]) ? p.attendance[sessionKey] : { status: "Belum Hadir" };
+      const pName = p.nama || p["Nama Peserta"] || 'Peserta';
 
       if (slotData.status === "Hadir") {
-        triggerToast(`${p.nama} sudah disahkan hadir bagi ${getSessionTitleText()}.`, "info");
+        triggerToast(`${pName} sudah disahkan hadir bagi ${getSessionTitleText()}.`, "info");
         return;
       }
 
@@ -1077,7 +1061,7 @@
 
     function openPinModal(participant) {
       activeParticipant = participant;
-      document.getElementById('modalTargetName').innerText = participant.nama;
+      document.getElementById('modalTargetName').innerText = participant.nama || participant["Nama Peserta"] || 'Peserta';
       document.getElementById('modalSessionBadge').innerText = getSessionTitleText();
       document.getElementById('modalError').classList.add('hidden');
 
@@ -1173,7 +1157,8 @@
         btnSpinner.classList.add('hidden');
         btn.disabled = false;
 
-        const expectedPin = activeParticipant.last4 || (activeParticipant.phone ? activeParticipant.phone.slice(-4) : "1234");
+        const rawPhone = (activeParticipant.phone || activeParticipant.noTel || activeParticipant["No Telefon"] || "").toString();
+        const expectedPin = activeParticipant.last4 || (rawPhone.length >= 4 ? rawPhone.slice(-4) : "1234");
 
         if (fullPin === expectedPin) {
           if (!activeParticipant.attendance) activeParticipant.attendance = {};
@@ -1187,7 +1172,8 @@
           };
 
           closePinModal();
-          triggerToast(`Kehadiran ${activeParticipant.nama} berjaya disahkan.`, "success");
+          const pName = activeParticipant.nama || activeParticipant["Nama Peserta"] || 'Peserta';
+          triggerToast(`Kehadiran ${pName} berjaya disahkan.`, "success");
           filterParticipants();
         } else {
           showPinModalError(`4 digit tidak sepadan! (Demo PIN: "${expectedPin}")`);
@@ -1211,10 +1197,10 @@
       msg.innerText = text;
 
       if (type === "success") {
-        toast.className = "fixed top-6 left-1/2 -translate-x-1/2 z-[80] px-5 py-3 rounded-2xl shadow-xl text-xs sm:text-sm font-semibold flex items-center gap-2 bg-slate-900 text-amber-400 border border-slate-700 transition-all duration-300 pointer-events-none";
+        toast.className = "fixed top-6 left-1/2 -translate-x-1/2 z-[80] px-5 py-3 rounded-2xl shadow-2xl text-xs sm:text-sm font-semibold flex items-center gap-2 bg-slate-900 text-amber-400 border border-slate-700 transition-all duration-300 pointer-events-none";
         icon.innerHTML = `✓`;
       } else {
-        toast.className = "fixed top-6 left-1/2 -translate-x-1/2 z-[80] px-5 py-3 rounded-2xl shadow-xl text-xs sm:text-sm font-semibold flex items-center gap-2 bg-[#1c2227] text-white border border-slate-700 transition-all duration-300 pointer-events-none";
+        toast.className = "fixed top-6 left-1/2 -translate-x-1/2 z-[80] px-5 py-3 rounded-2xl shadow-2xl text-xs sm:text-sm font-semibold flex items-center gap-2 bg-[#1c2227] text-white border border-slate-700 transition-all duration-300 pointer-events-none";
         icon.innerHTML = `ℹ`;
       }
 
