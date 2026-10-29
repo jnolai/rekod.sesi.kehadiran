@@ -149,6 +149,7 @@
               </button>
             </div>
 
+            <!-- Butang Refresh & Status Auto-Sync -->
             <button onclick="fetchParticipants(true)" id="userSyncBtn" class="w-10 h-10 rounded-full bg-white shadow-neumorph-btn flex items-center justify-center text-slate-600 transition active:scale-95" title="Segar Semula Data">
               <svg id="userSyncIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
@@ -160,7 +161,7 @@
             <div>
               <h2 class="text-lg sm:text-2xl font-extrabold text-slate-900 tracking-tight">Peserta Bengkel</h2>
               <p class="text-xs text-slate-400 flex items-center gap-1.5 mt-0.5">
-                <span id="subCountInfo">Memuatkan data kehadiran...</span>
+                <span id="subCountInfo">Menyegerak data Google Sheets...</span>
                 <span class="inline-flex items-center gap-1 text-[10px] text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
                   <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                   Auto Sync 1m
@@ -368,11 +369,10 @@
                   <span id="adminTableSessionHeading">Hari 1 – Pagi</span>
                   <span id="adminActiveBadge" class="text-[10px] font-bold bg-amber-400/20 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded-full">Sesi Dipilih</span>
                 </h3>
-                <p class="text-xs text-slate-400 mt-0.5">Ketik status untuk ubah pengesahan atau ketik nombor telefon untuk buka WhatsApp terus.</p>
+                <p class="text-xs text-slate-400 mt-0.5">Ketik status untuk ubah pengesahan atau ketik nombor telefon untuk buka WhatsApp terus[span_0](start_span)[span_0](end_span).</p>
               </div>
 
               <div class="flex flex-wrap items-center gap-2.5">
-                <!-- Butang Buka Analisis Jabatan Secara Manual -->
                 <button onclick="openDepartmentModal(adminActiveSessionKey)" class="px-3.5 py-2 rounded-xl bg-amber-400/10 hover:bg-amber-400/20 text-amber-400 border border-amber-400/30 text-xs font-bold transition flex items-center gap-1.5">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                   <span>Lihat Pecahan Jabatan</span>
@@ -438,6 +438,7 @@
             <!-- Footer Kecil Dalam Kad Admin -->
             <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-500 font-semibold tracking-wider uppercase select-none">
               <span>Sistem Kehadiran Pintar</span>
+              <span>UMKB@JKEW - JnolAi</span>
             </div>
 
           </div>
@@ -456,7 +457,6 @@
 
     <!-- ==============================================
          MODAL POP-UP: ANALISIS JABATAN BELUM HADIR
-         (MUNCUL BILA KOTAK SESI DIKETIK)
          ============================================== -->
     <div id="departmentStatsModal" class="hidden fixed inset-0 z-[75] flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 transition-all">
       <div class="w-full max-w-lg bg-[#1e293b] text-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-slate-700 flex flex-col max-h-[85vh]">
@@ -672,6 +672,9 @@
     let autoSyncTimer = null;
     let isSyncing = false;
 
+    // Senarai Peserta Bersih (Tiada Data Demo - 100% Mengambil daripada Google Sheet)
+    let participants = [];
+
     // Format Tarikh & Masa Malaysia: 28/10/2026, 12:36:59 PTG
     function formatMasaMY(val) {
       if (!val || val === "-" || val === "") return "-";
@@ -693,74 +696,6 @@
 
       return `${day}/${month}/${year}, ${hours}:${minutes}:${seconds} ${ampm}`;
     }
-
-    // Data Demo Awal Padanan Google Sheet Terkini
-    let participants = [
-      {
-        row: 2, id: "1", nama: "Ahmad Faizal bin Ramli", jawatan: "PENGARAH EKSEKUTIF (PERANCANGAN) JUSA A", jabatan: "Pejabat Pengarah Eksekutif (Perancangan)", phone: "0123456789", last4: "6789",
-        attendance: {
-          "h1_pagi": { status: "Belum Hadir", masa: "" },
-          "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" }
-        }
-      },
-      {
-        row: 3, id: "2", nama: "Siti Sarah binti Idris", jawatan: "TIMBALAN PENGARAH F12", jabatan: "Jabatan Pengurusan Maklumat (JPM)", phone: "0198765432", last4: "5432",
-        attendance: {
-          "h1_pagi": { status: "Hadir", masa: "2026-10-30T00:23:07" },
-          "h1_petang": { status: "Hadir", masa: "2026-10-30T14:10:11" },
-          "h1_malam": { status: "Belum Hadir", masa: "" }
-        }
-      },
-      {
-        row: 4, id: "3", nama: "Mohd Hafiz bin Razak", jawatan: "PENGARAH F14", jabatan: "Jabatan Pengurusan Maklumat (JPM)", phone: "0131122334", last4: "2334",
-        attendance: {
-          "h1_pagi": { status: "Hadir", masa: "2026-10-30T08:22:45" },
-          "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" }
-        }
-      },
-      {
-        row: 5, id: "4", nama: "Nurul Aini binti Osman", jawatan: "PENGARAH JUSA C", jabatan: "Jabatan Pentadbiran Bahagian Pengurusan Perolehan (JP-BPP)", phone: "0179988776", last4: "8776",
-        attendance: {
-          "h1_pagi": { status: "Hadir", masa: "2026-10-30T00:29:39" },
-          "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" }
-        }
-      },
-      {
-        row: 6, id: "5", nama: "Khairul Anuar bin Kassim", jawatan: "JURUTERA AWAM J14", jabatan: "Jabatan Kejuruteraan Awam Dan Saliran (JKAWS)", phone: "0184455667", last4: "5667",
-        attendance: {
-          "h1_pagi": { status: "Hadir", masa: "2026-10-30T08:29:01" },
-          "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" }
-        }
-      },
-      {
-        row: 7, id: "6", nama: "Farah Diana binti Mansor", jawatan: "PEGAWAI UNDANG-UNDANG L12", jabatan: "Jabatan Undang-Undang dan Pendakwaan (JUP)", phone: "0112345678", last4: "5678",
-        attendance: {
-          "h1_pagi": { status: "Belum Hadir", masa: "" },
-          "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" }
-        }
-      },
-      {
-        row: 8, id: "7", nama: "Zulkifli bin Ismail", jawatan: "PENGARAH N14", jabatan: "Jabatan Pelesenan Dan Pembangunan Perniagaan (JPPP)", phone: "0145566778", last4: "6778",
-        attendance: {
-          "h1_pagi": { status: "Belum Hadir", masa: "" },
-          "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" }
-        }
-      },
-      {
-        row: 9, id: "8", nama: "Noraini binti Sulaiman", jawatan: "KETUA PENOLONG PENGARAH N12", jabatan: "Jabatan Pelesenan Dan Pembangunan Perniagaan (JPPP)", phone: "0163344556", last4: "4556",
-        attendance: {
-          "h1_pagi": { status: "Belum Hadir", masa: "" },
-          "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" }
-        }
-      }
-    ];
 
     function getCurrentSessionKey() {
       return `h${selectedDay}_${selectedSlot}`;
@@ -905,13 +840,10 @@
       renderAdminDashboard();
     }
 
-    // Dipanggil apabila admin mengetik kotak sesi
     function selectAdminSession(sessionKey) {
       adminActiveSessionKey = sessionKey;
       document.getElementById('adminSessionSelect').value = sessionKey;
       renderAdminDashboard();
-      
-      // Paparkan analisis jabatan yang masih belum hadir bagi sesi ini secara automatik
       openDepartmentModal(sessionKey);
     }
 
@@ -956,7 +888,6 @@
 
       document.getElementById('deptModalSessionBadge').innerText = sessionDisplayNames[sessionKey] || sessionKey;
 
-      // Kumpul peserta yang belum hadir mengikut jabatan
       const deptCounts = {};
       let totalBelum = 0;
 
@@ -972,8 +903,6 @@
       document.getElementById('deptModalTotalCount').innerText = `${totalBelum} Peserta`;
 
       const listContainer = document.getElementById('deptModalList');
-
-      // Susun jabatan daripada bilangan tertinggi ke terendah
       const sortedDepts = Object.keys(deptCounts).sort((a, b) => deptCounts[b] - deptCounts[a]);
 
       if (sortedDepts.length === 0) {
@@ -1018,7 +947,6 @@
       document.getElementById('departmentStatsModal').classList.add('hidden');
     }
 
-    // Menapis jadual terus kepada nama jabatan yang dipilih dalam modal
     function filterTableByDepartment(deptName) {
       closeDepartmentModal();
       setAdminStatusFilter('belum');
@@ -1053,7 +981,6 @@
       document.getElementById('adminCurrentSessionName').innerText = readableSessionName;
       document.getElementById('adminTableSessionHeading').innerText = readableSessionName;
 
-      // Kemas kini Metrik Hadir vs Belum
       document.getElementById('adminStatHadirCount').innerText = `${currentHadir} Hadir`;
       document.getElementById('adminStatBelumCount').innerText = `${currentBelum} Belum`;
 
@@ -1070,7 +997,7 @@
       document.getElementById('adminTodaySubtitle').innerText = `Hari ${adminSelectedDay}`;
       document.getElementById('adminTodayBar').style.width = `${dayPct}%`;
 
-      // 3. Pecahan 3 Sesi Bagi Hari Dipilih (Boleh Diklik)
+      // 3. Pecahan 3 Sesi Bagi Hari Dipilih
       const matrixHtml = daySlots.map(sKey => {
         const count = participants.filter(p => (p.attendance && p.attendance[sKey] && p.attendance[sKey].status === 'Hadir')).length;
         const pct = totalParticipants > 0 ? Math.round((count / totalParticipants) * 100) : 0;
@@ -1145,7 +1072,7 @@
           <tr>
             <td colspan="7" class="p-8 text-center text-slate-400">
               <p class="font-bold">Tiada rekod peserta dijumpai</p>
-              <p class="text-[11px] mt-1 text-slate-500">Sila semak semula pilihan penapis atau perkataan carian anda.</p>
+              <p class="text-[11px] mt-1 text-slate-500">Sila pastikan sambungan internet stabil atau semak data Google Sheets anda.</p>
             </td>
           </tr>
         `;
@@ -1373,15 +1300,15 @@
         try {
           const res = await fetch(`${SCRIPT_URL}?action=getPeserta`);
           const cloudData = await res.json();
-          if (Array.isArray(cloudData) && cloudData.length > 0) {
+          if (Array.isArray(cloudData)) {
             participants = cloudData;
           }
           if (isManualTrigger) {
-            triggerToast("Data terkini berjaya dimuatkan!", "success");
+            triggerToast("Data Google Sheets berjaya disegarkan!", "success");
           }
         } catch (err) {
           if (isManualTrigger) {
-            triggerToast("Mod demo aktif (data luar talian)", "info");
+            triggerToast("Ralat menyegerak dari Google Sheets", "error");
           }
         }
       }
@@ -1439,7 +1366,7 @@
         container.innerHTML = `
           <div class="col-span-full py-16 text-center">
             <p class="text-sm font-bold text-slate-700">Tiada nama ditemui</p>
-            <p class="text-xs text-slate-400 mt-1">Sila pastikan carian nama, jawatan atau jabatan anda betul.</p>
+            <p class="text-xs text-slate-400 mt-1">Sila pastikan senarai peserta telah diisi dalam Google Sheets.</p>
           </div>
         `;
         return;
@@ -1612,37 +1539,13 @@
             showPinModalError(json.message || "4 digit nombor tidak sepadan!");
           }
           return;
-        } catch (e) {}
-      }
-
-      setTimeout(() => {
-        btnLabel.innerText = "Sahkan Hadir";
-        btnSpinner.classList.add('hidden');
-        btn.disabled = false;
-
-        const rawPhone = (activeParticipant.phone || activeParticipant.noTel || activeParticipant["No Telefon"] || "").toString();
-        const expectedPin = activeParticipant.last4 || (rawPhone.length >= 4 ? rawPhone.slice(-4) : "1234");
-
-        if (fullPin === expectedPin) {
-          if (!activeParticipant.attendance) activeParticipant.attendance = {};
-          
-          const now = new Date();
-          const masaStr = formatMasaMY(now);
-
-          activeParticipant.attendance[sessionKey] = {
-            status: "Hadir",
-            masa: masaStr
-          };
-
-          closePinModal();
-          const pName = activeParticipant.nama || activeParticipant["Nama Peserta"] || 'Peserta';
-          triggerToast(`Kehadiran ${pName} berjaya disahkan.`, "success");
-          filterParticipants();
-        } else {
-          showPinModalError(`4 digit tidak sepadan! (Demo PIN: "${expectedPin}")`);
-          document.getElementById('pin1').focus();
+        } catch (e) {
+          btnLabel.innerText = "Sahkan Hadir";
+          btnSpinner.classList.add('hidden');
+          btn.disabled = false;
+          showPinModalError("Ralat sambungan ke pelayan!");
         }
-      }, 350);
+      }
     }
 
     function showPinModalError(msg) {
