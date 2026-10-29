@@ -851,7 +851,7 @@
       const sessionKey = getCurrentSessionKey();
 
       // Sekiranya ada integrasi Google Apps Script
-      if (SCRIPT_URL && SCRIPT_URL.trim() !== "https://script.google.com/macros/s/AKfycbzKUzGPSuyT9iYu3SgScXFnYgt1P3VbYQIcbaRxs6bCiEZLrPNHpvGJIqNPYyvb3UnQ/exec") {
+      if (SCRIPT_URL && SCRIPT_URL.trim() !== "") {
         try {
           const res = await fetch(SCRIPT_URL, {
             method: "POST",
