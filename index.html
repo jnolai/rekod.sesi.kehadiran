@@ -780,20 +780,29 @@
         // Pengesanan Nombor Telefon
         let displayPhone = '-';
         if (p.phone !== undefined && p.phone !== null && p.phone !== '') {
-          displayPhone = p.phone.toString();
+          displayPhone = p.phone.toString().trim();
         } else if (p.noTel !== undefined && p.noTel !== null && p.noTel !== '') {
-          displayPhone = p.noTel.toString();
+          displayPhone = p.noTel.toString().trim();
         } else if (p["No Telefon"] !== undefined && p["No Telefon"] !== null && p["No Telefon"] !== '') {
-          displayPhone = p["No Telefon"].toString();
+          displayPhone = p["No Telefon"].toString().trim();
         }
 
         if (displayPhone !== '-' && !displayPhone.startsWith('0') && !displayPhone.startsWith('+')) {
           displayPhone = '0' + displayPhone;
         }
 
+        // Formatkan nombor untuk pautan WhatsApp Antarabangsa (cth: 0123456789 -> 60123456789)
+        let waPhone = displayPhone.replace(/[^0-9]/g, '');
+        if (waPhone.startsWith('0')) {
+          waPhone = '60' + waPhone.substring(1);
+        }
+
         const displayName = p.nama || p["Nama Peserta"] || p.name || 'Peserta';
         const displayJawatan = p.jawatan || p["Jawatan/Gred"] || p.jawatanGred || '-';
         const displayJabatan = p.jabatan || p["Jabatan"] || '-';
+
+        const waText = encodeURIComponent(`Salam ${displayName}, ini berkenaan kehadiran Bengkel Perancangan Perolehan 2027.`);
+        const waLink = `https://wa.me/${waPhone}?text=${waText}`;
 
         return `
           <tr class="hover:bg-slate-800/40 transition">
@@ -801,7 +810,27 @@
             <td class="p-4 font-bold text-white whitespace-nowrap">${displayName}</td>
             <td class="p-4 text-slate-300 font-semibold text-[11px] leading-relaxed max-w-[220px]">${displayJawatan}</td>
             <td class="p-4 text-slate-400 text-[11px] leading-relaxed max-w-[220px]">${displayJabatan}</td>
-            <td class="p-4 text-amber-300 font-mono font-medium whitespace-nowrap">${displayPhone}</td>
+            
+            <!-- Lajur Nombor Telefon dengan Pautan WhatsApp -->
+            <td class="p-4 whitespace-nowrap">
+              ${displayPhone !== '-' ? `
+                <a 
+                  href="${waLink}" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  title="Hubungi melalui WhatsApp"
+                  class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 hover:text-emerald-300 border border-emerald-500/30 transition-all font-mono font-bold text-xs group"
+                >
+                  <svg class="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.54 1.772.82 2.791.82 3.18 0 5.767-2.587 5.767-5.766.001-3.181-2.585-5.766-5.767-5.766zm3.376 8.204c-.149.42-.767.784-1.077.834-.31.05-.705.074-2.008-.466-1.564-.648-2.569-2.24-2.647-2.344-.078-.104-.636-.848-.636-1.618 0-.77.404-1.15.548-1.306.144-.156.314-.195.42-.195.105 0 .211.001.304.006.098.005.228-.037.357.273.134.321.458 1.118.498 1.201.041.083.068.18.013.29-.055.111-.083.18-.166.276-.083.097-.175.216-.25.29-.083.082-.17.172-.073.339.098.166.434.717.931 1.16.64.57 1.18.746 1.347.829.166.083.264.069.362-.042.098-.111.42-.489.532-.656.111-.166.223-.139.375-.083.153.056.969.457 1.135.54.166.083.277.125.318.194.042.07.042.404-.107.824z"/>
+                  </svg>
+                  <span>${displayPhone}</span>
+                </a>
+              ` : `
+                <span class="text-slate-400 font-mono">-</span>
+              `}
+            </td>
+
             <td class="p-4 text-center">
               <button 
                 onclick="promptAdminToggleStatus(${p.row})" 
