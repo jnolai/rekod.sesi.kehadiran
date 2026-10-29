@@ -149,8 +149,9 @@
               </button>
             </div>
 
-            <button onclick="fetchParticipants()" class="w-10 h-10 rounded-full bg-white shadow-neumorph-btn flex items-center justify-center text-slate-600 transition active:scale-95" title="Segar Semula">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <!-- Butang Refresh & Status Auto-Sync -->
+            <button onclick="fetchParticipants(true)" id="userSyncBtn" class="w-10 h-10 rounded-full bg-white shadow-neumorph-btn flex items-center justify-center text-slate-600 transition active:scale-95" title="Segar Semula Data">
+              <svg id="userSyncIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
               </svg>
             </button>
@@ -159,7 +160,13 @@
           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-2">
             <div>
               <h2 class="text-lg sm:text-2xl font-extrabold text-slate-900 tracking-tight">Peserta Bengkel</h2>
-              <p class="text-xs text-slate-400" id="subCountInfo">Memuatkan data kehadiran...</p>
+              <p class="text-xs text-slate-400 flex items-center gap-1.5 mt-0.5">
+                <span id="subCountInfo">Memuatkan data kehadiran...</span>
+                <span class="inline-flex items-center gap-1 text-[10px] text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  Auto Sync 1m
+                </span>
+              </p>
             </div>
             <div class="self-start sm:self-center">
               <span id="currentSessionLabelTop" class="text-xs font-bold text-amber-600 bg-amber-50 border border-amber-200/60 px-3 py-1 rounded-full">
@@ -224,7 +231,7 @@
           <span id="currentSessionLabel" class="font-bold text-slate-800">Hari 1 • Sesi Pagi</span>
           <span class="flex items-center gap-1.5 text-amber-600 font-semibold">
             <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-            Sistem Aktif
+            <span id="lastSyncLabelUser">Segerak automatik aktif</span>
           </span>
         </div>
       </div>
@@ -246,13 +253,23 @@
             <div>
               <div class="flex items-center gap-2">
                 <span class="text-[10px] uppercase font-bold tracking-widest text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">Mod Pentadbir</span>
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="flex items-center gap-1 text-[10px] text-emerald-400 font-semibold bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span id="adminLiveSyncIndicator">Auto Sync 1m</span>
+                </span>
               </div>
               <h2 class="text-sm sm:text-lg font-bold text-white">Dashboard Kehadiran Bengkel</h2>
             </div>
           </div>
 
           <div class="flex items-center gap-2.5">
+            <!-- Manual Trigger Sync Button -->
+            <button onclick="fetchParticipants(true)" id="adminSyncBtn" class="px-3.5 py-2 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition flex items-center gap-1.5" title="Segar Semula Sekarang">
+              <svg id="adminSyncIcon" class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+              <span class="hidden sm:inline">Segar Semula</span>
+            </button>
             <button onclick="exportAttendanceCSV()" class="px-3.5 py-2 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition flex items-center gap-1.5" title="Muat turun format Excel/CSV">
               <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
               <span class="hidden sm:inline">Eksport CSV</span>
@@ -324,7 +341,7 @@
                   <span class="w-2 h-2 rounded-full bg-amber-400"></span>
                   Pecahan Sesi Mengikut Hari
                 </h3>
-                <p class="text-xs text-slate-400 mt-0.5">Ketik pada mana-mana kotak sesi untuk melihat dan mengurus jadual di bawah.</p>
+                <p class="text-xs text-slate-400 mt-0.5">Ketik pada mana-mana kotak sesi untuk melihat dan mengurus jadual di bawah[cite: 9].</p>
               </div>
 
               <!-- Tab Pemilih Hari di Dashboard -->
@@ -343,7 +360,7 @@
           <!-- Jadual Perincian Peserta Lengkap -->
           <div class="bg-[#1e293b]/80 p-6 rounded-3xl border border-slate-800 shadow-xl">
             
-            <!-- Header Kawalan Jadual: Carian, Penapis Status & Dropdown Sesi -->
+            <!-- Header Kawalan Jadual -->
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
               <div>
                 <h3 class="text-base font-extrabold text-white flex items-center gap-2">
@@ -354,7 +371,6 @@
               </div>
 
               <div class="flex flex-wrap items-center gap-2.5">
-                <!-- Dropdown Sesi Alternatif -->
                 <select id="adminSessionSelect" onchange="onAdminSessionChange(this.value)" class="bg-slate-900 text-xs font-semibold text-white px-3.5 py-2.5 rounded-xl border border-slate-700 outline-none focus:border-amber-400 transition cursor-pointer">
                   <option value="h1_pagi">Hari 1 – Pagi</option>
                   <option value="h1_petang">Hari 1 – Petang</option>
@@ -371,7 +387,6 @@
 
             <!-- Bar Carian & Penapis Pantas Jadual -->
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 pt-3 border-t border-slate-800/80">
-              <!-- Kotak Carian -->
               <div class="relative flex-1 max-w-sm">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.85-5.65a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
@@ -573,8 +588,12 @@
     // Pemboleh ubah Dashboard Admin
     let adminSelectedDay = 1;
     let adminActiveSessionKey = "h1_pagi";
-    let adminStatusFilter = "all"; // 'all', 'hadir', 'belum'
+    let adminStatusFilter = "all"; 
     let pendingToggleData = null;
+
+    // Penjejak Auto-Sync (1 Minit)
+    let autoSyncTimer = null;
+    let isSyncing = false;
 
     // Format Tarikh & Masa Malaysia: 28/10/2026, 12:36:59 PTG
     function formatMasaMY(val) {
@@ -598,7 +617,7 @@
       return `${day}/${month}/${year}, ${hours}:${minutes}:${seconds} ${ampm}`;
     }
 
-    // Data Demo Awal Padanan Google Sheet Terkini (Lajur A hingga E)
+    // Data Demo Awal Padanan Google Sheet Terkini[cite: 6]
     let participants = [
       {
         row: 2, id: "1", nama: "Ahmad Faizal bin Ramli", jawatan: "PENGARAH EKSEKUTIF (PERANCANGAN) JUSA A", jabatan: "Pejabat Pengarah Eksekutif (Perancangan)", phone: "0123456789", last4: "6789",
@@ -734,13 +753,31 @@
         screenAtt.classList.add('flex');
         autoDetectSession();
         fetchParticipants();
+        startAutoSync();
       } else if (screen === 'admin') {
         screenAdmin.classList.remove('hidden');
         screenAdmin.classList.add('flex');
         renderAdminDashboard();
+        startAutoSync();
       } else {
         screenOnboard.classList.remove('hidden');
       }
+    }
+
+    /* ========================================================
+       FUNGSI AUTO-SYNC SETIAP 1 MINIT (BACKGROUND SINKRON)
+       ======================================================== */
+    function startAutoSync() {
+      if (autoSyncTimer) clearInterval(autoSyncTimer);
+      // Panggil fetchParticipants secara senyap setiap 60,000 ms (1 minit)
+      autoSyncTimer = setInterval(() => {
+        // Jangan segerak jika pengguna sedang mengisi modal PIN 4-digit
+        const isModalOpen = !document.getElementById('pinModal').classList.contains('hidden') ||
+                            !document.getElementById('adminToggleConfirmModal').classList.contains('hidden');
+        if (!isModalOpen) {
+          fetchParticipants(false);
+        }
+      }, 60000);
     }
 
     /* ========================================================
@@ -854,7 +891,7 @@
       document.getElementById('adminStatHadirCount').innerText = `${currentHadir} Hadir`;
       document.getElementById('adminStatBelumCount').innerText = `${currentBelum} Belum`;
 
-      // 2. Metrik Purata Hari Dipilih (3 Sesi Sehari)
+      // 2. Metrik Purata Hari Dipilih
       const daySlots = [`h${adminSelectedDay}_pagi`, `h${adminSelectedDay}_petang`, `h${adminSelectedDay}_malam`];
       let daySlotsHadir = 0;
       daySlots.forEach(s => {
@@ -905,18 +942,21 @@
 
     function renderAdminTable() {
       const tbody = document.getElementById('adminTableBody');
-      const searchTerm = (document.getElementById('adminSearchInput').value || '').toLowerCase().trim();
+      const searchInput = document.getElementById('adminSearchInput');
+      const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
 
-      // Kira bilangan untuk lencana penapis
       const allCount = participants.length;
       const hadirCount = participants.filter(p => p.attendance && p.attendance[adminActiveSessionKey] && p.attendance[adminActiveSessionKey].status === 'Hadir').length;
       const belumCount = allCount - hadirCount;
 
-      document.getElementById('countBadgeAll').innerText = allCount;
-      document.getElementById('countBadgeHadir').innerText = hadirCount;
-      document.getElementById('countBadgeBelum').innerText = belumCount;
+      const badgeAll = document.getElementById('countBadgeAll');
+      const badgeHadir = document.getElementById('countBadgeHadir');
+      const badgeBelum = document.getElementById('countBadgeBelum');
 
-      // Tapis mengikut carian teks dan penapis status
+      if (badgeAll) badgeAll.innerText = allCount;
+      if (badgeHadir) badgeHadir.innerText = hadirCount;
+      if (badgeBelum) badgeBelum.innerText = belumCount;
+
       let filtered = participants.filter(p => {
         const slot = (p.attendance && p.attendance[adminActiveSessionKey]) ? p.attendance[adminActiveSessionKey] : { status: "Belum Hadir" };
         const isHadir = (slot.status === 'Hadir');
@@ -1149,9 +1189,17 @@
     }
 
     /* ========================================================
-       FUNGSI CARIAN & KEHADIRAN PESERTA (PORTAL UTAMA)
+       FUNGSI CARIAN & SINKRON DATA (PORTAL UTAMA)
        ======================================================== */
-    async function fetchParticipants() {
+    async function fetchParticipants(isManualTrigger = false) {
+      if (isSyncing) return;
+      isSyncing = true;
+
+      const userIcon = document.getElementById('userSyncIcon');
+      const adminIcon = document.getElementById('adminSyncIcon');
+      if (userIcon) userIcon.classList.add('animate-spin');
+      if (adminIcon) adminIcon.classList.add('animate-spin');
+
       if (SCRIPT_URL && SCRIPT_URL.trim() !== "") {
         try {
           const res = await fetch(`${SCRIPT_URL}?action=getPeserta`);
@@ -1159,18 +1207,30 @@
           if (Array.isArray(cloudData) && cloudData.length > 0) {
             participants = cloudData;
           }
+          if (isManualTrigger) {
+            triggerToast("Data terkini berjaya dimuatkan!", "success");
+          }
         } catch (err) {
-          triggerToast("Mod demo aktif (data luar talian)", "info");
+          if (isManualTrigger) {
+            triggerToast("Mod demo aktif (data luar talian)", "info");
+          }
         }
       }
+
       filterParticipants();
       if (!document.getElementById('screenAdmin').classList.contains('hidden')) {
         renderAdminDashboard();
       }
+
+      setTimeout(() => {
+        if (userIcon) userIcon.classList.remove('animate-spin');
+        if (adminIcon) adminIcon.classList.remove('animate-spin');
+        isSyncing = false;
+      }, 500);
     }
 
     function filterParticipants() {
-      const term = document.getElementById('searchInput').value.toLowerCase().trim();
+      const term = (document.getElementById('searchInput').value || '').toLowerCase().trim();
       const clearBtn = document.getElementById('clearSearchBtn');
       if (term.length > 0) {
         clearBtn.classList.remove('hidden');
@@ -1378,7 +1438,7 @@
           if (json.success) {
             closePinModal();
             triggerToast(`Kehadiran ${getSessionTitleText()} direkodkan!`, "success");
-            fetchParticipants();
+            fetchParticipants(false);
           } else {
             showPinModalError(json.message || "4 digit nombor tidak sepadan!");
           }
