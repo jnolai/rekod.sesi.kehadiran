@@ -62,11 +62,11 @@
 </head>
 <body class="bg-[#f6f8fa] w-full min-h-[100dvh] text-slate-800 antialiased font-sans flex flex-col m-0 p-0 overflow-x-hidden">
 
-  <!-- Responsive Full-Size Container (Memenuhi 100% lebar & tinggi peranti) -->
+  <!-- Responsive Full-Size Container -->
   <div class="relative w-full min-h-[100dvh] flex-1 glow-canvas flex flex-col justify-between">
 
     <!-- ==============================================
-         SKRIN 1: ONBOARDING / PENGENALAN (FULL SCREEN)
+         SKRIN 1: ONBOARDING / PENGENALAN
          ============================================== -->
     <div id="screenOnboarding" class="relative flex-1 flex flex-col justify-between overflow-y-auto no-scrollbar transition-all duration-300 p-5 sm:p-8 md:p-12 max-w-4xl mx-auto w-full">
       
@@ -76,16 +76,14 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
         </div>
         <div class="flex gap-2.5">
-          <div class="w-10 h-10 rounded-full bg-white/80 shadow-neumorph-btn flex items-center justify-center text-slate-600">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"/></svg>
-          </div>
-          <div class="w-10 h-10 rounded-full bg-white/80 shadow-neumorph-btn flex items-center justify-center text-amber-500 font-bold text-sm">
-            ★
-          </div>
+          <button onclick="promptAdminLogin()" class="px-3.5 py-1.5 rounded-full bg-white/80 shadow-neumorph-btn flex items-center gap-1.5 text-slate-600 text-xs font-bold hover:text-slate-900 transition">
+            <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            <span>Admin</span>
+          </button>
         </div>
       </div>
 
-      <!-- Hero Visual Motif & Penerangan Program -->
+      <!-- Hero Visual Motif -->
       <div class="my-auto py-8 flex flex-col items-center text-center">
         <div class="relative w-44 h-44 sm:w-56 sm:h-56 mb-6 flex items-center justify-center">
           <div class="absolute inset-0 bg-gradient-to-tr from-amber-200/50 to-orange-100/40 rounded-full blur-3xl"></div>
@@ -102,7 +100,7 @@
           SISTEM KEHADIRAN PINTAR
         </span>
         <h1 class="text-xl sm:text-3xl font-extrabold text-slate-900 leading-tight mb-2 uppercase max-w-lg">
-          Bengkel Perancangan Perolehan Tahun 2027
+          Bengkel Perancangan Perolehan 2027
         </h1>
         <p class="text-xs sm:text-sm text-slate-500 leading-relaxed max-w-md">
           Sahkan slot sesi bengkel anda dengan pantas melalui carian nama serta pengesahan 4 digit telefon berdaftar.
@@ -128,11 +126,11 @@
     </div>
 
     <!-- ==============================================
-         SKRIN 2: PORTAL SENARAI KEHADIRAN (FULL SCREEN)
+         SKRIN 2: PORTAL PESERTA (CARIAN & KEHADIRAN)
          ============================================== -->
     <div id="screenAttendance" class="hidden flex-1 flex flex-col w-full h-[100dvh] overflow-hidden transition-all duration-300">
       
-      <!-- Top Sticky App Bar & Header Panel -->
+      <!-- Top Sticky App Bar -->
       <div class="w-full bg-white/70 backdrop-blur-md border-b border-slate-200/60 shadow-sm shrink-0">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 py-4">
           
@@ -143,9 +141,13 @@
               </svg>
             </button>
             
+            <!-- Tab Switcher: Kehadiran vs Admin -->
             <div class="flex bg-slate-100/90 p-1 rounded-full border border-slate-200/50">
-              <button class="px-4 py-1 rounded-full text-xs font-bold bg-white text-slate-800 shadow-sm">Kehadiran</button>
-              <button class="px-4 py-1 rounded-full text-xs font-medium text-slate-400 hover:text-slate-700">Info Program</button>
+              <button class="px-4 py-1.5 rounded-full text-xs font-bold bg-white text-slate-800 shadow-sm">Kehadiran</button>
+              <button onclick="promptAdminLogin()" class="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-500 hover:text-slate-900 transition flex items-center gap-1.5">
+                <svg class="w-3 h-3 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                <span>Admin</span>
+              </button>
             </div>
 
             <button onclick="fetchParticipants()" class="w-10 h-10 rounded-full bg-white shadow-neumorph-btn flex items-center justify-center text-slate-600 transition active:scale-95" title="Segar Semula">
@@ -186,16 +188,14 @@
             </button>
           </div>
 
-          <!-- Pilihan Hari & Pilihan Sesi (Responsif Grid) -->
+          <!-- Tab Hari & Tab Sesi -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3 pt-2 border-t border-slate-100">
-            <!-- Tab Hari -->
             <div class="flex items-center gap-1.5 p-1 bg-white/80 rounded-2xl border border-slate-200/60">
               <button onclick="setDay(1)" id="tabDay1" class="flex-1 py-1.5 text-xs font-bold rounded-xl transition bg-slate-900 text-white shadow-sm">Hari 1</button>
               <button onclick="setDay(2)" id="tabDay2" class="flex-1 py-1.5 text-xs font-bold rounded-xl transition text-slate-500 hover:text-slate-800">Hari 2</button>
               <button onclick="setDay(3)" id="tabDay3" class="flex-1 py-1.5 text-xs font-bold rounded-xl transition text-slate-500 hover:text-slate-800">Hari 3</button>
             </div>
 
-            <!-- Tab Sesi -->
             <div class="flex items-center gap-1.5 p-1 bg-white/80 rounded-2xl border border-slate-200/60">
               <button onclick="setSlot('pagi')" id="btnSlotPagi" class="flex-1 py-1.5 text-xs font-bold rounded-xl transition flex items-center justify-center gap-1 bg-amber-400 text-slate-900 shadow-sm">
                 <span>🌅 Pagi</span>
@@ -212,7 +212,7 @@
         </div>
       </div>
 
-      <!-- Participant List Scroll Area (Responsif Grid untuk Skrin Lebar / Telefon Pintar) -->
+      <!-- Participant List Scroll Area -->
       <div class="flex-1 overflow-y-auto no-scrollbar w-full">
         <div id="participantList" class="max-w-4xl mx-auto p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
           <!-- Rendered via JS -->
@@ -233,7 +233,189 @@
     </div>
 
     <!-- ==============================================
-         MODAL POP-UP 4-DIGIT: GAYA RESPONSIVE SHEET / DIALOG
+         SKRIN 3: DASHBOARD ADMIN KEHADIRAN
+         ============================================== -->
+    <div id="screenAdmin" class="hidden flex-1 flex flex-col w-full h-[100dvh] overflow-hidden transition-all duration-300 bg-slate-900 text-white">
+      
+      <!-- Top Admin Bar -->
+      <div class="bg-slate-900/90 border-b border-slate-800 px-4 sm:px-8 py-4 shrink-0 backdrop-blur-md">
+        <div class="max-w-5xl mx-auto flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] uppercase font-bold tracking-widest text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">Mod Pentadbir</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              </div>
+              <h2 class="text-sm sm:text-lg font-bold text-white">Dashboard Kehadiran Bengkel</h2>
+            </div>
+          </div>
+
+          <button onclick="logoutAdmin()" class="px-4 py-2 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold border border-slate-700 transition flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            <span>Keluar Admin</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Admin Scrollable Content -->
+      <div class="flex-1 overflow-y-auto no-scrollbar p-4 sm:p-8">
+        <div class="max-w-5xl mx-auto space-y-6">
+
+          <!-- Ringkasan Kad Statistik (Gaya Glassmorphism Gelap) -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            
+            <div class="bg-[#1c2227] p-5 rounded-3xl border border-slate-800 shadow-xl">
+              <span class="text-xs text-slate-400 font-medium">Kadar Kehadiran Sesi Semasa</span>
+              <div class="flex items-baseline gap-2 mt-2">
+                <h3 id="adminCurrentRate" class="text-3xl font-extrabold text-amber-400">0%</h3>
+                <span id="adminCurrentRatio" class="text-xs text-slate-400">0 / 0 Peserta</span>
+              </div>
+              <div class="w-full h-2 bg-slate-800 rounded-full mt-3 overflow-hidden">
+                <div id="adminCurrentBar" class="h-full bg-amber-400 transition-all duration-500" style="width: 0%"></div>
+              </div>
+              <p id="adminCurrentSessionName" class="text-[11px] text-slate-400 mt-2 font-medium">Hari 1 • Sesi Pagi</p>
+            </div>
+
+            <div class="bg-[#1c2227] p-5 rounded-3xl border border-slate-800 shadow-xl">
+              <span class="text-xs text-slate-400 font-medium">Jumlah Peserta Berdaftar</span>
+              <div class="flex items-baseline gap-2 mt-2">
+                <h3 id="adminTotalParticipants" class="text-3xl font-extrabold text-white">0</h3>
+                <span class="text-xs text-slate-400">Orang</span>
+              </div>
+              <div class="flex items-center gap-2 mt-4 text-xs text-emerald-400 font-semibold">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span>Pangkalan Data Bersedia</span>
+              </div>
+            </div>
+
+            <div class="bg-[#1c2227] p-5 rounded-3xl border border-slate-800 shadow-xl">
+              <span class="text-xs text-slate-400 font-medium">Purata Keseluruhan (9 Sesi)</span>
+              <div class="flex items-baseline gap-2 mt-2">
+                <h3 id="adminOverallAvg" class="text-3xl font-extrabold text-teal-400">0%</h3>
+                <span class="text-xs text-slate-400">Sepanjang Bengkel</span>
+              </div>
+              <div class="w-full h-2 bg-slate-800 rounded-full mt-3 overflow-hidden">
+                <div id="adminOverallBar" class="h-full bg-teal-400 transition-all duration-500" style="width: 0%"></div>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-2">Berdasarkan 9 slot sesi berjadual</p>
+            </div>
+
+          </div>
+
+          <!-- Matriks Kehadiran Mengikut Hari & Sesi (9 Sesi) -->
+          <div class="bg-[#1c2227] p-6 rounded-3xl border border-slate-800 shadow-xl">
+            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+              Pecahan Kehadiran 9 Sesi Bengkel
+            </h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="adminSessionMatrix">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Jadual Perincian Peserta Lengkap -->
+          <div class="bg-[#1c2227] p-6 rounded-3xl border border-slate-800 shadow-xl">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+              <div>
+                <h3 class="text-sm font-bold text-white">Senarai Terperinci Peserta & Sesi Semasa</h3>
+                <p class="text-xs text-slate-400 mt-0.5">Semak status kehadiran individu mengikut slot yang dipilih</p>
+              </div>
+
+              <!-- Pilihan Sesi Pantas Admin -->
+              <div class="flex items-center gap-2">
+                <select id="adminSessionSelect" onchange="onAdminSessionChange(this.value)" class="bg-slate-800 text-xs font-semibold text-white px-3 py-2 rounded-xl border border-slate-700 outline-none focus:border-amber-400">
+                  <option value="h1_pagi">Hari 1 - Pagi</option>
+                  <option value="h1_petang">Hari 1 - Petang</option>
+                  <option value="h1_malam">Hari 1 - Malam</option>
+                  <option value="h2_pagi">Hari 2 - Pagi</option>
+                  <option value="h2_petang">Hari 2 - Petang</option>
+                  <option value="h2_malam">Hari 2 - Malam</option>
+                  <option value="h3_pagi">Hari 3 - Pagi</option>
+                  <option value="h3_petang">Hari 3 - Petang</option>
+                  <option value="h3_malam">Hari 3 - Malam</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Table Container -->
+            <div class="overflow-x-auto no-scrollbar rounded-2xl border border-slate-800">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-800/80 text-slate-300 font-bold uppercase text-[10px] tracking-wider">
+                  <tr>
+                    <th class="p-3.5">Bil</th>
+                    <th class="p-3.5">Nama Peserta</th>
+                    <th class="p-3.5">Jawatan / Peranan</th>
+                    <th class="p-3.5">No. Tel</th>
+                    <th class="p-3.5">Status</th>
+                    <th class="p-3.5">Masa Imbasan</th>
+                  </tr>
+                </thead>
+                <tbody id="adminTableBody" class="divide-y divide-slate-800/60 font-medium">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ==============================================
+         MODAL LOG MASUK KATA LALUAN ADMIN
+         ============================================== -->
+    <div id="adminLoginModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 backdrop-blur-md p-4 transition-all">
+      <div class="w-full max-w-sm bg-[#1c2227] text-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-slate-700 text-center">
+        
+        <div class="w-12 h-12 rounded-2xl bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center mx-auto mb-3">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        </div>
+
+        <h3 class="text-base font-bold text-white">Log Masuk Pentadbir</h3>
+        <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+          Sila masukkan kata laluan untuk mengakses dashboard statistik dan pemantauan kehadiran.
+        </p>
+
+        <div class="mt-4 text-left">
+          <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Kata Laluan Admin</label>
+          <input 
+            type="password" 
+            id="adminPasswordInput" 
+            placeholder="Masukkan kata laluan..."
+            onkeydown="if(event.key === 'Enter') checkAdminPassword()"
+            class="w-full mt-1.5 px-4 py-3 bg-[#242b32] border border-slate-600 rounded-2xl text-white text-sm outline-none focus:border-amber-400 transition"
+            autofocus
+          >
+          <p id="adminPasswordError" class="hidden text-xs text-rose-400 font-semibold mt-2 flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>Kata laluan salah! Sila cuba lagi.</span>
+          </p>
+        </div>
+
+        <div class="flex gap-2.5 mt-5">
+          <button 
+            onclick="closeAdminLoginModal()" 
+            class="flex-1 py-3 px-4 rounded-2xl font-semibold text-xs text-slate-400 bg-slate-800 hover:bg-slate-700 transition">
+            Batal
+          </button>
+          <button 
+            onclick="checkAdminPassword()" 
+            class="flex-1 py-3 px-4 rounded-2xl font-bold text-xs text-slate-900 bg-amber-400 hover:bg-amber-300 transition shadow-lg shadow-amber-400/20">
+            Log Masuk
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==============================================
+         MODAL PENGESAHAN 4 DIGIT PESERTA
          ============================================== -->
     <div id="pinModal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/60 backdrop-blur-sm p-0 sm:p-4 transition-all">
       <div class="w-full max-w-lg bg-[#1c2227] text-white rounded-t-[36px] sm:rounded-[36px] p-6 sm:p-8 shadow-dark-sheet transform transition-all text-center border-t sm:border border-slate-700/60">
@@ -255,7 +437,7 @@
 
         <!-- 4 Separate PIN Input Boxes -->
         <div class="flex justify-center gap-3 sm:gap-4 my-6">
-          <input type="tel" maxlength="1" id="pin1" class="pin-box w-12 h-14 sm:w-14 sm:h-16 text-center text-xl sm:text-2xl font-bold bg-[#242b32] border border-slate-600 rounded-2xl outline-none transition text-white" oninput="handlePinStep(this, 'pin2', null)" autofocus>
+          <input type="tel" maxlength="1" id="pin1" class="pin-box w-12 h-14 sm:w-14 sm:h-16 text-center text-xl sm:text-2xl font-bold bg-[#242b32] border border-slate-600 rounded-2xl outline-none transition text-white" oninput="handlePinStep(this, 'pin2', null)">
           <input type="tel" maxlength="1" id="pin2" class="pin-box w-12 h-14 sm:w-14 sm:h-16 text-center text-xl sm:text-2xl font-bold bg-[#242b32] border border-slate-600 rounded-2xl outline-none transition text-white" oninput="handlePinStep(this, 'pin3', 'pin1')">
           <input type="tel" maxlength="1" id="pin3" class="pin-box w-12 h-14 sm:w-14 sm:h-16 text-center text-xl sm:text-2xl font-bold bg-[#242b32] border border-slate-600 rounded-2xl outline-none transition text-white" oninput="handlePinStep(this, 'pin4', 'pin2')">
           <input type="tel" maxlength="1" id="pin4" class="pin-box w-12 h-14 sm:w-14 sm:h-16 text-center text-xl sm:text-2xl font-bold bg-[#242b32] border border-slate-600 rounded-2xl outline-none transition text-white" oninput="handlePinStep(this, null, 'pin3')">
@@ -298,50 +480,124 @@
 
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzKUzGPSuyT9iYu3SgScXFnYgt1P3VbYQIcbaRxs6bCiEZLrPNHpvGJIqNPYyvb3UnQ/exec"; 
+    const ADMIN_PASSWORD_HASH = "UMKB13813";
 
     let selectedDay = 1;
     let selectedSlot = "pagi";
     let activeParticipant = null;
+    let adminActiveSessionKey = "h1_pagi";
 
     let participants = [
       {
-        row: 2, id: "P-101", nama: "Farhan Hakim Bin Azman", role: "Penyelaras Perolehan", phone: "0134421188", last4: "1188",
+        row: 2, id: "P-101", nama: "Ahmad Faizal bin Ramli", role: "Peserta Bengkel", phone: "0134421188", last4: "1188",
         attendance: {
           "h1_pagi": { status: "Hadir", masa: "08:20 PG" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" }
+          "h1_malam": { status: "Belum Hadir", masa: "" },
+          "h2_pagi": { status: "Belum Hadir", masa: "" },
+          "h2_petang": { status: "Belum Hadir", masa: "" },
+          "h2_malam": { status: "Belum Hadir", masa: "" },
+          "h3_pagi": { status: "Belum Hadir", masa: "" },
+          "h3_petang": { status: "Belum Hadir", masa: "" },
+          "h3_malam": { status: "Belum Hadir", masa: "" }
         }
       },
       {
-        row: 3, id: "P-102", nama: "Nur Sabrina Binti Kamarul", role: "Pegawai Kewangan", phone: "0198765432", last4: "5432",
+        row: 3, id: "P-102", nama: "Siti Sarah binti Idris", role: "Peserta Bengkel", phone: "0198765432", last4: "5432",
         attendance: {
           "h1_pagi": { status: "Hadir", masa: "08:15 PG" },
           "h1_petang": { status: "Hadir", masa: "02:10 PTG" },
-          "h1_malam": { status: "Belum Hadir", masa: "" }
+          "h1_malam": { status: "Belum Hadir", masa: "" },
+          "h2_pagi": { status: "Belum Hadir", masa: "" },
+          "h2_petang": { status: "Belum Hadir", masa: "" },
+          "h2_malam": { status: "Belum Hadir", masa: "" },
+          "h3_pagi": { status: "Belum Hadir", masa: "" },
+          "h3_petang": { status: "Belum Hadir", masa: "" },
+          "h3_malam": { status: "Belum Hadir", masa: "" }
         }
       },
       {
-        row: 4, id: "P-103", nama: "Ahmad Danish Bin Razali", role: "Penolong Jurutera", phone: "0123456789", last4: "6789",
+        row: 4, id: "P-103", nama: "Mohd Hafiz bin Zainal", role: "Peserta Bengkel", phone: "0123456789", last4: "6789",
         attendance: {
-          "h1_pagi": { status: "Belum Hadir", masa: "" },
+          "h1_pagi": { status: "Hadir", masa: "08:22 PG" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" }
+          "h1_malam": { status: "Belum Hadir", masa: "" },
+          "h2_pagi": { status: "Belum Hadir", masa: "" },
+          "h2_petang": { status: "Belum Hadir", masa: "" },
+          "h2_malam": { status: "Belum Hadir", masa: "" },
+          "h3_pagi": { status: "Belum Hadir", masa: "" },
+          "h3_petang": { status: "Belum Hadir", masa: "" },
+          "h3_malam": { status: "Belum Hadir", masa: "" }
         }
       },
       {
-        row: 5, id: "P-104", nama: "Siti Zulaikha Binti Murad", role: "Ketua Bahagian", phone: "01122339900", last4: "9900",
+        row: 5, id: "P-104", nama: "Nurul Huda binti Othman", role: "Peserta Bengkel", phone: "01122339900", last4: "9900",
         attendance: {
-          "h1_pagi": { status: "Belum Hadir", masa: "" },
+          "h1_pagi": { status: "Hadir", masa: "08:25 PG" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" }
+          "h1_malam": { status: "Belum Hadir", masa: "" },
+          "h2_pagi": { status: "Belum Hadir", masa: "" },
+          "h2_petang": { status: "Belum Hadir", masa: "" },
+          "h2_malam": { status: "Belum Hadir", masa: "" },
+          "h3_pagi": { status: "Belum Hadir", masa: "" },
+          "h3_petang": { status: "Belum Hadir", masa: "" },
+          "h3_malam": { status: "Belum Hadir", masa: "" }
         }
       },
       {
-        row: 6, id: "P-105", nama: "Tan Jian Wei", role: "Pegawai Tadbir", phone: "0168892345", last4: "2345",
+        row: 6, id: "P-105", nama: "Khairul Anuar bin Kassim", role: "Peserta Bengkel", phone: "0168892345", last4: "2345",
         attendance: {
           "h1_pagi": { status: "Hadir", masa: "08:35 PG" },
           "h1_petang": { status: "Belum Hadir", masa: "" },
-          "h1_malam": { status: "Belum Hadir", masa: "" }
+          "h1_malam": { status: "Belum Hadir", masa: "" },
+          "h2_pagi": { status: "Belum Hadir", masa: "" },
+          "h2_petang": { status: "Belum Hadir", masa: "" },
+          "h2_malam": { status: "Belum Hadir", masa: "" },
+          "h3_pagi": { status: "Belum Hadir", masa: "" },
+          "h3_petang": { status: "Belum Hadir", masa: "" },
+          "h3_malam": { status: "Belum Hadir", masa: "" }
+        }
+      },
+      {
+        row: 7, id: "P-106", nama: "Zulkifli bin Mat Aris", role: "Peserta Bengkel", phone: "0172233445", last4: "3445",
+        attendance: {
+          "h1_pagi": { status: "Belum Hadir", masa: "" },
+          "h1_petang": { status: "Belum Hadir", masa: "" },
+          "h1_malam": { status: "Belum Hadir", masa: "" },
+          "h2_pagi": { status: "Belum Hadir", masa: "" },
+          "h2_petang": { status: "Belum Hadir", masa: "" },
+          "h2_malam": { status: "Belum Hadir", masa: "" },
+          "h3_pagi": { status: "Belum Hadir", masa: "" },
+          "h3_petang": { status: "Belum Hadir", masa: "" },
+          "h3_malam": { status: "Belum Hadir", masa: "" }
+        }
+      },
+      {
+        row: 8, id: "P-107", nama: "Faridah binti Sulaiman", role: "Peserta Bengkel", phone: "0189988776", last4: "8776",
+        attendance: {
+          "h1_pagi": { status: "Belum Hadir", masa: "" },
+          "h1_petang": { status: "Belum Hadir", masa: "" },
+          "h1_malam": { status: "Belum Hadir", masa: "" },
+          "h2_pagi": { status: "Belum Hadir", masa: "" },
+          "h2_petang": { status: "Belum Hadir", masa: "" },
+          "h2_malam": { status: "Belum Hadir", masa: "" },
+          "h3_pagi": { status: "Belum Hadir", masa: "" },
+          "h3_petang": { status: "Belum Hadir", masa: "" },
+          "h3_malam": { status: "Belum Hadir", masa: "" }
+        }
+      },
+      {
+        row: 9, id: "P-108", nama: "Ramesh a/l Muniandy", role: "Peserta Bengkel", phone: "0128877665", last4: "7665",
+        attendance: {
+          "h1_pagi": { status: "Belum Hadir", masa: "" },
+          "h1_petang": { status: "Belum Hadir", masa: "" },
+          "h1_malam": { status: "Belum Hadir", masa: "" },
+          "h2_pagi": { status: "Belum Hadir", masa: "" },
+          "h2_petang": { status: "Belum Hadir", masa: "" },
+          "h2_malam": { status: "Belum Hadir", masa: "" },
+          "h3_pagi": { status: "Belum Hadir", masa: "" },
+          "h3_petang": { status: "Belum Hadir", masa: "" },
+          "h3_malam": { status: "Belum Hadir", masa: "" }
         }
       }
     ];
@@ -405,20 +661,161 @@
     function goToScreen(screen) {
       const screenOnboard = document.getElementById('screenOnboarding');
       const screenAtt = document.getElementById('screenAttendance');
+      const screenAdmin = document.getElementById('screenAdmin');
+
+      [screenOnboard, screenAtt, screenAdmin].forEach(el => el.classList.add('hidden'));
 
       if (screen === 'attendance') {
-        screenOnboard.classList.add('hidden');
         screenAtt.classList.remove('hidden');
         screenAtt.classList.add('flex');
         autoDetectSession();
         fetchParticipants();
+      } else if (screen === 'admin') {
+        screenAdmin.classList.remove('hidden');
+        screenAdmin.classList.add('flex');
+        renderAdminDashboard();
       } else {
-        screenAtt.classList.add('hidden');
-        screenAtt.classList.remove('flex');
         screenOnboard.classList.remove('hidden');
       }
     }
 
+    /* ========================================================
+       FUNGSI LOG MASUK & DASHBOARD ADMIN
+       ======================================================== */
+    function promptAdminLogin() {
+      const modal = document.getElementById('adminLoginModal');
+      const input = document.getElementById('adminPasswordInput');
+      const err = document.getElementById('adminPasswordError');
+      input.value = '';
+      err.classList.add('hidden');
+      modal.classList.remove('hidden');
+      setTimeout(() => input.focus(), 150);
+    }
+
+    function closeAdminLoginModal() {
+      document.getElementById('adminLoginModal').classList.add('hidden');
+    }
+
+    function checkAdminPassword() {
+      const input = document.getElementById('adminPasswordInput');
+      const err = document.getElementById('adminPasswordError');
+
+      if (input.value.trim() === ADMIN_PASSWORD_HASH) {
+        closeAdminLoginModal();
+        triggerToast("Log masuk Admin berjaya!", "success");
+        goToScreen('admin');
+      } else {
+        err.classList.remove('hidden');
+        input.focus();
+      }
+    }
+
+    function logoutAdmin() {
+      triggerToast("Keluar daripada Mod Admin", "info");
+      goToScreen('attendance');
+    }
+
+    function renderAdminDashboard() {
+      const totalParticipants = participants.length;
+      document.getElementById('adminTotalParticipants').innerText = totalParticipants;
+
+      // Sesi Semasa
+      const currentKey = getCurrentSessionKey();
+      const currentHadir = participants.filter(p => (p.attendance && p.attendance[currentKey] && p.attendance[currentKey].status === 'Hadir')).length;
+      const currentPct = totalParticipants > 0 ? Math.round((currentHadir / totalParticipants) * 100) : 0;
+
+      document.getElementById('adminCurrentRate').innerText = `${currentPct}%`;
+      document.getElementById('adminCurrentRatio').innerText = `${currentHadir} / ${totalParticipants} Peserta`;
+      document.getElementById('adminCurrentBar').style.width = `${currentPct}%`;
+      document.getElementById('adminCurrentSessionName').innerText = getSessionTitleText();
+
+      // Kira Purata Keseluruhan Semua 9 Sesi
+      const sessions = [
+        'h1_pagi', 'h1_petang', 'h1_malam',
+        'h2_pagi', 'h2_petang', 'h2_malam',
+        'h3_pagi', 'h3_petang', 'h3_malam'
+      ];
+
+      let totalSlotsCount = sessions.length * totalParticipants;
+      let totalHadirAllSessions = 0;
+
+      const sessionDisplayNames = {
+        'h1_pagi': 'Hari 1 - Pagi',
+        'h1_petang': 'Hari 1 - Petang',
+        'h1_malam': 'Hari 1 - Malam',
+        'h2_pagi': 'Hari 2 - Pagi',
+        'h2_petang': 'Hari 2 - Petang',
+        'h2_malam': 'Hari 2 - Malam',
+        'h3_pagi': 'Hari 3 - Pagi',
+        'h3_petang': 'Hari 3 - Petang',
+        'h3_malam': 'Hari 3 - Malam'
+      };
+
+      const matrixHtml = sessions.map(sKey => {
+        const count = participants.filter(p => (p.attendance && p.attendance[sKey] && p.attendance[sKey].status === 'Hadir')).length;
+        totalHadirAllSessions += count;
+        const pct = totalParticipants > 0 ? Math.round((count / totalParticipants) * 100) : 0;
+        const isCurrent = sKey === currentKey;
+
+        return `
+          <div class="p-3.5 rounded-2xl bg-slate-800/80 border ${isCurrent ? 'border-amber-400/80 bg-amber-400/5' : 'border-slate-700/60'}">
+            <div class="flex items-center justify-between text-xs mb-1">
+              <span class="font-bold text-slate-300 ${isCurrent ? 'text-amber-400' : ''}">${sessionDisplayNames[sKey]}</span>
+              <span class="font-extrabold ${pct > 0 ? 'text-amber-400' : 'text-slate-500'}">${count}/${totalParticipants}</span>
+            </div>
+            <div class="w-full h-1.5 bg-slate-700 rounded-full overflow-hidden my-1.5">
+              <div class="h-full bg-amber-400" style="width: ${pct}%"></div>
+            </div>
+            <span class="text-[10px] text-slate-400">${pct}% kehadiran</span>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('adminSessionMatrix').innerHTML = matrixHtml;
+
+      const overallAvgPct = totalSlotsCount > 0 ? Math.round((totalHadirAllSessions / totalSlotsCount) * 100) : 0;
+      document.getElementById('adminOverallAvg').innerText = `${overallAvgPct}%`;
+      document.getElementById('adminOverallBar').style.width = `${overallAvgPct}%`;
+
+      // Set dropdown admin mengikut sesi aktif
+      document.getElementById('adminSessionSelect').value = currentKey;
+      adminActiveSessionKey = currentKey;
+      renderAdminTable();
+    }
+
+    function onAdminSessionChange(sessionKey) {
+      adminActiveSessionKey = sessionKey;
+      renderAdminTable();
+    }
+
+    function renderAdminTable() {
+      const tbody = document.getElementById('adminTableBody');
+      tbody.innerHTML = participants.map((p, index) => {
+        const slot = (p.attendance && p.attendance[adminActiveSessionKey]) ? p.attendance[adminActiveSessionKey] : { status: "Belum Hadir", masa: "-" };
+        const isHadir = slot.status === 'Hadir';
+
+        return `
+          <tr class="hover:bg-slate-800/40 transition">
+            <td class="p-3.5 text-slate-400">${index + 1}</td>
+            <td class="p-3.5 font-bold text-white">${p.nama}</td>
+            <td class="p-3.5 text-slate-400">${p.role || 'Peserta Bengkel'}</td>
+            <td class="p-3.5 text-slate-300 font-mono">${p.phone || '-'}</td>
+            <td class="p-3.5">
+              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                isHadir ? 'bg-amber-400/20 text-amber-400 border border-amber-400/30' : 'bg-slate-800 text-slate-400 border border-slate-700'
+              }">
+                ${isHadir ? '✓ Hadir' : 'Belum Hadir'}
+              </span>
+            </td>
+            <td class="p-3.5 text-slate-300 font-mono text-[11px]">${slot.masa || '-'}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    /* ========================================================
+       FUNGSI CARIAN & KEHADIRAN PESERTA
+       ======================================================== */
     async function fetchParticipants() {
       if (SCRIPT_URL && SCRIPT_URL.trim() !== "") {
         try {
@@ -428,7 +825,7 @@
             participants = cloudData;
           }
         } catch (err) {
-          triggerToast("Mod demo aktif (data luar talian)", "info");
+          triggerToast("Mod demo aktif (data tempatan)", "info");
         }
       }
       filterParticipants();
@@ -470,7 +867,7 @@
         container.innerHTML = `
           <div class="col-span-full py-16 text-center">
             <p class="text-sm font-bold text-slate-700">Tiada nama ditemui</p>
-            <p class="text-xs text-slate-400 mt-1">Sila pastikan ejaan nama carian anda betul.</p>
+            <p class="text-xs text-slate-400 mt-1">Sila pastikan ejaan carian nama anda betul.</p>
           </div>
         `;
         return;
@@ -499,13 +896,11 @@
                 </div>
               </div>
 
-              <!-- Top Right Action Arrow -->
               <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-slate-700 transition shrink-0">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
               </div>
             </div>
 
-            <!-- Status Indicator Bar -->
             <div class="pt-2 border-t border-slate-100/80 flex items-center justify-between text-[11px]">
               <div class="flex items-center gap-2">
                 <span class="text-slate-400 font-medium">Status:</span>
@@ -638,9 +1033,7 @@
             showPinModalError(json.message || "4 digit nombor tidak sepadan!");
           }
           return;
-        } catch (e) {
-          // Beralih ke demo jika ada ralat rangkaian
-        }
+        } catch (e) {}
       }
 
       setTimeout(() => {
