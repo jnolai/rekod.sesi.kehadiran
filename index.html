@@ -142,15 +142,21 @@
             </button>
             
             <div class="flex bg-slate-100/90 p-1 rounded-full border border-slate-200/50">
-              <button class="px-4 py-1.5 rounded-full text-xs font-bold bg-white text-slate-800 shadow-sm">Kehadiran</button>
-              <button onclick="promptAdminLogin()" class="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-500 hover:text-slate-900 transition flex items-center gap-1.5">
+              <button class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-white text-slate-800 shadow-sm">Kehadiran</button>
+              <button onclick="openUserStatsModal()" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+                <span>Statistik</span>
+              </button>
+              <button onclick="promptAdminLogin()" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-500 hover:text-slate-900 transition flex items-center gap-1.5">
                 <svg class="w-3 h-3 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                 <span>Admin</span>
               </button>
             </div>
 
-            <!-- Butang Refresh & Status Auto-Sync -->
-            <button onclick="fetchParticipants(true)" id="userSyncBtn" class="w-10 h-10 rounded-full bg-white shadow-neumorph-btn flex items-center justify-center text-slate-600 transition active:scale-95" title="Sync Data">
+            <!-- Butang Refresh -->
+            <button onclick="fetchParticipants(true)" id="userSyncBtn" class="w-10 h-10 rounded-full bg-white shadow-neumorph-btn flex items-center justify-center text-slate-600 transition active:scale-95" title="Segar Semula Data">
               <svg id="userSyncIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
               </svg>
@@ -242,7 +248,7 @@
     </div>
 
     <!-- ==============================================
-         SKRIN 3: DASHBOARD ADMIN KEHADIRAN (UPGRADED)
+         SKRIN 3: DASHBOARD ADMIN KEHADIRAN
          ============================================== -->
     <div id="screenAdmin" class="hidden flex-1 flex flex-col w-full h-[100dvh] overflow-hidden transition-all duration-300 bg-[#0f172a] text-slate-100">
       
@@ -270,7 +276,7 @@
               <svg id="adminSyncIcon" class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
               </svg>
-              <span class="hidden sm:inline">Sync DB</span>
+              <span class="hidden sm:inline">Segar Semula</span>
             </button>
             <button onclick="exportAttendanceCSV()" class="px-3.5 py-2 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition flex items-center gap-1.5" title="Muat turun format Excel/CSV">
               <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -335,7 +341,7 @@
 
           </div>
 
-          <!-- Pecahan Sesi Interaktif (Kotak boleh diklik) -->
+          <!-- Pecahan Sesi Interaktif[cite: 1] -->
           <div class="bg-[#1e293b]/80 p-6 rounded-3xl border border-slate-800 shadow-xl">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
               <div>
@@ -346,7 +352,7 @@
                 <p class="text-xs text-slate-400 mt-0.5">Ketik mana-mana kotak untuk melihat pecahan jabatan yang belum hadir serta jadual perincian di bawah.</p>
               </div>
 
-              <!-- Tab Pemilih Hari -->
+              <!-- Tab Pemilih Hari[cite: 1] -->
               <div class="flex items-center gap-1.5 p-1 bg-slate-900 rounded-2xl border border-slate-700">
                 <button onclick="setAdminDay(1)" id="adminTabDay1" class="px-3.5 py-1.5 text-xs font-bold rounded-xl transition bg-amber-400 text-slate-900 shadow-sm">Hari 1</button>
                 <button onclick="setAdminDay(2)" id="adminTabDay2" class="px-3.5 py-1.5 text-xs font-bold rounded-xl transition text-slate-400 hover:text-white">Hari 2</button>
@@ -369,12 +375,12 @@
                   <span id="adminTableSessionHeading">Hari 1 – Pagi</span>
                   <span id="adminActiveBadge" class="text-[10px] font-bold bg-amber-400/20 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded-full">Sesi Dipilih</span>
                 </h3>
-                <p class="text-xs text-slate-400 mt-0.5">Ketik status untuk ubah pengesahan atau ketik nombor telefon untuk buka WhatsApp terus[span_0](start_span)[span_0](end_span).</p>
+                <p class="text-xs text-slate-400 mt-0.5">Ketik status untuk ubah pengesahan atau ketik nombor telefon untuk buka WhatsApp terus.</p>
               </div>
 
               <div class="flex flex-wrap items-center gap-2.5">
                 <button onclick="openDepartmentModal(adminActiveSessionKey)" class="px-3.5 py-2 rounded-xl bg-amber-400/10 hover:bg-amber-400/20 text-amber-400 border border-amber-400/30 text-xs font-bold transition flex items-center gap-1.5">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v6a2 2 0 002 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                   <span>Lihat Pecahan Jabatan</span>
                 </button>
 
@@ -435,7 +441,6 @@
               </table>
             </div>
 
-            <!-- Footer Kecil Dalam Kad Admin -->
             <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-500 font-semibold tracking-wider uppercase select-none">
               <span>Sistem Kehadiran Pintar</span>
               <span>UMKB@JKEW - JnolAi</span>
@@ -456,12 +461,11 @@
     </div>
 
     <!-- ==============================================
-         MODAL POP-UP: ANALISIS JABATAN BELUM HADIR
+         MODAL POP-UP: ANALISIS JABATAN BELUM HADIR (ADMIN)
          ============================================== -->
     <div id="departmentStatsModal" class="hidden fixed inset-0 z-[75] flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 transition-all">
       <div class="w-full max-w-lg bg-[#1e293b] text-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-slate-700 flex flex-col max-h-[85vh]">
         
-        <!-- Header Modal -->
         <div class="flex items-start justify-between pb-3 border-b border-slate-700/80">
           <div>
             <div class="flex items-center gap-2">
@@ -476,24 +480,150 @@
           </button>
         </div>
 
-        <!-- Ringkasan Ringkas -->
         <div class="py-3 px-4 my-3 rounded-2xl bg-slate-900/80 border border-slate-800 flex items-center justify-between text-xs">
           <span class="text-slate-400">Jumlah Belum Hadir:</span>
           <span id="deptModalTotalCount" class="font-extrabold text-rose-400 text-sm">0 Peserta</span>
         </div>
 
-        <!-- Senarai Jabatan Scrollable -->
         <div class="flex-1 overflow-y-auto no-scrollbar space-y-2.5 my-2 pr-1" id="deptModalList">
           <!-- Rendered via JS -->
         </div>
 
-        <!-- Footer Modal -->
         <div class="pt-4 border-t border-slate-700/80 flex items-center justify-between">
           <span class="text-[10px] text-slate-500 font-semibold tracking-wider uppercase select-none">
             UMKB@JKEW - JnolAi
           </span>
           <button onclick="closeDepartmentModal()" class="px-5 py-2.5 rounded-xl font-bold text-xs text-slate-900 bg-amber-400 hover:bg-amber-300 transition">
             Tutup
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==============================================
+         MODAL POP-UP: STATISTIK & PECAHAN JABATAN (PESERTA - TEMA CERAH)
+         ============================================== -->
+    <div id="userStatsModal" class="hidden fixed inset-0 z-[70] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-3 sm:p-5 transition-all">
+      <div class="w-full max-w-4xl bg-[#f6f8fa] text-slate-800 rounded-[32px] p-5 sm:p-7 shadow-2xl border border-white/80 flex flex-col max-h-[92vh] overflow-hidden">
+        
+        <!-- Header Modal -->
+        <div class="flex items-center justify-between pb-4 border-b border-slate-200/60 shrink-0">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-white shadow-neumorph-btn flex items-center justify-center text-amber-500 font-bold border border-slate-100">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </div>
+            <div>
+              <span class="text-[10px] uppercase font-bold tracking-widest text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 shadow-sm">Paparan Komuniti</span>
+              <h2 class="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5">Statistik Kehadiran Mengikut Jabatan</h2>
+            </div>
+          </div>
+          <button onclick="closeUserStatsModal()" class="w-9 h-9 rounded-full bg-white hover:bg-slate-100 shadow-neumorph-btn flex items-center justify-center text-slate-500 hover:text-slate-900 transition active:scale-95">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <!-- Bahagian Boleh Ditatal (Scrollable) -->
+        <div class="flex-1 overflow-y-auto no-scrollbar space-y-4 my-4 pr-1">
+          
+          <!-- 1. Kad Metrik Utama (Gaya Lembut / Soft-Card)[cite: 1] -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            
+            <div class="bg-white/95 p-4 rounded-2xl border border-white/80 shadow-soft-card">
+              <span class="text-xs text-slate-500 font-semibold">Kehadiran Sesi Terpilih</span>
+              <div class="flex items-baseline gap-2 mt-1.5">
+                <h3 id="uStatCurrentRate" class="text-2xl font-extrabold text-slate-900">0%</h3>
+                <span id="uStatCurrentRatio" class="text-xs text-slate-500 font-medium">0 / 0 Peserta</span>
+              </div>
+              <div class="w-full h-2 bg-slate-100 rounded-full mt-2.5 overflow-hidden border border-slate-100">
+                <div id="uStatCurrentBar" class="h-full bg-amber-400 transition-all duration-500" style="width: 0%"></div>
+              </div>
+              <p id="uStatCurrentSessionLabel" class="text-[11px] text-amber-600 mt-2 font-bold">Hari 1 • Sesi Pagi</p>
+            </div>
+
+            <div class="bg-white/95 p-4 rounded-2xl border border-white/80 shadow-soft-card">
+              <span class="text-xs text-slate-500 font-semibold">Status Peserta Sesi Ini</span>
+              <div class="flex items-baseline gap-2 mt-1.5">
+                <h3 id="uStatTotalCount" class="text-2xl font-extrabold text-slate-900">0</h3>
+                <span class="text-xs text-slate-500 font-medium">Jumlah Peserta</span>
+              </div>
+              <div class="flex items-center gap-3 mt-3 text-xs font-bold">
+                <span class="text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  <span id="uStatHadirCount">0 Hadir</span>
+                </span>
+                <span class="text-rose-700 bg-rose-50 border border-rose-200/60 px-2 py-0.5 rounded-full flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                  <span id="uStatBelumCount">0 Belum</span>
+                </span>
+              </div>
+            </div>
+
+            <div class="bg-white/95 p-4 rounded-2xl border border-white/80 shadow-soft-card">
+              <span class="text-xs text-slate-500 font-semibold">Kehadiran Purata Hari Ini</span>
+              <div class="flex items-baseline gap-2 mt-1.5">
+                <h3 id="uStatDayRate" class="text-2xl font-extrabold text-teal-600">0%</h3>
+                <span id="uStatDayLabel" class="text-xs text-slate-500 font-medium">Hari 1</span>
+              </div>
+              <div class="w-full h-2 bg-slate-100 rounded-full mt-2.5 overflow-hidden border border-slate-100">
+                <div id="uStatDayBar" class="h-full bg-teal-500 transition-all duration-500" style="width: 0%"></div>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-2 font-medium">Purata 3 sesi (Pagi, Petang, Malam)</p>
+            </div>
+
+          </div>
+
+          <!-- 2. Kotak Pecahan Sesi Interaktif[cite: 1] -->
+          <div class="bg-white/95 p-4 sm:p-5 rounded-2xl border border-white/80 shadow-soft-card">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 mb-3">
+              <h3 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                Pecahan Sesi Mengikut Hari
+              </h3>
+              <div class="flex items-center gap-1 p-1 bg-slate-100 rounded-xl border border-slate-200/60">
+                <button onclick="setUserStatsDay(1)" id="uTabDay1" class="px-3.5 py-1 text-xs font-bold rounded-lg transition bg-slate-900 text-white shadow-sm">Hari 1</button>
+                <button onclick="setUserStatsDay(2)" id="uTabDay2" class="px-3.5 py-1 text-xs font-bold rounded-lg transition text-slate-500 hover:text-slate-800">Hari 2</button>
+                <button onclick="setUserStatsDay(3)" id="uTabDay3" class="px-3.5 py-1 text-xs font-bold rounded-lg transition text-slate-500 hover:text-slate-800">Hari 3</button>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="uSessionMatrix">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- 3. Senarai Jabatan & Status Peserta -->
+          <div class="bg-white/95 p-4 sm:p-5 rounded-2xl border border-white/80 shadow-soft-card">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+              <div>
+                <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  Pecahan Kehadiran Mengikut Jabatan
+                </h3>
+                <p class="text-xs text-slate-500 mt-0.5">Ketik pada nama jabatan untuk membuka senarai nama yang hadir dan belum hadir.</p>
+              </div>
+              <div class="relative max-w-xs w-full">
+                <input 
+                  type="text" 
+                  id="userStatsDeptSearch" 
+                  oninput="renderUserDepartmentBreakdown()" 
+                  placeholder="Cari jabatan..." 
+                  class="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 outline-none focus:border-amber-400 transition"
+                >
+              </div>
+            </div>
+
+            <div id="uDepartmentAccordionList" class="space-y-2.5">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer Modal -->
+        <div class="pt-3 border-t border-slate-200/60 flex items-center justify-between text-xs text-slate-500 shrink-0">
+          <span class="text-[10px] text-slate-400 font-semibold tracking-wider uppercase select-none">UMKB@JKEW - JnolAi</span>
+          <button onclick="closeUserStatsModal()" class="px-5 py-2 rounded-xl font-bold text-xs text-slate-900 bg-amber-400 hover:bg-amber-300 transition shadow-sm">
+            Tutup Paparan
           </button>
         </div>
 
@@ -668,11 +798,15 @@
     let adminStatusFilter = "all"; 
     let pendingToggleData = null;
 
+    // Pemboleh ubah Modal Statistik Peserta
+    let userStatsDay = 1;
+    let userStatsActiveSessionKey = "h1_pagi";
+
     // Penjejak Auto-Sync (1 Minit)
     let autoSyncTimer = null;
     let isSyncing = false;
 
-    // Senarai Peserta Bersih (Tiada Data Demo - 100% Mengambil daripada Google Sheet)
+    // Senarai Peserta (100% daripada Google Sheet)
     let participants = [];
 
     // Format Tarikh & Masa Malaysia: 28/10/2026, 12:36:59 PTG
@@ -784,7 +918,8 @@
       autoSyncTimer = setInterval(() => {
         const isModalOpen = !document.getElementById('pinModal').classList.contains('hidden') ||
                             !document.getElementById('adminToggleConfirmModal').classList.contains('hidden') ||
-                            !document.getElementById('departmentStatsModal').classList.contains('hidden');
+                            !document.getElementById('departmentStatsModal').classList.contains('hidden') ||
+                            !document.getElementById('userStatsModal').classList.contains('hidden');
         if (!isModalOpen) {
           fetchParticipants(false);
         }
@@ -877,7 +1012,7 @@
     }
 
     /* ========================================================
-       MODAL ANALISIS JABATAN BELUM HADIR
+       MODAL ANALISIS JABATAN BELUM HADIR (ADMIN)
        ======================================================== */
     function openDepartmentModal(sessionKey) {
       const sessionDisplayNames = {
@@ -962,7 +1097,7 @@
       const totalParticipants = participants.length;
       document.getElementById('adminTotalParticipants').innerText = totalParticipants;
 
-      // 1. Sesi Semasa Yang Dipilih
+      // 1. Sesi Semasa Yang Dipilih[cite: 1]
       const currentHadir = participants.filter(p => (p.attendance && p.attendance[adminActiveSessionKey] && p.attendance[adminActiveSessionKey].status === 'Hadir')).length;
       const currentBelum = totalParticipants - currentHadir;
       const currentPct = totalParticipants > 0 ? Math.round((currentHadir / totalParticipants) * 100) : 0;
@@ -984,7 +1119,7 @@
       document.getElementById('adminStatHadirCount').innerText = `${currentHadir} Hadir`;
       document.getElementById('adminStatBelumCount').innerText = `${currentBelum} Belum`;
 
-      // 2. Metrik Purata Hari Dipilih
+      // 2. Metrik Purata Hari Dipilih[cite: 1]
       const daySlots = [`h${adminSelectedDay}_pagi`, `h${adminSelectedDay}_petang`, `h${adminSelectedDay}_malam`];
       let daySlotsHadir = 0;
       daySlots.forEach(s => {
@@ -997,7 +1132,7 @@
       document.getElementById('adminTodaySubtitle').innerText = `Hari ${adminSelectedDay}`;
       document.getElementById('adminTodayBar').style.width = `${dayPct}%`;
 
-      // 3. Pecahan 3 Sesi Bagi Hari Dipilih
+      // 3. Pecahan 3 Sesi Bagi Hari Dipilih[cite: 1]
       const matrixHtml = daySlots.map(sKey => {
         const count = participants.filter(p => (p.attendance && p.attendance[sKey] && p.attendance[sKey].status === 'Hadir')).length;
         const pct = totalParticipants > 0 ? Math.round((count / totalParticipants) * 100) : 0;
@@ -1072,7 +1207,7 @@
           <tr>
             <td colspan="7" class="p-8 text-center text-slate-400">
               <p class="font-bold">Tiada rekod peserta dijumpai</p>
-              <p class="text-[11px] mt-1 text-slate-500">Sila pastikan sambungan internet stabil atau semak DB anda.</p>
+              <p class="text-[11px] mt-1 text-slate-500">Sila pastikan senarai carian tepat atau semak data Google Sheets anda.</p>
             </td>
           </tr>
         `;
@@ -1160,7 +1295,6 @@
       }).join('');
     }
 
-    // Fungsi Muat Turun Data Kehadiran Format CSV
     function exportAttendanceCSV() {
       if (participants.length === 0) {
         triggerToast("Tiada data untuk dieksport.", "error");
@@ -1304,11 +1438,11 @@
             participants = cloudData;
           }
           if (isManualTrigger) {
-            triggerToast("DB berjaya disync!", "success");
+            triggerToast("Data Google Sheets berjaya disegarkan!", "success");
           }
         } catch (err) {
           if (isManualTrigger) {
-            triggerToast("Ralat menyegerak dari DB", "error");
+            triggerToast("Ralat menyegerak dari Google Sheets", "error");
           }
         }
       }
@@ -1316,6 +1450,9 @@
       filterParticipants();
       if (!document.getElementById('screenAdmin').classList.contains('hidden')) {
         renderAdminDashboard();
+      }
+      if (!document.getElementById('userStatsModal').classList.contains('hidden')) {
+        renderUserStatsOverview();
       }
 
       setTimeout(() => {
@@ -1553,6 +1690,254 @@
       const txt = document.getElementById('modalErrorText');
       txt.innerText = msg;
       err.classList.remove('hidden');
+    }
+
+    /* ========================================================
+       LOGIK PAPARAN STATISTIK & JABATAN UNTUK PESERTA
+       ======================================================== */
+    function openUserStatsModal() {
+      userStatsDay = selectedDay;
+      userStatsActiveSessionKey = getCurrentSessionKey();
+      setUserStatsDay(userStatsDay);
+      document.getElementById('userStatsModal').classList.remove('hidden');
+    }
+
+    function closeUserStatsModal() {
+      document.getElementById('userStatsModal').classList.add('hidden');
+    }
+
+    function setUserStatsDay(dayNum) {
+      userStatsDay = dayNum;
+      [1, 2, 3].forEach(d => {
+        const btn = document.getElementById(`uTabDay${d}`);
+        if (btn) {
+          if (d === dayNum) {
+            btn.className = "px-3.5 py-1 text-xs font-bold rounded-lg transition bg-slate-900 text-white shadow-sm";
+          } else {
+            btn.className = "px-3.5 py-1 text-xs font-bold rounded-lg transition text-slate-500 hover:text-slate-800";
+          }
+        }
+      });
+
+      if (!userStatsActiveSessionKey.startsWith(`h${dayNum}_`)) {
+        userStatsActiveSessionKey = `h${dayNum}_pagi`;
+      }
+
+      renderUserStatsOverview();
+    }
+
+    function selectUserStatsSession(sessionKey) {
+      userStatsActiveSessionKey = sessionKey;
+      renderUserStatsOverview();
+    }
+
+    function renderUserStatsOverview() {
+      const total = participants.length;
+      const sessionDisplayNames = {
+        'h1_pagi': 'Hari 1 – Pagi', 'h1_petang': 'Hari 1 – Petang', 'h1_malam': 'Hari 1 – Malam',
+        'h2_pagi': 'Hari 2 – Pagi', 'h2_petang': 'Hari 2 – Petang', 'h2_malam': 'Hari 2 – Malam',
+        'h3_pagi': 'Hari 3 – Pagi', 'h3_petang': 'Hari 3 – Petang', 'h3_malam': 'Hari 3 – Malam'
+      };
+
+      // 1. Kad Sesi Terpilih[cite: 1]
+      const hadir = participants.filter(p => (p.attendance && p.attendance[userStatsActiveSessionKey] && p.attendance[userStatsActiveSessionKey].status === 'Hadir')).length;
+      const belum = total - hadir;
+      const pct = total > 0 ? Math.round((hadir / total) * 100) : 0;
+
+      document.getElementById('uStatCurrentRate').innerText = `${pct}%`;
+      document.getElementById('uStatCurrentRatio').innerText = `${hadir} / ${total} Peserta`;
+      document.getElementById('uStatCurrentBar').style.width = `${pct}%`;
+      document.getElementById('uStatCurrentSessionLabel').innerText = sessionDisplayNames[userStatsActiveSessionKey] || userStatsActiveSessionKey;
+
+      document.getElementById('uStatTotalCount').innerText = total;
+      document.getElementById('uStatHadirCount').innerText = `${hadir} Hadir`;
+      document.getElementById('uStatBelumCount').innerText = `${belum} Belum`;
+
+      // 2. Kad Purata Harian[cite: 1]
+      const daySlots = [`h${userStatsDay}_pagi`, `h${userStatsDay}_petang`, `h${userStatsDay}_malam`];
+      let daySlotsHadir = 0;
+      daySlots.forEach(s => {
+        daySlotsHadir += participants.filter(p => (p.attendance && p.attendance[s] && p.attendance[s].status === 'Hadir')).length;
+      });
+      const dayTotalSlots = total * 3;
+      const dayPct = dayTotalSlots > 0 ? Math.round((daySlotsHadir / dayTotalSlots) * 100) : 0;
+
+      document.getElementById('uStatDayRate').innerText = `${dayPct}%`;
+      document.getElementById('uStatDayLabel').innerText = `Hari ${userStatsDay}`;
+      document.getElementById('uStatDayBar').style.width = `${dayPct}%`;
+
+      // 3. Pecahan 3 Sesi Mengikut Hari[cite: 1]
+      const matrixHtml = daySlots.map(sKey => {
+        const sHadir = participants.filter(p => (p.attendance && p.attendance[sKey] && p.attendance[sKey].status === 'Hadir')).length;
+        const sPct = total > 0 ? Math.round((sHadir / total) * 100) : 0;
+        const isCurrent = (sKey === userStatsActiveSessionKey);
+
+        return `
+          <div 
+            onclick="selectUserStatsSession('${sKey}')"
+            class="p-3.5 rounded-2xl cursor-pointer transition border ${
+              isCurrent 
+                ? 'border-amber-400 bg-amber-50/60 shadow-sm' 
+                : 'border-slate-200/80 bg-slate-50/60 hover:bg-slate-100/70 hover:border-slate-300'
+            }"
+          >
+            <div class="flex items-center justify-between text-xs mb-1">
+              <span class="font-bold ${isCurrent ? 'text-slate-900' : 'text-slate-600'}">${sessionDisplayNames[sKey]}</span>
+              <span class="font-extrabold ${sPct > 0 ? 'text-amber-600' : 'text-slate-400'}">${sHadir}/${total}</span>
+            </div>
+            <div class="w-full h-1.5 bg-slate-200/80 rounded-full overflow-hidden my-2">
+              <div class="h-full bg-amber-400 transition-all duration-300" style="width: ${sPct}%"></div>
+            </div>
+            <div class="flex items-center justify-between text-[10px] text-slate-500">
+              <span>${sPct}% kehadiran</span>
+              <span class="${isCurrent ? 'text-amber-600 font-bold' : 'text-slate-400'}">Pilih Sesi</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('uSessionMatrix').innerHTML = matrixHtml;
+
+      renderUserDepartmentBreakdown();
+    }
+
+    function renderUserDepartmentBreakdown() {
+      const container = document.getElementById('uDepartmentAccordionList');
+      const searchFilter = (document.getElementById('userStatsDeptSearch').value || '').toLowerCase().trim();
+
+      const depts = {};
+      participants.forEach(p => {
+        const deptName = (p.jabatan || p["Jabatan"] || "Tidak Dinyatakan").trim();
+        if (!depts[deptName]) {
+          depts[deptName] = { hadir: [], belum: [] };
+        }
+        const slot = (p.attendance && p.attendance[userStatsActiveSessionKey]) ? p.attendance[userStatsActiveSessionKey] : { status: "Belum Hadir", masa: "" };
+        if (slot.status === "Hadir") {
+          depts[deptName].hadir.push({ participant: p, masa: slot.masa });
+        } else {
+          depts[deptName].belum.push({ participant: p });
+        }
+      });
+
+      const sortedDeptNames = Object.keys(depts)
+        .filter(d => d.toLowerCase().includes(searchFilter))
+        .sort((a, b) => (depts[b].hadir.length + depts[b].belum.length) - (depts[a].hadir.length + depts[a].belum.length));
+
+      if (sortedDeptNames.length === 0) {
+        container.innerHTML = `
+          <div class="py-8 text-center text-slate-400">
+            <p class="text-xs font-semibold">Tiada rekod jabatan ditemui.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = sortedDeptNames.map((deptName, idx) => {
+        const item = depts[deptName];
+        const deptTotal = item.hadir.length + item.belum.length;
+        const deptRate = deptTotal > 0 ? Math.round((item.hadir.length / deptTotal) * 100) : 0;
+        const accordionId = `deptAccordion_${idx}`;
+
+        return `
+          <div class="rounded-2xl border border-slate-200/80 bg-slate-50/70 overflow-hidden shadow-sm">
+            <div 
+              onclick="toggleDeptAccordion('${accordionId}')"
+              class="p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 cursor-pointer hover:bg-slate-100/60 transition"
+            >
+              <div class="flex items-center gap-2.5">
+                <span class="w-2.5 h-2.5 rounded-full ${deptRate === 100 ? 'bg-emerald-500' : (deptRate > 0 ? 'bg-amber-400' : 'bg-slate-300')}"></span>
+                <div>
+                  <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 leading-tight">${deptName}</h4>
+                  <p class="text-[10px] text-slate-500 mt-0.5">${item.hadir.length} Hadir • ${item.belum.length} Belum (${deptRate}%)</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 self-end sm:self-center">
+                <div class="w-24 sm:w-32 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                  <div class="h-full bg-emerald-500" style="width: ${deptRate}%"></div>
+                </div>
+                <span class="text-[11px] text-slate-600 font-mono font-bold w-8 text-right">${deptRate}%</span>
+                <svg id="icon_${accordionId}" class="w-4 h-4 text-slate-400 transition-transform transform rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </div>
+            </div>
+
+            <div id="${accordionId}" class="hidden p-3.5 border-t border-slate-200/80 bg-white">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                
+                <!-- Senarai Hadir -->
+                <div class="bg-emerald-50/40 border border-emerald-200/60 rounded-xl p-3">
+                  <div class="flex items-center justify-between pb-2 mb-2 border-b border-emerald-200/60">
+                    <span class="text-xs font-bold text-emerald-800 flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                      Hadir (${item.hadir.length})
+                    </span>
+                  </div>
+                  ${item.hadir.length === 0 ? '<p class="text-[11px] text-slate-400 italic">Belum ada peserta hadir.</p>' : `
+                    <div class="space-y-1.5 max-h-48 overflow-y-auto no-scrollbar pr-1">
+                      ${item.hadir.map((h, i) => {
+                        const p = h.participant;
+                        const pName = p.nama || p["Nama Peserta"] || 'Peserta';
+                        const pJawatan = p.jawatan || p["Jawatan/Gred"] || '-';
+                        const scanTime = formatMasaMY(h.masa);
+                        return `
+                          <div class="p-2 rounded-lg bg-white border border-emerald-100 flex items-start justify-between gap-2 shadow-sm">
+                            <div>
+                              <p class="text-xs font-bold text-slate-900">${i+1}. ${pName}</p>
+                              <p class="text-[10px] text-slate-500 font-medium">${pJawatan}</p>
+                            </div>
+                            <span class="text-[9px] font-mono text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 whitespace-nowrap">${scanTime}</span>
+                          </div>
+                        `;
+                      }).join('')}
+                    </div>
+                  `}
+                </div>
+
+                <!-- Senarai Belum Hadir -->
+                <div class="bg-rose-50/40 border border-rose-200/60 rounded-xl p-3">
+                  <div class="flex items-center justify-between pb-2 mb-2 border-b border-rose-200/60">
+                    <span class="text-xs font-bold text-rose-800 flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                      Belum Hadir (${item.belum.length})
+                    </span>
+                  </div>
+                  ${item.belum.length === 0 ? '<p class="text-[11px] text-emerald-700 font-semibold">Tahniah! Semua peserta telah hadir.</p>' : `
+                    <div class="space-y-1.5 max-h-48 overflow-y-auto no-scrollbar pr-1">
+                      ${item.belum.map((b, i) => {
+                        const p = b.participant;
+                        const pName = p.nama || p["Nama Peserta"] || 'Peserta';
+                        const pJawatan = p.jawatan || p["Jawatan/Gred"] || '-';
+                        return `
+                          <div class="p-2 rounded-lg bg-white border border-rose-100 flex items-start justify-between gap-2 shadow-sm">
+                            <div>
+                              <p class="text-xs font-bold text-slate-800">${i+1}. ${pName}</p>
+                              <p class="text-[10px] text-slate-500 font-medium">${pJawatan}</p>
+                            </div>
+                            <span class="text-[9px] text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200 whitespace-nowrap font-medium">Belum</span>
+                          </div>
+                        `;
+                      }).join('')}
+                    </div>
+                  `}
+                </div>
+
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleDeptAccordion(id) {
+      const content = document.getElementById(id);
+      const icon = document.getElementById(`icon_${id}`);
+      if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        if (icon) icon.classList.add('rotate-180');
+      } else {
+        content.classList.add('hidden');
+        if (icon) icon.classList.remove('rotate-180');
+      }
     }
 
     function triggerToast(text, type = "info") {
