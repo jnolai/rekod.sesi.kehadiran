@@ -155,7 +155,7 @@
               </button>
             </div>
 
-            <!-- Butang Refresh & Status Auto-Sync -->
+            <!-- Butang Refresh -->
             <button onclick="fetchParticipants(true)" id="userSyncBtn" class="w-10 h-10 rounded-full bg-white shadow-neumorph-btn flex items-center justify-center text-slate-600 transition active:scale-95" title="Segar Semula Data">
               <svg id="userSyncIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
@@ -918,7 +918,6 @@
 
     /* ========================================================
        FUNGSI AUTO-SYNC SETIAP 1 MINIT
-       (Menyokong Auto-Sync Modal Statistik & Papan Pemuka)
        ======================================================== */
     function startAutoSync() {
       if (autoSyncTimer) clearInterval(autoSyncTimer);
@@ -1834,9 +1833,31 @@
         }
       });
 
+      // LOGIK SUSUNAN:
+      // 1. Jabatan 100% kehadiran diletakkan di paling atas secara automatik
+      // 2. Diikuti jabatan dengan peratusan tertinggi seterusnya
+      // 3. Jika peratusan sama, susun mengikut jumlah peserta terbanyak
       const sortedDeptNames = Object.keys(depts)
         .filter(d => d.toLowerCase().includes(searchFilter))
-        .sort((a, b) => (depts[b].hadir.length + depts[b].belum.length) - (depts[a].hadir.length + depts[a].belum.length));
+        .sort((a, b) => {
+          const totalA = depts[a].hadir.length + depts[a].belum.length;
+          const rateA = totalA > 0 ? Math.round((depts[a].hadir.length / totalA) * 100) : 0;
+
+          const totalB = depts[b].hadir.length + depts[b].belum.length;
+          const rateB = totalB > 0 ? Math.round((depts[b].hadir.length / totalB) * 100) : 0;
+
+          // Utamakan 100% di baris teratas
+          if (rateA === 100 && rateB !== 100) return -1;
+          if (rateB === 100 && rateA !== 100) return 1;
+
+          // Susun ikut peratusan kehadiran tertinggi
+          if (rateB !== rateA) {
+            return rateB - rateA;
+          }
+
+          // Jika peratus sama, susun mengikut jumlah saiz peserta
+          return totalB - totalA;
+        });
 
       if (sortedDeptNames.length === 0) {
         container.innerHTML = `
@@ -1852,17 +1873,25 @@
         const deptTotal = item.hadir.length + item.belum.length;
         const deptRate = deptTotal > 0 ? Math.round((item.hadir.length / deptTotal) * 100) : 0;
         const accordionId = `deptAccordion_${idx}`;
+        const isComplete = deptRate === 100;
 
         return `
-          <div class="rounded-2xl border border-slate-200/80 bg-slate-50/70 overflow-hidden shadow-sm">
+          <div class="rounded-2xl border transition-all ${
+            isComplete 
+              ? 'border-emerald-300/80 bg-emerald-50/30 shadow-sm' 
+              : 'border-slate-200/80 bg-slate-50/70 shadow-sm'
+          } overflow-hidden">
             <div 
               onclick="toggleDeptAccordion('${accordionId}')"
               class="p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 cursor-pointer hover:bg-slate-100/60 transition"
             >
               <div class="flex items-center gap-2.5">
-                <span class="w-2.5 h-2.5 rounded-full ${deptRate === 100 ? 'bg-emerald-500' : (deptRate > 0 ? 'bg-amber-400' : 'bg-slate-300')}"></span>
+                <span class="w-2.5 h-2.5 rounded-full shrink-0 ${isComplete ? 'bg-emerald-500 ring-4 ring-emerald-100' : (deptRate > 0 ? 'bg-amber-400' : 'bg-slate-300')}"></span>
                 <div>
-                  <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 leading-tight">${deptName}</h4>
+                  <div class="flex items-center gap-2">
+                    <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 leading-tight">${deptName}</h4>
+                    ${isComplete ? '<span class="text-[9px] font-bold text-emerald-700 bg-emerald-100/80 border border-emerald-300 px-2 py-0.5 rounded-full">Selesai 100%</span>' : ''}
+                  </div>
                   <p class="text-[10px] text-slate-500 mt-0.5">${item.hadir.length} Hadir • ${item.belum.length} Belum (${deptRate}%)</p>
                 </div>
               </div>
@@ -1870,7 +1899,7 @@
                 <div class="w-24 sm:w-32 h-1.5 bg-slate-200 rounded-full overflow-hidden">
                   <div class="h-full bg-emerald-500" style="width: ${deptRate}%"></div>
                 </div>
-                <span class="text-[11px] text-slate-600 font-mono font-bold w-8 text-right">${deptRate}%</span>
+                <span class="text-[11px] ${isComplete ? 'text-emerald-700 font-extrabold' : 'text-slate-600 font-bold'} font-mono w-8 text-right">${deptRate}%</span>
                 <svg id="icon_${accordionId}" class="w-4 h-4 text-slate-400 transition-transform transform rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                 </svg>
