@@ -1072,7 +1072,7 @@
           <tr>
             <td colspan="7" class="p-8 text-center text-slate-400">
               <p class="font-bold">Tiada rekod peserta dijumpai</p>
-              <p class="text-[11px] mt-1 text-slate-500">Sila pastikan sambungan internet stabil atau semak data Google Sheets anda.</p>
+              <p class="text-[11px] mt-1 text-slate-500">Sila pastikan sambungan internet stabil atau semak DB anda.</p>
             </td>
           </tr>
         `;
@@ -1304,11 +1304,11 @@
             participants = cloudData;
           }
           if (isManualTrigger) {
-            triggerToast("Data Google Sheets berjaya disegarkan!", "success");
+            triggerToast("DB berjaya disync!", "success");
           }
         } catch (err) {
           if (isManualTrigger) {
-            triggerToast("Ralat menyegerak dari Google Sheets", "error");
+            triggerToast("Ralat menyegerak dari DB", "error");
           }
         }
       }
