@@ -155,7 +155,7 @@
               </button>
             </div>
 
-            <!-- Butang Refresh -->
+            <!-- Butang Refresh & Status Auto-Sync -->
             <button onclick="fetchParticipants(true)" id="userSyncBtn" class="w-10 h-10 rounded-full bg-white shadow-neumorph-btn flex items-center justify-center text-slate-600 transition active:scale-95" title="Segar Semula Data">
               <svg id="userSyncIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
@@ -380,7 +380,7 @@
 
               <div class="flex flex-wrap items-center gap-2.5">
                 <button onclick="openDepartmentModal(adminActiveSessionKey)" class="px-3.5 py-2 rounded-xl bg-amber-400/10 hover:bg-amber-400/20 text-amber-400 border border-amber-400/30 text-xs font-bold transition flex items-center gap-1.5">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v6a2 2 0 002 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                   <span>Lihat Pecahan Jabatan</span>
                 </button>
 
@@ -514,7 +514,13 @@
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
             </div>
             <div>
-              <span class="text-[10px] uppercase font-bold tracking-widest text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 shadow-sm">Paparan Komuniti</span>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] uppercase font-bold tracking-widest text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 shadow-sm">Paparan Komuniti</span>
+                <span class="inline-flex items-center gap-1 text-[10px] text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  Auto Sync 1m
+                </span>
+              </div>
               <h2 class="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5">Statistik Kehadiran Mengikut Jabatan</h2>
             </div>
           </div>
@@ -912,15 +918,15 @@
 
     /* ========================================================
        FUNGSI AUTO-SYNC SETIAP 1 MINIT
+       (Menyokong Auto-Sync Modal Statistik & Papan Pemuka)
        ======================================================== */
     function startAutoSync() {
       if (autoSyncTimer) clearInterval(autoSyncTimer);
       autoSyncTimer = setInterval(() => {
-        const isModalOpen = !document.getElementById('pinModal').classList.contains('hidden') ||
-                            !document.getElementById('adminToggleConfirmModal').classList.contains('hidden') ||
-                            !document.getElementById('departmentStatsModal').classList.contains('hidden') ||
-                            !document.getElementById('userStatsModal').classList.contains('hidden');
-        if (!isModalOpen) {
+        // Hentikan segerak HANYA jika modal memasukkan PIN atau kotak pengesahan sedang dibuka (elak gangguan input)
+        const isInputModalOpen = !document.getElementById('pinModal').classList.contains('hidden') ||
+                                 !document.getElementById('adminToggleConfirmModal').classList.contains('hidden');
+        if (!isInputModalOpen) {
           fetchParticipants(false);
         }
       }, 60000);
@@ -1448,11 +1454,21 @@
       }
 
       filterParticipants();
+
       if (!document.getElementById('screenAdmin').classList.contains('hidden')) {
         renderAdminDashboard();
       }
-      if (!document.getElementById('userStatsModal').classList.contains('hidden')) {
+
+      // Pastikan paparan statistik sentiasa dikemas kini secara auto jika modal sedang terbuka
+      const userStatsModal = document.getElementById('userStatsModal');
+      if (userStatsModal && !userStatsModal.classList.contains('hidden')) {
         renderUserStatsOverview();
+      }
+
+      // Pastikan modal pecahan jabatan admin dikemas kini secara langsung jika terbuka
+      const deptModal = document.getElementById('departmentStatsModal');
+      if (deptModal && !deptModal.classList.contains('hidden')) {
+        openDepartmentModal(adminActiveSessionKey);
       }
 
       setTimeout(() => {
@@ -1693,7 +1709,7 @@
     }
 
     /* ========================================================
-       LOGIK PAPARAN STATISTIK & JABATAN UNTUK PESERTA
+       LOGIK PAPARAN STATISTIK & JABATAN UNTUK PESERTA (TEMA CERAH)
        ======================================================== */
     function openUserStatsModal() {
       userStatsDay = selectedDay;
